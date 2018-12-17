@@ -6,6 +6,9 @@
 
 Rook::Rook(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance)
 {
+	m_pieceType = PieceType::ROOK;
+
+	hashCodeKeyValue();
 }
 
 Rook::~Rook()
@@ -62,7 +65,3 @@ bool Rook::isEightColumnExclusion(int currentPosition, int candidateOffset) cons
 	return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == 1);
 }
 
-char Rook::getKeyCharacter() const
-{
-	return 'R';
-}

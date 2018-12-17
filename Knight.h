@@ -18,5 +18,4 @@ public:
 	bool isSecondColumnExclusion(int currentPosition, int candidateOffset) const;
 	bool isSeventhColumnExclusion(int currentPosition, int candidateOffset) const;
 
-	virtual char getKeyCharacter() const;
 };

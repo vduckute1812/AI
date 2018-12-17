@@ -7,6 +7,9 @@
 Pawn::Pawn(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance)
 {
 	m_isFirstMove = true;
+	m_pieceType = PieceType::PAWN;
+
+	hashCodeKeyValue();
 }
 
 
@@ -27,14 +30,14 @@ const std::vector<Move*> Pawn::calculateLegalMove(const Board* board) const
 		{
 			const Tile* candidateTile = board->getTile(candidateDestinationCoordinate);
 
-			if ( !candidateTile->isTileOccupied() && ( currentCandidateOffset == 8 
-												  ||   currentCandidateOffset == 16 && this->isFirstMove()) )
+			if ( !candidateTile->isTileOccupied() && ( currentCandidateOffset == 8								// MOVE
+												  ||   currentCandidateOffset == 16 && this->isFirstMove()) )	// JUMP
 			{
 				legalMoves.push_back(new Move(board, this, nullptr, candidateDestinationCoordinate));
 			}
 
-			else if (this->getAlliance() != candidateTile->getPiece()->getAlliance() 
-					&& (currentCandidateOffset == 7 || currentCandidateOffset == 9))
+			else if ( ( currentCandidateOffset == 7 || currentCandidateOffset == 9) 
+						&& this->getAlliance() != candidateTile->getPiece()->getAlliance() )
 			{
 				if (   isFirstColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection())
 					|| isEightColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection()))
@@ -74,9 +77,4 @@ bool Pawn::isFirstColumnExclusion(int currentPosition, int candidateOffset) cons
 bool Pawn::isEightColumnExclusion(int currentPosition, int candidateOffset) const
 {
 	return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == -7 || candidateOffset == 9);
-}
-
-char Pawn::getKeyCharacter() const
-{
-	return 'P';
 }

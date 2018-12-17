@@ -6,6 +6,9 @@
 
 Queen::Queen(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance)
 {
+	m_pieceType = PieceType::QUEEN;
+
+	hashCodeKeyValue();
 }
 
 
@@ -62,9 +65,4 @@ bool Queen::isEightColumnExclusion(int currentPosition, int candidateOffset) con
 {
 	return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == -1 || candidateOffset == -7 
 														|| candidateOffset == 9);
-}
-
-char Queen::getKeyCharacter() const
-{
-	return 'Q';
 }

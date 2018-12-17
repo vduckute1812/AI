@@ -1,4 +1,5 @@
 #include "Tile.h"
+#include "Piece.h"
 
 Tile::Tile(int coordinate)
 {

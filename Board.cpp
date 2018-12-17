@@ -1,12 +1,14 @@
 #include "Board.h"
 #include "Tile.h"
 #include "BoardUntils.h"
+#include "Move.h"
 #include "Pawn.h"
 #include "Rook.h"
 #include "King.h"
 #include "Queen.h"
 #include "Knight.h"
 #include "Bishop.h"
+
 #include <iostream>
 
 Board::Board(BoardController* controller)
@@ -16,6 +18,12 @@ Board::Board(BoardController* controller)
 	m_boardController->setBoard(m_board);
 	m_boardController->setMoveMaker(Alliance::WHITE);
 	buildStandardBoard();
+
+	this->m_blackPieces = calculateActivePieces(m_board, Alliance::BLACK);
+	this->m_whitePieces = calculateActivePieces(m_board, Alliance::WHITE);
+
+	this->m_blackLegalMoves = calculateLegalMoves(this->m_blackPieces);
+	this->m_whiteLegalMoves = calculateLegalMoves(this->m_whitePieces);
 }
 
 Board::~Board()
@@ -67,12 +75,63 @@ void Board::buildStandardBoard()
 	m_boardController->GetInstance()->setPiece(  new Pawn   (49, Alliance::WHITE));
 	m_boardController->GetInstance()->setPiece(  new Pawn   (48, Alliance::WHITE));
 
+	for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
+	{
+		if (!m_board.at(i)->isEmptyTile())
+		{
+			std::cout << "Hash : " << m_board.at(i)->getPiece()->getKeyCharacter() << " : " << m_board.at(i)->getPiece()->getHash() << std::endl;
+		}
+	}
+
+	Move* move = new Move(this, m_board.at(48)->getPiece(), nullptr, 45);
+	m_boardController->GetInstance()->movePiece(move);
+
+	std::cout << "Hash : " << " MOVE " << move->GetHash() << std::endl;
+
+	delete move;
 }
+
+std::vector<Piece*>	Board::calculateActivePieces(const std::vector<Tile*> gameBoard, const Alliance alliance) const
+{
+	std::vector<Piece*> activePieces;
+	for (Tile* tile: gameBoard)
+	{
+		if (tile->isTileOccupied())
+		{
+			if (tile->getPiece()->getAlliance() == alliance)
+			{
+				activePieces.push_back(tile->getPiece());
+			}
+		}
+	}
+	return activePieces;
+}
+
+std::vector<Move*> Board::calculateLegalMoves(const std::vector<Piece*> pieces) const
+{
+	std::vector<Move*> legalMoves;
+	for (Piece* piece : pieces)
+	{
+		for (Move* move : piece->calculateLegalMove(this))
+		{
+			legalMoves.push_back(move);
+		}
+	}
+
+	return legalMoves;
+}
+
 
 const Tile* Board::getTile(int coordinate) const
 {
 	return m_board[coordinate];
 }
+
+std::vector<Tile*>	Board::getTiles() const
+{
+	return m_board;
+}
+
 
 void Board::printBoard() const
 {
@@ -84,6 +143,11 @@ void Board::printBoard() const
 			std::cout << std::endl;
 
 		key = m_board.at(i)->isEmptyTile() ? 'x' : m_board.at(i)->getPiece()->getKeyCharacter();
+		
+		if (!m_board.at(i)->isEmptyTile() && m_board.at(i)->getPiece()->getAlliance() == Alliance::BLACK)
+		{
+			key = key + 'a' - 'A';
+		}
 		std::cout << " " << key;
 	}
 	std::cout << std::endl;

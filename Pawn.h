@@ -19,7 +19,6 @@ public:
 
 	bool		isFirstMove() const;
 
-	virtual char getKeyCharacter() const;
 
 private:
 	bool		m_isFirstMove;

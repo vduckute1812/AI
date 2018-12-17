@@ -15,6 +15,5 @@ public:
 
 	virtual const std::vector<Move*> calculateLegalMove(const Board* board) const;
 
-	virtual char getKeyCharacter() const;
 };
 

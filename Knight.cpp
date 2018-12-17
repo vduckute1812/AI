@@ -6,7 +6,9 @@
 
 Knight::Knight(int piecePosition, Alliance pieceAlliance) : Piece(piecePosition, pieceAlliance)
 {
+	m_pieceType = PieceType::KNIGHT;
 
+	hashCodeKeyValue();
 }
 
 
@@ -69,9 +71,4 @@ bool Knight::isEightColumnExclusion(int currentPosition, int candidateOffset) co
 {
 	return BoardUntils::isEighthColumn(currentPosition) && ( candidateOffset == -15 || candidateOffset == -6
 														||   candidateOffset == 10  || candidateOffset == 17 );
-}
-
-char Knight::getKeyCharacter() const
-{
-	return 'k';
 }

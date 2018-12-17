@@ -14,6 +14,5 @@ public:
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
 	virtual bool isEightColumnExclusion(int currentPosition, int candidateOffset) const;
 
-	virtual char getKeyCharacter() const;
 };
 

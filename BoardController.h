@@ -7,7 +7,7 @@ class BoardController : public Singleton<BoardController>
 {
 public:
 	void setPiece		( Piece* piece );
-	void setMovePiece	( int currentPosition, int destPosition );
+	void movePiece		( Move* move );
 	void setMoveMaker	( const Alliance& alliance );
 	void setBoard		( std::vector<Tile*> board );
 

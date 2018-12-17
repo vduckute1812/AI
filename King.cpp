@@ -6,6 +6,9 @@
 
 King::King(int piecePos, Alliance pieceAlliance) :Piece(piecePos, pieceAlliance)
 {
+	m_pieceType = PieceType::KING;
+
+	hashCodeKeyValue();
 }
 
 
@@ -56,9 +59,4 @@ const std::vector<Move*> King::calculateLegalMove(const Board* board) const
 	}
 
 	return legalMoves;
-}
-
-char King::getKeyCharacter() const
-{
-	return 'K';
 }
