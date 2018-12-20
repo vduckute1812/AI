@@ -1,6 +1,12 @@
 #pragma once
 #include "Piece.h"
 
+enum MoveStatus
+{
+	DONE,
+	ILLEGAL_MOVE
+};
+
 class Board;
 class Move
 {
@@ -8,11 +14,13 @@ public:
 	Move(const Board* board, const Piece* piece, const Piece* attackPiece, int destinate);
 	~Move();
 
-	const Piece*			getMovePiece();
+	const Piece*			getMovePiece() const;
 	int						getDestCoordinate();
 	bool					isAttack();
 
 	int						GetHash() const;
+
+	bool					isDone(MoveStatus status) const;
 
 private:
 	const Board*	m_board;

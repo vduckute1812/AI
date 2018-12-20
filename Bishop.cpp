@@ -13,7 +13,7 @@ Bishop::~Bishop()
 {
 }
 
-const std::vector<Move*> Bishop::calculateLegalMove(const Board* board) const
+std::vector<Move*> Bishop::calculateLegalMove(const Board* board) const
 {
 	std::vector<Move*> legalMoves;
 

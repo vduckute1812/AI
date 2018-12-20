@@ -13,7 +13,7 @@ Knight::~Knight()
 {
 }
 
-const std::vector<Move*> Knight::calculateLegalMove(const Board* board)  const
+std::vector<Move*> Knight::calculateLegalMove(const Board* board)  const
 {
 	std::vector<Move*> legalMoves;
 

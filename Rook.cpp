@@ -12,7 +12,7 @@ Rook::~Rook()
 {
 }
 
-const std::vector<Move*> Rook::calculateLegalMove(const Board* board) const
+std::vector<Move*> Rook::calculateLegalMove(const Board* board) const
 {
 	std::vector<Move*> legalMoves;
 

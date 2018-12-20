@@ -14,7 +14,7 @@ Pawn::~Pawn()
 {
 }
 
-const std::vector<Move*> Pawn::calculateLegalMove(const Board* board) const
+std::vector<Move*> Pawn::calculateLegalMove(const Board* board) const
 {
 	std::vector<Move*> legalMoves;
 	int candidateDestinationCoordinate;

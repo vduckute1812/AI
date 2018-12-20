@@ -9,7 +9,7 @@ public:
 	Rook(int piecePos, Alliance pieceAlliance);
 	~Rook();
 
-	virtual const std::vector<Move*> calculateLegalMove(const Board* board) const;
+	virtual std::vector<Move*> calculateLegalMove(const Board* board) const;
 
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
 

@@ -25,7 +25,7 @@ bool King::isEightColumnExclusion(int currentPosition, int candidateOffset) cons
 		|| candidateOffset == 9);
 }
 
-const std::vector<Move*> King::calculateLegalMove(const Board* board) const
+std::vector<Move*> King::calculateLegalMove(const Board* board) const
 {
 	std::vector<Move*> legalMoves;
 

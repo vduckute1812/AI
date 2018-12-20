@@ -26,7 +26,7 @@ public:
 	explicit Piece(int piecePos, Alliance pieceAlliance, PieceType type);
 	virtual ~Piece();
 
-	virtual const std::vector<Move*> calculateLegalMove(const Board* board) const = 0;
+	virtual	std::vector<Move*> calculateLegalMove(const Board* board) const = 0;
 
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const = 0;
 	virtual bool isEightColumnExclusion(int currentPosition, int candidateOffset) const = 0;

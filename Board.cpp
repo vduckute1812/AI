@@ -122,6 +122,19 @@ std::vector<Move*> Board::calculateLegalMoves(const std::vector<Piece*> pieces) 
 }
 
 
+std::vector<Move*> Board::calculateAttackMoves(const std::vector<Move*> moves, const Alliance alliance) const
+{
+	std::vector<Move*> attackMoves;
+	for (Move* move : moves)
+	{
+		if (move->isAttack())
+		{
+			attackMoves.push_back(move);
+		}
+	}
+	return attackMoves;
+}
+
 const Tile* Board::getTile(int coordinate) const
 {
 	return m_board[coordinate];

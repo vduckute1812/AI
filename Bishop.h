@@ -9,7 +9,7 @@ public:
 	Bishop(int piecePos, Alliance pieceAlliance);
 	~Bishop();
 
-	virtual const std::vector<Move*> calculateLegalMove(const Board* board) const;
+	virtual std::vector<Move*> calculateLegalMove(const Board* board) const;
 
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
 	virtual bool isEightColumnExclusion(int currentPosition, int candidateOffset) const;

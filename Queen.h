@@ -9,7 +9,7 @@ public:
 	Queen(int piecePos, Alliance pieceAlliance);
 	~Queen();
 
-	virtual const std::vector<Move*> Queen::calculateLegalMove(const Board* board) const;
+	virtual std::vector<Move*> calculateLegalMove(const Board* board) const;
 
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
 

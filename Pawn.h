@@ -13,7 +13,7 @@ public:
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
 	virtual bool isEightColumnExclusion(int currentPosition, int candidateOffset) const;
 
-	virtual const std::vector<Move*> calculateLegalMove(const Board* board) const;
+	virtual std::vector<Move*> calculateLegalMove(const Board* board) const;
 
 	int			getDirection() const;
 

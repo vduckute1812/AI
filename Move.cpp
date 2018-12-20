@@ -23,11 +23,10 @@ Move::~Move()
 {
 }
 
-const Piece* Move::getMovePiece()
+const Piece* Move::getMovePiece() const
 {
 	return m_movePiece;
 }
-
 
 int Move::getDestCoordinate()
 {
@@ -46,4 +45,12 @@ int Move::GetHash() const
 	result = result*prime + this->m_destCoordinate;
 	result = result*prime + this->m_movePiece->getHash();
 	return result;
+}
+
+bool Move::isDone(MoveStatus status) const
+{
+	if (status == MoveStatus::DONE)
+		return true;
+
+	return false;
 }

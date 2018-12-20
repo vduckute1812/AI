@@ -10,7 +10,7 @@ public:
 	Knight(int piecePosition, Alliance pieceAlliance);
 	~Knight();
 	
-	virtual const std::vector<Move*> calculateLegalMove(const Board* board)  const;
+	virtual std::vector<Move*> calculateLegalMove(const Board* board)  const;
 
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
 	virtual bool isEightColumnExclusion(int currentPosition, int candidateOffset) const;

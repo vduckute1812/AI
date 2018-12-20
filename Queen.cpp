@@ -13,7 +13,7 @@ Queen::~Queen()
 {
 }
 
-const std::vector<Move*> Queen::calculateLegalMove(const Board* board) const
+std::vector<Move*> Queen::calculateLegalMove(const Board* board) const
 {
 	std::vector<Move*> legalMoves;
 
