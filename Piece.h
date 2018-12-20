@@ -23,7 +23,7 @@ class Board;
 class Piece
 {
 public:
-	explicit Piece(int piecePos, Alliance pieceAlliance);
+	explicit Piece(int piecePos, Alliance pieceAlliance, PieceType type);
 	virtual ~Piece();
 
 	virtual const std::vector<Move*> calculateLegalMove(const Board* board) const = 0;

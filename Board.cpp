@@ -86,7 +86,7 @@ void Board::buildStandardBoard()
 	Move* move = new Move(this, m_board.at(48)->getPiece(), nullptr, 45);
 	m_boardController->GetInstance()->movePiece(move);
 
-	std::cout << "Hash : " << " MOVE " << move->GetHash() << std::endl;
+	std::cout << "Hash : " << move->getMovePiece()->getHash() << " MOVE " << move->GetHash() << std::endl;
 
 	delete move;
 }
@@ -151,4 +151,19 @@ void Board::printBoard() const
 		std::cout << " " << key;
 	}
 	std::cout << std::endl;
+}
+
+std::vector<Piece*>	Board::getPieces(PieceType type, Alliance alliance) const
+{
+	std::vector<Piece*> activePiece = alliance == Alliance::WHITE ? this->m_whitePieces : this->m_blackPieces;
+	std::vector<Piece*> result;
+	for (Piece* piece : activePiece)
+	{
+		if (piece->getPieceType() == type)
+		{
+			result.push_back(piece);
+		}
+	}
+
+	return result;
 }

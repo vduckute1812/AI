@@ -4,11 +4,8 @@
 #include "Board.h"
 #include "BoardUntils.h"
 
-Queen::Queen(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance)
+Queen::Queen(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance, PieceType::QUEEN)
 {
-	m_pieceType = PieceType::QUEEN;
-
-	hashCodeKeyValue();
 }
 
 

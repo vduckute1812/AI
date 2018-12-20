@@ -4,11 +4,8 @@
 #include "Move.h"
 #include "BoardUntils.h"
 
-Knight::Knight(int piecePosition, Alliance pieceAlliance) : Piece(piecePosition, pieceAlliance)
+Knight::Knight(int piecePosition, Alliance pieceAlliance) : Piece(piecePosition, pieceAlliance, PieceType::KNIGHT)
 {
-	m_pieceType = PieceType::KNIGHT;
-
-	hashCodeKeyValue();
 }
 
 

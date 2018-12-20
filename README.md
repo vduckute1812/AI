@@ -1,1 +1,1 @@
-# AI
+ChessGame AI tutorial

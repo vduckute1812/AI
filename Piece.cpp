@@ -1,11 +1,14 @@
 #include "Piece.h"
 #include "Pawn.h"
+#include "Board.h"
 
-Piece::Piece(int piecePos, Alliance pieceAlliance)
+Piece::Piece(int piecePos, Alliance pieceAlliance, PieceType type)
 {
 	m_piecePosition = piecePos;
 	m_pieceAlliance = pieceAlliance;
+	m_pieceType		= type;
 
+	hashCodeKeyValue();
 }
 
 Piece::~Piece()
@@ -39,7 +42,7 @@ void Piece::hashCodeKeyValue()
 	std::hash<char> hash_fn;
 
 	const int prime = 31;
-	int result = static_cast<int>(hash_fn(m_pieceType));
+	unsigned int result = static_cast<int>(hash_fn(m_pieceType));
 
 	result = prime * result + static_cast<int>(hash_fn(m_pieceAlliance));
 	result = prime * result + m_piecePosition;
@@ -58,3 +61,4 @@ int  Piece::getHash() const
 {
 	return m_hashCode;
 }
+

@@ -4,12 +4,9 @@
 #include "Board.h"
 #include "BoardUntils.h"
 
-Pawn::Pawn(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance)
+Pawn::Pawn(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance, PieceType::PAWN)
 {
 	m_isFirstMove = true;
-	m_pieceType = PieceType::PAWN;
-
-	hashCodeKeyValue();
 }
 
 

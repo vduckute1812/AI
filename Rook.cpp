@@ -4,11 +4,8 @@
 #include "Board.h"
 #include "BoardUntils.h"
 
-Rook::Rook(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance)
+Rook::Rook(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance, PieceType::ROOK)
 {
-	m_pieceType = PieceType::ROOK;
-
-	hashCodeKeyValue();
 }
 
 Rook::~Rook()

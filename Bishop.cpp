@@ -5,11 +5,8 @@
 #include "BoardUntils.h"
 
 
-Bishop::Bishop(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance)
+Bishop::Bishop(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance, PieceType::BISHOP)
 {
-	m_pieceType = PieceType::BISHOP;
-
-	hashCodeKeyValue();
 }
 
 Bishop::~Bishop()
@@ -65,4 +62,3 @@ bool Bishop::isEightColumnExclusion(int currentPosition, int candidateOffset) co
 {
 	return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == -7 || candidateOffset == 9);
 }
-
