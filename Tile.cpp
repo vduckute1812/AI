@@ -1,9 +1,12 @@
 #include "Tile.h"
 #include "Piece.h"
+#include <QPainter>
+#include "BoardUntils.h"
 
 Tile::Tile(int coordinate)
 {
 	m_coordinate = coordinate;
+	m_isOccupied = false;
 }
 
 Tile::Tile(int coordinate, Piece* piece)
@@ -23,6 +26,7 @@ Tile::~Tile()
 void Tile::setPiece(Piece* piece)
 {
 	m_piece = piece;
+	m_isOccupied = true;
 }
 
 void Tile::setOccupiedState(bool isOccupied)

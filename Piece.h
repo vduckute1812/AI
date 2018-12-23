@@ -1,53 +1,63 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <QFrame>
+#include <QLabel>
 
 enum Alliance
 {
-	WHITE,
-	BLACK
+	WHITE = 'w',
+	BLACK = 'b'
 };
 
 enum PieceType
 {
-	ROOK   = 'R',
-	KNIGHT = 'K',
-	BISHOP = 'B',
-	QUEEN  = 'Q',
-	KING   = 'K',
-	PAWN   = 'P'
+	ROOK	= 'R',
+	KNIGHT	= 'K',
+	BISHOP	= 'B',
+	QUEEN	= 'Q',
+	KING	= 'Z',
+	PAWN	= 'P'
 };
 
 class Move;
 class Board;
-class Piece
+class Piece: public QFrame
 {
 public:
-	explicit Piece(int piecePos, Alliance pieceAlliance, PieceType type);
+	explicit Piece(int piecePos, Alliance pieceAlliance, PieceType type, QWidget *parent = nullptr);
 	virtual ~Piece();
 
 	virtual	std::vector<Move*> calculateLegalMove(const Board* board) const = 0;
 
-	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const = 0;
-	virtual bool isEightColumnExclusion(int currentPosition, int candidateOffset) const = 0;
+	virtual bool		isFirstColumnExclusion(int currentPosition, int candidateOffset) const = 0;
+	virtual bool		isEightColumnExclusion(int currentPosition, int candidateOffset) const = 0;
 
+	virtual char		getKeyCharacter() const;
 
-	virtual char getKeyCharacter() const;
+	PieceType			getPieceType() const;
 
-	virtual PieceType getPieceType() const;
+	void				setPosition(int position);
+	int					getPosistion() const;
 
-	int			getPosistion() const;
+	Alliance			getAlliance() const;
 
-	Alliance	getAlliance() const;
+	void				hashCodeKeyValue();
 
-	virtual void	 hashCodeKeyValue();
+	int					getHash() const;
 
-	virtual int		getHash() const;
+	QLabel*				getRenderImg();
 
+	void				dragEnterEvent(QDragEnterEvent *event) override;
+	void				dragMoveEvent(QDragMoveEvent *event) override;
+	void				dropEvent(QDropEvent *event) override;
+	void				mousePressEvent(QMouseEvent *event) override;
 protected:
-	int			m_piecePosition;
-	Alliance	m_pieceAlliance;
-	PieceType	m_pieceType;
-	int			m_hashCode;
-};
+	int					m_piecePosition;
+	Alliance			m_pieceAlliance;
+	PieceType			m_pieceType;
+	int					m_hashCode;
 
+	QLabel*				m_icon;
+	QRect				m_rect;
+};

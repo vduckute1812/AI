@@ -7,7 +7,7 @@ class Knight : public Piece
 {
 public:
 
-	Knight(int piecePosition, Alliance pieceAlliance);
+	Knight(int piecePosition, Alliance pieceAlliance, QWidget *parent = nullptr);
 	~Knight();
 	
 	virtual std::vector<Move*> calculateLegalMove(const Board* board)  const;

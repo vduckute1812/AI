@@ -4,7 +4,7 @@
 #include "Move.h"
 #include "BoardUntils.h"
 
-Knight::Knight(int piecePosition, Alliance pieceAlliance) : Piece(piecePosition, pieceAlliance, PieceType::KNIGHT)
+Knight::Knight(int piecePosition, Alliance pieceAlliance, QWidget *parent) : Piece(piecePosition, pieceAlliance, PieceType::KNIGHT, parent)
 {
 }
 

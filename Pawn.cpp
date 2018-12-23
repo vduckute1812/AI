@@ -4,7 +4,7 @@
 #include "Board.h"
 #include "BoardUntils.h"
 
-Pawn::Pawn(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance, PieceType::PAWN)
+Pawn::Pawn(int piecePos, Alliance pieceAlliance, QWidget *parent) : Piece(piecePos, pieceAlliance, PieceType::PAWN, parent)
 {
 	m_isFirstMove = true;
 }
@@ -33,8 +33,9 @@ std::vector<Move*> Pawn::calculateLegalMove(const Board* board) const
 				legalMoves.push_back(new Move(board, this, nullptr, candidateDestinationCoordinate));
 			}
 
-			else if ( ( currentCandidateOffset == 7 || currentCandidateOffset == 9) 
-						&& this->getAlliance() != candidateTile->getPiece()->getAlliance() )
+			else if (candidateTile->isTileOccupied() &&
+					(currentCandidateOffset == 7 || currentCandidateOffset == 9) && 
+					!BoardUntils::isSameAlliance(this->getAlliance(), candidateTile->getPiece()->getAlliance()))
 			{
 				if (   isFirstColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection())
 					|| isEightColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection()))

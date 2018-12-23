@@ -7,10 +7,10 @@
 
 class Tile;
 
-class Board
+class Board : public QWidget
 {
 public:
-	Board(BoardController*);
+	Board(BoardController*, QWidget *parent = nullptr);
 	~Board();
 
 	const Tile*				getTile(int coordinate) const;
@@ -18,15 +18,20 @@ public:
 
 	std::vector<Move*>		calculateLegalMoves(const std::vector<Piece*> pieces) const;
 
-	std::vector<Piece*>		 calculateActivePieces(const std::vector<Tile*> gameBoard, const Alliance alliance) const;
-
 	std::vector<Move*>		calculateAttackMoves(const std::vector<Move*> moves, const Alliance alliance) const;
+
+	std::vector<Piece*>		calculateActivePieces(const std::vector<Tile*> gameBoard, const Alliance alliance) const;
 
 	std::vector<Piece*>		getPieces() const;
 
 	std::vector<Tile*>		getTiles() const;
 
 	std::vector<Piece*>		getPieces(PieceType type, Alliance alliance) const;
+
+	void					updateBoard();
+
+protected:
+	void			paintEvent(QPaintEvent *);
 
 private:
 	void			Init();

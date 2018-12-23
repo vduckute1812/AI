@@ -7,7 +7,7 @@ const static int KING_CANDIDATE_MOVE_COORDINATE[] = { -9, -8, -7, -1, 1, 7, 8, 9
 class King :public Piece
 {
 public:
-	King(int piecePos, Alliance pieceAlliance);
+	King(int piecePos, Alliance pieceAlliance, QWidget *parent = nullptr);
 	~King();
 
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;

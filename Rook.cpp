@@ -4,7 +4,7 @@
 #include "Board.h"
 #include "BoardUntils.h"
 
-Rook::Rook(int piecePos, Alliance pieceAlliance) : Piece(piecePos, pieceAlliance, PieceType::ROOK)
+Rook::Rook(int piecePos, Alliance pieceAlliance, QWidget *parent) : Piece(piecePos, pieceAlliance, PieceType::ROOK, parent)
 {
 }
 

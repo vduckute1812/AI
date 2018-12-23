@@ -6,7 +6,7 @@ const static int ROOK_CANDIDATE_MOVE_COORDINATE[] = { -8, -1, 1, 8 };
 class Rook : public Piece
 {
 public:
-	Rook(int piecePos, Alliance pieceAlliance);
+	Rook(int piecePos, Alliance pieceAlliance, QWidget *parent = nullptr);
 	~Rook();
 
 	virtual std::vector<Move*> calculateLegalMove(const Board* board) const;
