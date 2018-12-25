@@ -7,7 +7,7 @@ Tile::Tile(int coordinate, QWidget* parent) :QWidget(parent)
 {
 	m_coordinate = coordinate;
 	m_isOccupied = false;
-	(coordinate + (coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? setStyleSheet("background-color:red;") : setStyleSheet("background-color:green;");
+	(coordinate + (coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? setStyleSheet("background-color:rgb(200,0,0);") : setStyleSheet("background-color:rgb(0,100,0);");
 	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
 }
 
@@ -16,7 +16,7 @@ Tile::Tile(int coordinate, Piece* piece, QWidget* parent) : QWidget(parent)
 	m_coordinate = coordinate;
 	m_piece = piece;
 	m_isOccupied = true;
-	(coordinate + (coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? setStyleSheet("background-color:red;") : setStyleSheet("background-color:green;");
+	(coordinate + (coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? setStyleSheet("background-color:rgb(100,0,0);") : setStyleSheet("background-color:rgb(0,100,0);");
 	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
 }
 
