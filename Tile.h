@@ -1,13 +1,14 @@
 #pragma once
+#include <QWidget>
 
 class Piece;
 
-class Tile
+class Tile : public QWidget
 {
 public:
 
-	explicit Tile(int coordinate);
-	explicit Tile(int coordinate, Piece* piece);
+	explicit Tile(int coordinate, QWidget* parent = nullptr);
+	explicit Tile(int coordinate, Piece* piece, QWidget* parent = nullptr);
 
 	~Tile();
 	

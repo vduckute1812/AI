@@ -3,16 +3,21 @@
 #include <QPainter>
 #include "BoardUntils.h"
 
-Tile::Tile(int coordinate)
+Tile::Tile(int coordinate, QWidget* parent) :QWidget(parent)
 {
 	m_coordinate = coordinate;
 	m_isOccupied = false;
+	(coordinate + (coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? setStyleSheet("background-color:red;") : setStyleSheet("background-color:green;");
+	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
 }
 
-Tile::Tile(int coordinate, Piece* piece)
+Tile::Tile(int coordinate, Piece* piece, QWidget* parent) : QWidget(parent)
 {
 	m_coordinate = coordinate;
 	m_piece = piece;
+	m_isOccupied = true;
+	(coordinate + (coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? setStyleSheet("background-color:red;") : setStyleSheet("background-color:green;");
+	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
 }
 
 Tile::~Tile()
@@ -26,7 +31,17 @@ Tile::~Tile()
 void Tile::setPiece(Piece* piece)
 {
 	m_piece = piece;
-	m_isOccupied = true;
+	if (piece)
+	{
+		piece->setParent(this);
+		piece->setPosition(m_coordinate);
+
+		m_isOccupied = true;
+	}
+	else
+	{
+		m_isOccupied = false;
+	}
 }
 
 void Tile::setOccupiedState(bool isOccupied)

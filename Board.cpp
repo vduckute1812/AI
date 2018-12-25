@@ -37,7 +37,8 @@ void Board::Init()
 {
 	for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
 	{
-		m_board.push_back(new Tile(i));
+		m_board.push_back(new Tile(i, this));
+		m_board.at(i)->setPiece(nullptr);
 	}
 }
 
@@ -45,39 +46,39 @@ void Board::buildStandardBoard()
 {
 	QTextStream out;
 
-	m_boardController->GetInstance()->setPiece(  new Rook   (0 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Knight (1 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Bishop (2 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Queen  (3 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new King   (4 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Bishop (5 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Knight (6 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Rook   (7 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (8 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (9 , Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (10, Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (11, Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (12, Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (13, Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (14, Alliance::BLACK, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (15, Alliance::BLACK, this));
+	m_boardController->GetInstance()->setPiece(	 new Rook	(0 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(	 new Knight (1 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Bishop (2 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Queen  (3 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new King   (4 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Bishop (5 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Knight (6 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Rook   (7 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (8 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (9 , Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (10, Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (11, Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (12, Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (13, Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (14, Alliance::BLACK ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (15, Alliance::BLACK ));
 
-	m_boardController->GetInstance()->setPiece(  new Rook   (63, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Knight (62, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Bishop (61, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new King   (60, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Queen  (59, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Bishop (58, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Knight (57, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Rook   (56, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (55, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (54, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (53, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (52, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (51, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (50, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (49, Alliance::WHITE, this));
-	m_boardController->GetInstance()->setPiece(  new Pawn   (48, Alliance::WHITE, this));
+	m_boardController->GetInstance()->setPiece(  new Rook   (63, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Knight (62, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Bishop (61, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new King   (60, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Queen  (59, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Bishop (58, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Knight (57, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Rook   (56, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (55, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (54, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (53, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (52, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (51, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (50, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (49, Alliance::WHITE ));
+	m_boardController->GetInstance()->setPiece(  new Pawn   (48, Alliance::WHITE ));
 
 	for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
 	{
@@ -87,7 +88,7 @@ void Board::buildStandardBoard()
 		}
 	}
 
-	Move* move = new Move(this, m_board.at(48)->getPiece(), m_board.at(45)->getPiece(), 45);
+	Move* move = new Move(this, m_board.at(48)->getPiece(), m_board.at(40)->getPiece(), 40);
 	m_boardController->GetInstance()->movePiece(move);
 
 	delete move;
@@ -189,23 +190,25 @@ void Board::updateBoard()
 {
 	QPainter painter(this);
 
-	for (int position = 0; position < BoardUntils::NUM_TILES; position++)
-	{
-		QRect rect = QRect(position % BoardUntils::NUM_TILES_PER_ROW *BoardUntils::TILE_ROW_SIZE, 
-								 position / BoardUntils::NUM_TILES_PER_ROW *BoardUntils::TILE_ROW_SIZE,
-						   BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
-		(position + (position / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? painter.setBrush(QBrush("red")) : painter.setBrush(QBrush("green"));
-		painter.drawRect(rect);
-	}
+	//for (int position = 0; position < BoardUntils::NUM_TILES; position++)
+	//{
+	//	QRect rect = QRect(position % BoardUntils::NUM_TILES_PER_ROW *BoardUntils::TILE_ROW_SIZE, 
+	//							 position / BoardUntils::NUM_TILES_PER_ROW *BoardUntils::TILE_ROW_SIZE,
+	//					   BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
+	//	(position + (position / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? painter.setBrush(QBrush("red")) : painter.setBrush(QBrush("green"));
+	//	painter.drawRect(rect);
+	//}
 
 
 	for (Tile* tile : m_board)
 	{
-		if (tile->isTileOccupied())
-		{
-			tile->getPiece()->move(tile->getPiece()->getPosistion() % BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_ROW_SIZE, 
-									tile->getPiece()->getPosistion() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
-		}
+		tile->move(tile->getCoordinate() % BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_ROW_SIZE, 
+					tile->getCoordinate() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
+		//if (tile->isTileOccupied())
+		//{
+		//	tile->getPiece()->move(tile->getPiece()->getPosistion() % BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_ROW_SIZE, 
+		//							tile->getPiece()->getPosistion() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
+		//}
 	}
 }
 

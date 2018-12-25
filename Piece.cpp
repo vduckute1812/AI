@@ -170,11 +170,10 @@ void Piece::mousePressEvent(QMouseEvent *event)
 
 	child->setPixmap(tempPixmap);
 
-	if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
-		child->close();
-	}
-	else {
+	if (!drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
 		child->show();
 		child->setPixmap(pixmap);
 	}
+	child->close();
+
 }
