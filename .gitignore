@@ -3,3 +3,9 @@ x64\
 *.sdf
 *.sln
 *.txt
+ChessGame/.vs/
+ChessGame/ChessGame.VC.VC.opendb
+ChessGame/ChessGame.VC.db
+ChessGame/ChessGame/
+ChessGame/x64/
+
