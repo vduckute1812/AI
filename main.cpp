@@ -2,10 +2,10 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QGridLayout>
-#include "../BoardUntils.h"
-#include "../Piece.h"
-#include "../King.h"
-#include "../Board.h"
+#include "BoardUntils.h"
+#include "Piece.h"
+#include "King.h"
+#include "Board.h"
 
 class BoardRender : public QWidget {
 

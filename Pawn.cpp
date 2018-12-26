@@ -30,7 +30,7 @@ std::vector<Move*> Pawn::calculateLegalMove(const Board* board) const
 			if ( !candidateTile->isTileOccupied() && ( currentCandidateOffset == 8								// MOVE
 												  ||   currentCandidateOffset == 16 && this->isFirstMove()) )	// JUMP
 			{
-				legalMoves.push_back(new Move(board, this, nullptr, candidateDestinationCoordinate));
+				legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
 			}
 
 			else if (candidateTile->isTileOccupied() &&
@@ -43,7 +43,7 @@ std::vector<Move*> Pawn::calculateLegalMove(const Board* board) const
 					continue;
 				}
 
-				legalMoves.push_back(new Move(board, this, candidateTile->getPiece(), candidateDestinationCoordinate));
+				legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
 			}
 		}
 	}

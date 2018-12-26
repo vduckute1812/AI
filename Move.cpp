@@ -1,11 +1,13 @@
 #include "Move.h"
+#include "Board.h"
 
-
-Move::Move(const Board* board, const Piece* piece, const Piece* attackPiece, int destinate)
+Move::Move(const Board* board, const Piece* piece, int destinate)
 {
 	m_board = board;
 	m_movePiece = piece;
-	m_attackPiece = attackPiece;
+	ASSERT(piece);
+
+	m_attackPiece = board->getTile(destinate)->getPiece();
 	m_destCoordinate = destinate;
 
 	if (m_attackPiece)

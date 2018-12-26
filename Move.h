@@ -11,7 +11,7 @@ class Board;
 class Move
 {
 public:
-	Move(const Board* board, const Piece* piece, const Piece* attackPiece, int destinate);
+	Move(const Board* board, const Piece* piece, int destinate);
 	~Move();
 
 	const Piece*			getMovePiece() const;

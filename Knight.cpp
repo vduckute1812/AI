@@ -34,13 +34,9 @@ std::vector<Move*> Knight::calculateLegalMove(const Board* board)  const
 			
 			const Tile* candidateTile = board->getTile(candidateDestinationCoordinate);
 			
-			if (!candidateTile->isTileOccupied())
+			if (!candidateTile->isTileOccupied() || !BoardUntils::isSameAlliance(this->getAlliance(), candidateTile->getPiece()->getAlliance()))
 			{
-				legalMoves.push_back(new Move(board, this, nullptr, candidateDestinationCoordinate));
-			}
-			else if (this->getAlliance() != candidateTile->getPiece()->getAlliance())
-			{
-				legalMoves.push_back(new Move(board, this, candidateTile->getPiece(), candidateDestinationCoordinate));
+				legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
 			}
 		}
 	}
