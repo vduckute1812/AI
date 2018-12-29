@@ -16,7 +16,7 @@ Board::Board(BoardController* controller, QWidget *parent)
 {
 	Init();
 	m_boardController = controller;
-	m_boardController->GetInstance()->setBoard(m_board);
+	m_boardController->GetInstance()->setBoard(this);
 	m_boardController->GetInstance()->setMoveMaker(Alliance::WHITE);
 	buildStandardBoard();
 
@@ -26,6 +26,11 @@ Board::Board(BoardController* controller, QWidget *parent)
 	this->m_blackLegalMoves = calculateLegalMoves(this->m_blackPieces);
 	this->m_whiteLegalMoves = calculateLegalMoves(this->m_whitePieces);
 
+	for (Tile* tile : m_board)
+	{
+		tile->move(tile->getCoordinate() % BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_ROW_SIZE,
+			tile->getCoordinate() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
+	}
 }
 
 Board::~Board()
@@ -40,6 +45,7 @@ void Board::Init()
 		m_board.push_back(new Tile(i, this));
 		m_board.at(i)->setPiece(nullptr);
 	}
+
 }
 
 void Board::buildStandardBoard()
@@ -139,7 +145,7 @@ std::vector<Move*> Board::calculateAttackMoves(const std::vector<Move*> moves, c
 	return attackMoves;
 }
 
-const Tile* Board::getTile(int coordinate) const
+Tile* Board::getTile(int coordinate) const
 {
 	return m_board[coordinate];
 }
@@ -184,21 +190,4 @@ std::vector<Piece*>	Board::getPieces(PieceType type, Alliance alliance) const
 	}
 
 	return result;
-}
-
-void Board::updateBoard()
-{
-	QPainter painter(this);
-
-	for (Tile* tile : m_board)
-	{
-		tile->move(tile->getCoordinate() % BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_ROW_SIZE, 
-					tile->getCoordinate() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
-	}
-}
-
-void Board::paintEvent(QPaintEvent *e)
-{
-	Q_UNUSED(e);
-	updateBoard();
 }

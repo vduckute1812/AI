@@ -13,7 +13,7 @@ public:
 	Board(BoardController*, QWidget *parent = nullptr);
 	~Board();
 
-	const Tile*				getTile(int coordinate) const;
+	Tile*					getTile(int coordinate) const;
 	void					printBoard() const;
 
 	std::vector<Move*>		calculateLegalMoves(const std::vector<Piece*> pieces) const;
@@ -28,10 +28,6 @@ public:
 
 	std::vector<Piece*>		getPieces(PieceType type, Alliance alliance) const;
 
-	void					updateBoard();
-
-protected:
-	void			paintEvent(QPaintEvent *);
 
 private:
 	void			Init();

@@ -21,7 +21,7 @@ std::vector<Move*> Bishop::calculateLegalMove(const Board* board) const
 
 	for (int candidateCoordinationOffset : BISHOP_CANDIDATE_MOVE_COORDINATE)
 	{
-		candidateDestinationCoordinate = this->m_piecePosition;
+		candidateDestinationCoordinate = this->m_piecePosition + candidateCoordinationOffset;
 
 		while (BoardUntils::isValidTileCandidate(candidateDestinationCoordinate))
 		{

@@ -5,6 +5,8 @@ class Piece;
 
 class Tile : public QWidget
 {
+	Q_OBJECT
+
 public:
 
 	explicit Tile(int coordinate, QWidget* parent = nullptr);
@@ -18,6 +20,11 @@ public:
 	Piece*		getPiece() const;
 	int			getCoordinate();
 	bool		isEmptyTile() const;
+
+	void		mousePressEvent(QMouseEvent *) override;
+	void		paintEvent(QPaintEvent *) override;
+	void		timerEvent(QTimerEvent *e) override;
+
 
 private:
 	int			m_coordinate;

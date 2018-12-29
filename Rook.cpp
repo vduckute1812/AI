@@ -20,7 +20,7 @@ std::vector<Move*> Rook::calculateLegalMove(const Board* board) const
 
 	for (int candidateCoordinationOffset : ROOK_CANDIDATE_MOVE_COORDINATE)
 	{
-		candidateDestinationCoordinate = this->m_piecePosition;
+		candidateDestinationCoordinate = this->m_piecePosition + candidateCoordinationOffset;
 
 		while (BoardUntils::isValidTileCandidate(candidateDestinationCoordinate))
 		{

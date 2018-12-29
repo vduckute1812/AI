@@ -1,11 +1,13 @@
 #include "Move.h"
 #include "Board.h"
+#include "Tile.h"
+#include <assert.h>
 
 Move::Move(const Board* board, const Piece* piece, int destinate)
 {
 	m_board = board;
 	m_movePiece = piece;
-	ASSERT(piece);
+	assert(piece);
 
 	m_attackPiece = board->getTile(destinate)->getPiece();
 	m_destCoordinate = destinate;
