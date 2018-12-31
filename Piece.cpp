@@ -10,15 +10,13 @@ Piece::Piece(int piecePos, Alliance pieceAlliance, PieceType type, QWidget *pare
 	m_pieceAlliance = pieceAlliance;
 	m_pieceType		= type;
 
-	setAcceptDrops(true);		// accept Drop
-
 	m_icon = new QLabel(this);
 	m_icon->setPixmap(QPixmap(QString("Resources/") + QString(type) + QString(pieceAlliance) + QString(".svg")));
 	m_icon->resize(QSize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE));
+	m_icon->setAlignment(Qt::AlignCenter);
+	m_icon->setAttribute(Qt::WA_DeleteOnClose);
 
 	hashCodeKeyValue();
-
-	setAttribute(Qt::WA_TranslucentBackground, true);
 }
 
 Piece::~Piece()

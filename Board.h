@@ -27,6 +27,7 @@ public:
 	std::vector<Tile*>		getTiles() const;
 
 	std::vector<Piece*>		getPieces(PieceType type, Alliance alliance) const;
+	void					timerEvent(QTimerEvent *e);
 
 
 private:

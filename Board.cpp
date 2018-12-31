@@ -31,6 +31,7 @@ Board::Board(BoardController* controller, QWidget *parent)
 		tile->move(tile->getCoordinate() % BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_ROW_SIZE,
 			tile->getCoordinate() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
 	}
+	startTimer(50);
 }
 
 Board::~Board()
@@ -93,11 +94,6 @@ void Board::buildStandardBoard()
 			out << "Hash : " << QString(m_board.at(i)->getPiece()->getKeyCharacter()) << endl;
 		}
 	}
-
-	Move* move = new Move(this, m_board.at(48)->getPiece(), 40);
-	m_boardController->GetInstance()->movePiece(move);
-
-	delete move;
 }
 
 std::vector<Piece*>	Board::calculateActivePieces( const std::vector<Tile*> gameBoard,const Alliance alliance) const
@@ -190,4 +186,11 @@ std::vector<Piece*>	Board::getPieces(PieceType type, Alliance alliance) const
 	}
 
 	return result;
+}
+
+
+void Board::timerEvent(QTimerEvent *e) 
+{
+	Q_UNUSED(e);
+	repaint();
 }

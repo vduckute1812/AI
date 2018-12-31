@@ -11,6 +11,7 @@ public:
 	void				setBoard		( Board* m_board );
 
 	Board*				getBoard();
+	const Alliance		getMoveMaker();
 
 	void				setSelectedPiece(Piece* piece);
 	Piece*				getSelectedPiece();

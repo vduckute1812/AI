@@ -2,7 +2,7 @@
 #include "Move.h"
 #include "Board.h"
 #include "Tile.h"
-
+#include "Pawn.h"
 
 void BoardController::setBoard( Board* board )
 {
@@ -23,9 +23,18 @@ void BoardController::setPiece( Piece* piece )
 void BoardController::movePiece(Move* move)
 {
 	int currentPosition = move->getMovePiece()->getPosistion();
-	Piece* movePiece = const_cast<Piece*> (move->getMovePiece());
+	Piece* movePieced = const_cast<Piece*> (move->getMovePiece());
 
-	m_board->getTiles().at(move->getDestCoordinate())->setPiece(movePiece);
+	if (movePieced->getPieceType() == PieceType::PAWN)
+	{
+		Pawn* pawn = static_cast<Pawn*>(movePieced);
+		if (pawn->isFirstMove())
+		{
+			pawn->setFirstMove(false);
+		}
+	}
+
+	m_board->getTiles().at(move->getDestCoordinate())->setPiece(movePieced);
 	m_board->getTiles().at(currentPosition)->setPiece(nullptr);
 }
 
@@ -42,4 +51,9 @@ void BoardController::setSelectedPiece(Piece* piece)
 Piece* BoardController::getSelectedPiece()
 {
 	return m_currentPiece;
+}
+
+const Alliance BoardController::getMoveMaker()
+{
+	return m_nextMoveMaker;
 }

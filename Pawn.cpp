@@ -1,4 +1,4 @@
-#include "Pawn.h"
+	 #include "Pawn.h"
 #include "Tile.h"
 #include "Move.h"
 #include "Board.h"
@@ -75,4 +75,9 @@ bool Pawn::isFirstColumnExclusion(int currentPosition, int candidateOffset) cons
 bool Pawn::isEightColumnExclusion(int currentPosition, int candidateOffset) const
 {
 	return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == -7 || candidateOffset == 9);
+}
+
+void Pawn::setFirstMove(bool firstMove)
+{
+	m_isFirstMove = firstMove;
 }

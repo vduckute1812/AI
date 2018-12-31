@@ -12,7 +12,6 @@ Tile::Tile(int coordinate, QWidget* parent) :QWidget(parent)
 	m_coordinate = coordinate;
 	m_isOccupied = false;
 	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
-	startTimer(50);
 }
 
 Tile::Tile(int coordinate, Piece* piece, QWidget* parent) : QWidget(parent)
@@ -37,6 +36,10 @@ void Tile::setPiece(Piece* piece)
 	m_piece = piece;
 	if (piece)
 	{
+		QLabel* label = piece->getRenderImg();
+		label->setParent(this);
+		label->show();
+
 		piece->setParent(this);
 		piece->setPosition(m_coordinate);
 
@@ -82,13 +85,18 @@ void Tile::mousePressEvent(QMouseEvent *event)
 {
 	int coordinate = this->getCoordinate();
 	Piece* piece = BoardController::GetInstance()->getSelectedPiece();
-	if (piece)
+	if (piece  && BoardUntils::isSameAlliance(piece->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
 	{
 		for (Move* move : piece->calculateLegalMove(BoardController::GetInstance()->getBoard()))
+		{
 			if (move->getDestCoordinate() == coordinate)
 			{
 				BoardController::GetInstance()->movePiece(move);
+				const Alliance currentMaker = BoardController::GetInstance()->getMoveMaker();
+				BoardController::GetInstance()->setMoveMaker(currentMaker == Alliance::BLACK ? Alliance::WHITE : Alliance::BLACK);
 			}
+			delete move;
+		}
 		BoardController::GetInstance()->setSelectedPiece(nullptr);
 	}
 	else
@@ -104,7 +112,7 @@ void Tile::paintEvent(QPaintEvent *e)
 	painter.drawRect(rect());
 
 	Piece* piece = BoardController::GetInstance()->getSelectedPiece();
-	if (piece)
+	if (piece && BoardUntils::isSameAlliance(piece->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
 	{
 		for (Move* move : piece->calculateLegalMove(BoardController::GetInstance()->getBoard()))
 		{
@@ -112,11 +120,7 @@ void Tile::paintEvent(QPaintEvent *e)
 			QPainter painter(tile);
 			painter.setBrush(QBrush("yellow"));
 			painter.drawRect(tile->rect());
+			delete move;
 		}
 	}
-}
-
-void Tile::timerEvent(QTimerEvent *e) {
-	Q_UNUSED(e);
-	repaint();
 }

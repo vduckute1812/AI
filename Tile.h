@@ -5,7 +5,6 @@ class Piece;
 
 class Tile : public QWidget
 {
-	Q_OBJECT
 
 public:
 
@@ -23,8 +22,6 @@ public:
 
 	void		mousePressEvent(QMouseEvent *) override;
 	void		paintEvent(QPaintEvent *) override;
-	void		timerEvent(QTimerEvent *e) override;
-
 
 private:
 	int			m_coordinate;

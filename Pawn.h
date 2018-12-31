@@ -18,7 +18,7 @@ public:
 	int			getDirection() const;
 
 	bool		isFirstMove() const;
-
+	void		setFirstMove(bool firstMove);
 
 private:
 	bool		m_isFirstMove;
