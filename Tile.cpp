@@ -99,10 +99,8 @@ void Tile::mousePressEvent(QMouseEvent *event)
 		}
 		BoardController::GetInstance()->setSelectedPiece(nullptr);
 	}
-	else
-	{
-		BoardController::GetInstance()->setSelectedPiece(this->getPiece());
-	}
+
+	BoardController::GetInstance()->setSelectedPiece(this->getPiece());
 }
 
 void Tile::paintEvent(QPaintEvent *e)

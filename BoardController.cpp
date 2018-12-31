@@ -38,6 +38,11 @@ void BoardController::movePiece(Move* move)
 	{
 		m_board->getTiles().at(move->getDestCoordinate())->getPiece()->diedState(true);		
 		m_board->getTiles().at(move->getDestCoordinate())->getPiece()->getRenderImg()->hide();
+
+		if (m_board->getTiles().at(move->getDestCoordinate())->getPiece()->getPieceType() == PieceType::KING)
+		{
+			// ENDGAME
+		}
 	}
 
 	m_board->getTiles().at(move->getDestCoordinate())->setPiece(movePieced);

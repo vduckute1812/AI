@@ -27,6 +27,14 @@ std::vector<Move*> Pawn::calculateLegalMove(const Board* board) const
 		{
 			const Tile* candidateTile = board->getTile(candidateDestinationCoordinate);
 
+			if (currentCandidateOffset == 16 && this->isFirstMove())
+			{
+				int candidateCoordinate = this->m_piecePosition + 8 * getDirection();
+				const Tile* checkTile = board->getTile(candidateCoordinate);
+				if (checkTile->isTileOccupied())
+					continue;
+			}
+
 			if ( !candidateTile->isTileOccupied() && ( currentCandidateOffset == 8								// MOVE
 												  ||   currentCandidateOffset == 16 && this->isFirstMove()) )	// JUMP
 			{
