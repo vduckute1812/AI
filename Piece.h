@@ -48,6 +48,9 @@ public:
 
 	QLabel*				getRenderImg();
 
+	void				diedState(bool yes = true);
+	bool				isDestroy();
+
 protected:
 	int					m_piecePosition;
 	Alliance			m_pieceAlliance;
@@ -56,4 +59,6 @@ protected:
 
 	QLabel*				m_icon;
 	QRect				m_rect;
+
+	bool				m_isDestroy;
 };

@@ -9,6 +9,7 @@ Piece::Piece(int piecePos, Alliance pieceAlliance, PieceType type, QWidget *pare
 	m_piecePosition = piecePos;
 	m_pieceAlliance = pieceAlliance;
 	m_pieceType		= type;
+	m_isDestroy		= false;
 
 	m_icon = new QLabel(this);
 	m_icon->setPixmap(QPixmap(QString("Resources/") + QString(type) + QString(pieceAlliance) + QString(".svg")));
@@ -76,4 +77,14 @@ int  Piece::getHash() const
 QLabel*	Piece::getRenderImg()
 {
 	return m_icon;
+}
+
+void Piece::diedState(bool yes)
+{
+	m_isDestroy = yes;
+}
+
+bool Piece::isDestroy()
+{
+	return m_isDestroy;
 }

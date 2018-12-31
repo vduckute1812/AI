@@ -34,6 +34,12 @@ void BoardController::movePiece(Move* move)
 		}
 	}
 
+	if (move->isAttack())
+	{
+		m_board->getTiles().at(move->getDestCoordinate())->getPiece()->diedState(true);		
+		m_board->getTiles().at(move->getDestCoordinate())->getPiece()->getRenderImg()->hide();
+	}
+
 	m_board->getTiles().at(move->getDestCoordinate())->setPiece(movePieced);
 	m_board->getTiles().at(currentPosition)->setPiece(nullptr);
 }

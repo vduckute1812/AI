@@ -41,10 +41,20 @@ std::vector<Move*> Bishop::calculateLegalMove(const Board* board) const
 				break;
 			}
 
+			if (BoardUntils::isFirstColumn(candidateDestinationCoordinate)
+				|| BoardUntils::isEighthColumn(candidateDestinationCoordinate))
+			{
+				break;
+			}
+
+			if (candidateTile->isTileOccupied())
+			{
+				break;
+			}
+
 			candidateDestinationCoordinate += candidateCoordinationOffset;
 		}
 	}
-
 
 	return legalMoves;
 }

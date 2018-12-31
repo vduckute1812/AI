@@ -40,6 +40,11 @@ std::vector<Move*> Rook::calculateLegalMove(const Board* board) const
 				break;
 			}
 
+			if (candidateTile->isTileOccupied())
+			{
+				break;
+			}
+
 			candidateDestinationCoordinate += candidateCoordinationOffset;
 		}
 	}

@@ -21,7 +21,7 @@ std::vector<Move*> Queen::calculateLegalMove(const Board* board) const
 
 	for (int candidateCoordinationOffset : QUEEN_CANDIDATE_MOVE_COORDINATE)
 	{
-		candidateDestinationCoordinate = this->m_piecePosition;
+		candidateDestinationCoordinate = this->m_piecePosition + candidateCoordinationOffset;
 
 		while (BoardUntils::isValidTileCandidate(candidateDestinationCoordinate))
 		{
@@ -41,6 +41,21 @@ std::vector<Move*> Queen::calculateLegalMove(const Board* board) const
 				break;
 			}
 
+			if (candidateTile->isTileOccupied())
+			{
+				break;
+			}
+
+			if (candidateCoordinationOffset != 8 && candidateCoordinationOffset != -8)
+			{
+				if (BoardUntils::isFirstColumn(candidateDestinationCoordinate)
+					|| BoardUntils::isEighthColumn(candidateDestinationCoordinate))
+				{
+					break;
+				}
+			}
+
+
 			candidateDestinationCoordinate += candidateCoordinationOffset;
 		}
 	}
@@ -56,6 +71,6 @@ bool Queen::isFirstColumnExclusion(int currentPosition, int candidateOffset) con
 
 bool Queen::isEightColumnExclusion(int currentPosition, int candidateOffset) const
 {
-	return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == -1 || candidateOffset == -7 
+	return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == 1 || candidateOffset == -7 
 														|| candidateOffset == 9);
 }
