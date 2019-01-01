@@ -106,7 +106,7 @@ void Tile::mousePressEvent(QMouseEvent *event)
 void Tile::paintEvent(QPaintEvent *e)
 {
 	QPainter painter(this);
-	(m_coordinate + (m_coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? painter.setBrush(QBrush("red")) : painter.setBrush(QBrush("green"));
+	(m_coordinate + (m_coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? painter.setBrush(QBrush("white")) : painter.setBrush(QBrush("brown"));
 	painter.drawRect(rect());
 
 	Piece* piece = BoardController::GetInstance()->getSelectedPiece();
@@ -116,8 +116,17 @@ void Tile::paintEvent(QPaintEvent *e)
 		{
 			Tile* tile = BoardController::GetInstance()->getBoard()->getTile(move->getDestCoordinate());
 			QPainter painter(tile);
-			painter.setBrush(QBrush("yellow"));
-			painter.drawRect(tile->rect());
+			if (move->isAttack())
+			{
+				painter.setBrush(QBrush(QColor(255, 0, 0, 255)));
+				painter.drawRect(tile->rect());
+			}
+			else
+			{
+				QBrush brush;
+				painter.setBrush(QBrush(QColor(100, 100, 100, 150)));
+				painter.drawRect(tile->rect());
+			}
 			delete move;
 		}
 	}
