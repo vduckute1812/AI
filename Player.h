@@ -20,7 +20,7 @@ private:
 	std::vector<Piece*>		m_pieces;
 	std::vector<Move*>		m_legalMoves;
 	std::vector<Move*>		m_attackMoves;
-	Alliance				m_alliace;
+	Alliance				m_alliance;
 	bool					m_isInCheck;
 };
 

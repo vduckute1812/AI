@@ -46,7 +46,7 @@ void Board::Init()
 		m_board.push_back(new Tile(i, this));
 		m_board.at(i)->setPiece(nullptr);
 	}
-
+	
 }
 
 void Board::buildStandardBoard()
@@ -128,8 +128,20 @@ std::vector<Move*> Board::calculateLegalMoves(const std::vector<Piece*> pieces) 
 }
 
 
-std::vector<Move*> Board::calculateAttackMoves(const std::vector<Move*> moves, const Alliance alliance) const
+std::vector<Move*> Board::calculateAttackMoves(const Alliance alliance) const
 {
+	std::vector<Move*> moves;
+	std::vector<Piece*> pieces = calculateActivePieces(m_board, alliance);
+	for (Piece* piece: pieces)
+	{
+		std::vector<Move*> candidateMove;
+		candidateMove = piece->calculateLegalMove(this);
+		for (Move* move : candidateMove)
+		{
+			moves.push_back(move);
+		}
+	}
+
 	std::vector<Move*> attackMoves;
 	for (Move* move : moves)
 	{

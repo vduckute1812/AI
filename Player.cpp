@@ -7,7 +7,7 @@ Player::Player(const Board* board, const std::vector<Move*> legalMoves,
 {
 	m_pieces = board->calculateActivePieces(board->getTiles(), alliance);
 	m_isInCheck = false;
-	m_alliace = alliance;
+	m_alliance = alliance;
 	m_King =  board->getPieces(PieceType::KING, alliance).at(0);
 
 	m_isInCheck = !calculateActacksOnTile(m_King->getPosistion(), opponentMoves).empty();
@@ -27,4 +27,21 @@ std::vector<Move*> Player::calculateActacksOnTile(int piecePosition, std::vector
 		}
 	}
 	return m_attackMoves;
+}
+
+bool Player::isInCheck()
+{
+	std::vector<Move*> moves = BoardController::GetInstance()->getBoard()->calculateAttackMoves(m_alliance == Alliance::WHITE ? Alliance::BLACK: Alliance::WHITE);
+	std::vector<Move*> attackedMove = calculateActacksOnTile(m_King->getPosistion(), moves);
+
+	if (attackedMove.empty())
+	{
+		return false;
+	}
+	return true;
+}
+
+bool Player::isInCheckMate()
+{
+	return false;
 }

@@ -45,6 +45,15 @@ std::vector<Move*> Rook::calculateLegalMove(const Board* board) const
 				break;
 			}
 
+			if (candidateCoordinationOffset != 8 && candidateCoordinationOffset != -8)
+			{
+				if (BoardUntils::isFirstColumn(candidateDestinationCoordinate)
+					|| BoardUntils::isEighthColumn(candidateDestinationCoordinate))
+				{
+					break;
+				}
+			}
+
 			candidateDestinationCoordinate += candidateCoordinationOffset;
 		}
 	}

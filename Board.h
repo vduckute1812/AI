@@ -18,11 +18,9 @@ public:
 
 	std::vector<Move*>		calculateLegalMoves(const std::vector<Piece*> pieces) const;
 
-	std::vector<Move*>		calculateAttackMoves(const std::vector<Move*> moves, const Alliance alliance) const;
+	std::vector<Move*>		calculateAttackMoves(const Alliance alliance) const;
 
 	std::vector<Piece*>		calculateActivePieces(const std::vector<Tile*> gameBoard, const Alliance alliance) const;
-
-	std::vector<Piece*>		getPieces() const;
 
 	std::vector<Tile*>		getTiles() const;
 
