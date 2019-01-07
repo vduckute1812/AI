@@ -9,8 +9,8 @@
 
 Tile::Tile(int coordinate, QWidget* parent) :QWidget(parent)
 {
-	m_coordinate = coordinate;
-	m_isOccupied = false;
+    m_coordinate = coordinate;
+    m_isOccupied = false;
 	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
 	m_defaultColor = (m_coordinate + (m_coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
 	m_curretColor = m_defaultColor;
@@ -18,8 +18,8 @@ Tile::Tile(int coordinate, QWidget* parent) :QWidget(parent)
 
 Tile::Tile(int coordinate, Piece* piece, QWidget* parent) : QWidget(parent)
 {
-	m_coordinate = coordinate;
-	m_piece = piece;
+    m_coordinate = coordinate;
+    m_piece = piece;
 	m_isOccupied = true;
 	(coordinate + (coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? setStyleSheet("background-color:rgb(100,0,0);") : setStyleSheet("background-color:rgb(0,100,0);");
 	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
@@ -83,7 +83,7 @@ bool Tile::isEmptyTile() const
 }
 
 
-void Tile::mousePressEvent(QMouseEvent *event)
+void Tile::mousePressEvent(QMouseEvent *)
 {
 	int coordinate = this->getCoordinate();
 	Piece* piece = BoardController::GetInstance()->getSelectedPiece();
@@ -94,8 +94,6 @@ void Tile::mousePressEvent(QMouseEvent *event)
 			if (move->getDestCoordinate() == coordinate)
 			{
 				BoardController::GetInstance()->movePiece(move);
-				const Alliance currentMaker = BoardController::GetInstance()->getMoveMaker();
-				BoardController::GetInstance()->setMoveMaker(currentMaker == Alliance::BLACK ? Alliance::WHITE : Alliance::BLACK);
 			}
 			delete move;
 		}
@@ -109,6 +107,7 @@ void Tile::mousePressEvent(QMouseEvent *event)
 	Piece* pieceColor = BoardController::GetInstance()->getSelectedPiece();
 	if (pieceColor  && BoardUntils::isSameAlliance(pieceColor->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
 	{
+        this->setCurrentColor(CHOOSE_COLOR);
 		for (Move* move : pieceColor->calculateLegalMove(BoardController::GetInstance()->getBoard()))
 		{
 			Tile* tile = BoardController::GetInstance()->getBoard()->getTile(move->getDestCoordinate());
@@ -125,7 +124,7 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
 	}
 }
-void Tile::paintEvent(QPaintEvent *e)
+void Tile::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.setBrush(m_curretColor);

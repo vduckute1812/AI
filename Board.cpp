@@ -31,22 +31,43 @@ Board::Board(BoardController* controller, QWidget *parent)
 		tile->move(tile->getCoordinate() % BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_ROW_SIZE,
 			tile->getCoordinate() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
 	}
-	startTimer(50);
+
+    m_blackPlayer = new BlackPlayer(this, m_blackLegalMoves, m_whiteLegalMoves);
+    m_whitePlayer = new WhitePlayer(this, m_whiteLegalMoves, m_blackLegalMoves);
+
+    // Stupid code
+    switch (m_boardController->GetInstance()->getMoveMaker())
+    {
+        case Alliance::BLACK:
+            m_currentPlayer = m_blackPlayer;
+            break;
+        case Alliance::WHITE:
+            m_currentPlayer = m_whitePlayer;
+    }
+
+    startTimer(50);
 }
 
 Board::~Board()
 {
+    for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
+    {
+        delete m_board.at(i);
+    }
+    m_board.clear();
+
+    delete m_blackPlayer;
+    delete m_whitePlayer;
 }
 
 //Create emtpy tile board
 void Board::Init()
 {
-	for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
+    for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
 	{
 		m_board.push_back(new Tile(i, this));
 		m_board.at(i)->setPiece(nullptr);
-	}
-	
+	}	
 }
 
 void Board::buildStandardBoard()
@@ -87,7 +108,7 @@ void Board::buildStandardBoard()
 	m_boardController->GetInstance()->setPiece(  new Pawn   (49, Alliance::WHITE ));
 	m_boardController->GetInstance()->setPiece(  new Pawn   (48, Alliance::WHITE ));
 
-	for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
+    for (unsigned int i = 0; i < BoardUntils::NUM_TILES; ++i)
 	{
 		if (m_board.at(i)->isTileOccupied())
 		{
@@ -100,7 +121,7 @@ std::vector<Piece*>	Board::calculateActivePieces( const std::vector<Tile*> gameB
 {
 	std::vector<Piece*> activePieces;
 
-	for (Tile* tile: m_board)
+    for (Tile* tile: gameBoard)
 	{
 		if (tile->isTileOccupied())
 		{
@@ -153,7 +174,7 @@ std::vector<Move*> Board::calculateAttackMoves(const Alliance alliance) const
 	return attackMoves;
 }
 
-Tile* Board::getTile(int coordinate) const
+Tile* Board::getTile(unsigned int coordinate) const
 {
 	return m_board[coordinate];
 }
@@ -168,7 +189,7 @@ void Board::printBoard() const
 {
 	QTextStream out;
 	char key = 'x';
-	for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
+    for (unsigned int i = 0; i < BoardUntils::NUM_TILES; ++i)
 	{
 
 		if (i % 8 == 0)

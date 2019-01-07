@@ -2,7 +2,8 @@
 #include "Piece.h"
 #include "Player.h"
 #include "BoardController.h"
-
+#include "whiteplayer.h"
+#include "blackplayer.h"
 #include <vector>
 
 class Tile;
@@ -13,7 +14,7 @@ public:
 	Board(BoardController*, QWidget *parent = nullptr);
 	~Board();
 
-	Tile*					getTile(int coordinate) const;
+    Tile*					getTile(unsigned int coordinate) const;
 	void					printBoard() const;
 
 	std::vector<Move*>		calculateLegalMoves(const std::vector<Piece*> pieces) const;
@@ -42,5 +43,7 @@ private:
 
 	BoardController*		m_boardController;
 
-	Player*					m_player;
+    Player*					m_currentPlayer;
+    BlackPlayer*            m_blackPlayer;
+    WhitePlayer*            m_whitePlayer;
 };

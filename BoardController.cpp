@@ -47,6 +47,9 @@ void BoardController::movePiece(Move* move)
 
 	m_board->getTiles().at(move->getDestCoordinate())->setPiece(movePieced);
 	m_board->getTiles().at(currentPosition)->setPiece(nullptr);
+
+    const Alliance currentMaker = BoardController::GetInstance()->getMoveMaker();
+    BoardController::GetInstance()->setMoveMaker(currentMaker == Alliance::BLACK ? Alliance::WHITE : Alliance::BLACK);
 }
 
 void BoardController::setMoveMaker(const Alliance& alliance)

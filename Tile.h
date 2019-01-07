@@ -4,8 +4,9 @@
 
 static const QBrush ODD_COLOR("white");
 static const QBrush EVEN_COLOR("brown");
-static const QBrush MOVE_COLOR	(QColor(0, 0, 255, 100));
-static const QBrush ATTACK_COLOR(QColor(255, 0,	  0,   210));
+static const QBrush MOVE_COLOR	(QColor(150,150,150,100));
+static const QBrush ATTACK_COLOR(QColor(150,0,0,50));
+static const QBrush CHOOSE_COLOR(QColor(150,150,0,100));
 
 class Piece;
 
@@ -14,10 +15,10 @@ class Tile : public QWidget
 
 public:
 
-	explicit Tile(int coordinate, QWidget* parent = nullptr);
-	explicit Tile(int coordinate, Piece* piece, QWidget* parent = nullptr);
+    explicit Tile(int coordinate, QWidget* parent = nullptr);
+    explicit Tile(int coordinate, Piece* piece, QWidget* parent = nullptr);
 
-	~Tile();
+    ~Tile();
 	
 	void		setPiece(Piece* piece);
 	void		setOccupiedState(bool isOccupied = false);
