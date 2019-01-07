@@ -1,4 +1,3 @@
-#include "chessgame.h"
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QGridLayout>

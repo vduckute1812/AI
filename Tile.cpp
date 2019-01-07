@@ -12,6 +12,9 @@ Tile::Tile(int coordinate, QWidget* parent) :QWidget(parent)
 	m_coordinate = coordinate;
 	m_isOccupied = false;
 	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
+	m_defaultColor = (m_coordinate + (m_coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
+	m_curretColor = m_defaultColor;
+	startTimer(50);
 }
 
 Tile::Tile(int coordinate, Piece* piece, QWidget* parent) : QWidget(parent)
@@ -97,37 +100,58 @@ void Tile::mousePressEvent(QMouseEvent *event)
 			}
 			delete move;
 		}
-		BoardController::GetInstance()->setSelectedPiece(nullptr);
 	}
-
 	BoardController::GetInstance()->setSelectedPiece(this->getPiece());
-}
 
-void Tile::paintEvent(QPaintEvent *e)
-{
-	QPainter painter(this);
-	(m_coordinate + (m_coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? painter.setBrush(QBrush("white")) : painter.setBrush(QBrush("brown"));
-	painter.drawRect(rect());
 
-	Piece* piece = BoardController::GetInstance()->getSelectedPiece();
-	if (piece && BoardUntils::isSameAlliance(piece->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
+	// Set colors
+	resetColors();
+
+	Piece* pieceColor = BoardController::GetInstance()->getSelectedPiece();
+	if (pieceColor  && BoardUntils::isSameAlliance(pieceColor->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
 	{
-		for (Move* move : piece->calculateLegalMove(BoardController::GetInstance()->getBoard()))
+		for (Move* move : pieceColor->calculateLegalMove(BoardController::GetInstance()->getBoard()))
 		{
 			Tile* tile = BoardController::GetInstance()->getBoard()->getTile(move->getDestCoordinate());
-			QPainter painter(tile);
 			if (move->isAttack())
 			{
-				painter.setBrush(QBrush(QColor(255, 0, 0, 255)));
-				painter.drawRect(tile->rect());
+				tile->setCurrentColor(ATTACK_COLOR);
 			}
 			else
 			{
-				QBrush brush;
-				painter.setBrush(QBrush(QColor(100, 100, 100, 150)));
-				painter.drawRect(tile->rect());
+				tile->setCurrentColor(MOVE_COLOR);
 			}
 			delete move;
 		}
+
+	}
+}
+void Tile::paintEvent(QPaintEvent *e)
+{
+	QPainter painter(this);
+	painter.setBrush(m_curretColor);
+	painter.drawRect(rect());
+}
+
+void Tile::setCurrentColor(QBrush color)
+{
+	m_curretColor = color;
+}
+
+QBrush Tile::getCurrentColor()
+{
+	return m_curretColor;
+}
+
+QBrush Tile::getDefaultColor()
+{
+	return m_defaultColor;
+}
+
+void Tile::resetColors() const
+{
+	for (Tile* tile: BoardController::GetInstance()->getBoard()->getTiles())
+	{
+		tile->setCurrentColor(tile->getDefaultColor());
 	}
 }
