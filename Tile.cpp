@@ -14,7 +14,6 @@ Tile::Tile(int coordinate, QWidget* parent) :QWidget(parent)
 	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
 	m_defaultColor = (m_coordinate + (m_coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
 	m_curretColor = m_defaultColor;
-	startTimer(50);
 }
 
 Tile::Tile(int coordinate, Piece* piece, QWidget* parent) : QWidget(parent)
