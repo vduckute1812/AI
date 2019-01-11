@@ -1,4 +1,3 @@
-#include "BoardController.h"
 #include "Move.h"
 #include "Board.h"
 #include "Tile.h"
@@ -67,7 +66,12 @@ Piece* BoardController::getSelectedPiece()
 	return m_currentPiece;
 }
 
-const Alliance BoardController::getMoveMaker()
+Alliance BoardController::getMoveMaker()
 {
 	return m_nextMoveMaker;
+}
+
+Player* BoardController::getCurrentController()
+{
+    return m_board->getCurrentPlayer();
 }

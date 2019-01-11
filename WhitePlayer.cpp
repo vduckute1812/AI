@@ -1,12 +1,17 @@
-#include "whitePlayer.h"
+#include "WhitePlayer.h"
 
-WhitePlayer::WhitePlayer(const Board* board, const std::vector<Move*> legalMoves,
-	const std::vector<Move*> opponentMoves) : Player(board, legalMoves, opponentMoves, Alliance::WHITE)
+WhitePlayer::WhitePlayer(const Board* board): Player(board, Alliance::WHITE)
 {
-
 }
 
 WhitePlayer::~WhitePlayer()
 {
 
+}
+
+std::vector<Move*> WhitePlayer::calculateKingCastles(const std::vector<Move*> playerLegals,
+                                            const std::vector<Move*> opponentLegals)
+{
+    std::vector<Move*> nono;
+    return nono;
 }

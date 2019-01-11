@@ -87,11 +87,12 @@ void Tile::mousePressEvent(QMouseEvent *)
 {
 	int coordinate = this->getCoordinate();
 	Piece* piece = BoardController::GetInstance()->getSelectedPiece();
-	if (piece  && BoardUntils::isSameAlliance(piece->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
+    Player* currentPlayer =BoardController::GetInstance()->getCurrentController();
+    if (piece  && BoardUntils::isSameAlliance(piece->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
 	{
 		for (Move* move : piece->calculateLegalMove(BoardController::GetInstance()->getBoard()))
 		{
-			if (move->getDestCoordinate() == coordinate)
+            if (move->getDestCoordinate() == coordinate && !currentPlayer->checkLegalMove(move))
 			{
 				BoardController::GetInstance()->movePiece(move);
 			}
@@ -111,14 +112,17 @@ void Tile::mousePressEvent(QMouseEvent *)
 		for (Move* move : pieceColor->calculateLegalMove(BoardController::GetInstance()->getBoard()))
 		{
 			Tile* tile = BoardController::GetInstance()->getBoard()->getTile(move->getDestCoordinate());
-			if (move->isAttack())
-			{
-				tile->setCurrentColor(ATTACK_COLOR);
-			}
-			else
-			{
-				tile->setCurrentColor(MOVE_COLOR);
-			}
+            if(!currentPlayer->checkLegalMove(move))
+            {
+                if (move->isAttack())
+                {
+                    tile->setCurrentColor(ATTACK_COLOR);
+                }
+                else
+                {
+                    tile->setCurrentColor(MOVE_COLOR);
+                }
+            }
 			delete move;
 		}
 

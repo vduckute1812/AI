@@ -2,8 +2,8 @@
 #include "Piece.h"
 #include "Player.h"
 #include "BoardController.h"
-#include "whiteplayer.h"
-#include "blackplayer.h"
+#include "WhitePlayer.h"
+#include "BlackPlayer.h"
 #include <vector>
 
 class Tile;
@@ -28,6 +28,7 @@ public:
 	std::vector<Piece*>		getPieces(PieceType type, Alliance alliance) const;
 	void					timerEvent(QTimerEvent *e);
 
+    Player*                 getCurrentPlayer();
 
 private:
 	void			Init();

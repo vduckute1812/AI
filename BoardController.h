@@ -1,6 +1,7 @@
 #pragma once
 #include "Singleton.h"
 #include "Piece.h"
+#include "Player.h"
 
 class BoardController : public Singleton<BoardController>
 {
@@ -11,10 +12,12 @@ public:
 	void				setBoard		( Board* m_board );
 
 	Board*				getBoard();
-	const Alliance		getMoveMaker();
+    Alliance            getMoveMaker();
 
 	void				setSelectedPiece(Piece* piece);
 	Piece*				getSelectedPiece();
+
+    Player*             getCurrentController();
 
 private:
 	Alliance			m_nextMoveMaker;

@@ -32,8 +32,8 @@ Board::Board(BoardController* controller, QWidget *parent)
 			tile->getCoordinate() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
 	}
 
-    m_blackPlayer = new BlackPlayer(this, m_blackLegalMoves, m_whiteLegalMoves);
-    m_whitePlayer = new WhitePlayer(this, m_whiteLegalMoves, m_blackLegalMoves);
+    m_blackPlayer = new BlackPlayer(this);
+    m_whitePlayer = new WhitePlayer(this);
 
     // Stupid code
     switch (m_boardController->GetInstance()->getMoveMaker())
@@ -44,7 +44,6 @@ Board::Board(BoardController* controller, QWidget *parent)
         case Alliance::WHITE:
             m_currentPlayer = m_whitePlayer;
     }
-
     startTimer(50);
 }
 
@@ -170,6 +169,10 @@ std::vector<Move*> Board::calculateAttackMoves(const Alliance alliance) const
 		{
 			attackMoves.push_back(move);
 		}
+        else
+        {
+            delete move;
+        }
 	}
 	return attackMoves;
 }
@@ -187,13 +190,13 @@ std::vector<Tile*>	Board::getTiles() const
 
 void Board::printBoard() const
 {
-	QTextStream out;
-	char key = 'x';
+    QTextStream out;
+    char key = 'x';
     for (unsigned int i = 0; i < BoardUntils::NUM_TILES; ++i)
 	{
 
 		if (i % 8 == 0)
-			out << endl;
+            out << endl;
 
 		key = m_board.at(i)->isTileOccupied() ? 'x' : m_board.at(i)->getPiece()->getKeyCharacter();
 		
@@ -205,6 +208,22 @@ void Board::printBoard() const
 	}
 	out << endl;
 }
+
+Player* Board::getCurrentPlayer()
+{
+    // Stupid code
+    switch (m_boardController->GetInstance()->getMoveMaker())
+    {
+        case Alliance::BLACK:
+            m_currentPlayer = m_blackPlayer;
+            break;
+        case Alliance::WHITE:
+            m_currentPlayer = m_whitePlayer;
+    }
+
+    return m_currentPlayer;
+}
+
 
 std::vector<Piece*>	Board::getPieces(PieceType type, Alliance alliance) const
 {
