@@ -9,3 +9,8 @@ ChessGame/ChessGame.VC.db
 ChessGame/ChessGame/
 ChessGame/x64/
 
+ChessGame*
+moc_mainwindow.*
+ui_mainwindow.*
+*.o
+mainwindow.*
