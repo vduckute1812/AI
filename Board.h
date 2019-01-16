@@ -26,7 +26,8 @@ public:
 	std::vector<Tile*>		getTiles() const;
 
 	std::vector<Piece*>		getPieces(PieceType type, Alliance alliance) const;
-	void					timerEvent(QTimerEvent *e);
+    void					timerEvent(QTimerEvent *e) override;
+    void                    keyPressEvent(QKeyEvent* event) override;
 
     Player*                 getCurrentPlayer();
 
