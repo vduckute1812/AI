@@ -1,159 +1,66 @@
-#include "Move.h"
 #include "Tile.h"
-#include "Board.h"
 #include "Piece.h"
-#include <QPainter>
-#include <QMouseEvent>
 #include "BoardUntils.h"
-#include "BoardController.h"
 
-Tile::Tile(int coordinate, QWidget* parent) :QWidget(parent)
+Tile::Tile(const int coordinate, Piece* piece)
 {
-    m_coordinate = coordinate;
-    m_isOccupied = false;
-	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
-	m_defaultColor = (m_coordinate + (m_coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
-	m_curretColor = m_defaultColor;
-}
-
-Tile::Tile(int coordinate, Piece* piece, QWidget* parent) : QWidget(parent)
-{
-    m_coordinate = coordinate;
+    m_tileCoordinate = coordinate;
     m_piece = piece;
-	m_isOccupied = true;
-	(coordinate + (coordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? setStyleSheet("background-color:rgb(100,0,0);") : setStyleSheet("background-color:rgb(0,100,0);");
-	resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
 }
 
 Tile::~Tile()
 {
-	if (m_isOccupied)
-	{
-		delete m_piece;
-	}
+
 }
 
-void Tile::setPiece(Piece* piece)
+int Tile::getCoordinate() const
 {
-	m_piece = piece;
-	if (piece)
-	{
-		QLabel* label = piece->getRenderImg();
-		label->setParent(this);
-		label->show();
-
-		piece->setParent(this);
-		piece->setPosition(m_coordinate);
-
-		m_isOccupied = true;
-	}
-	else
-	{
-		m_isOccupied = false;
-	}
-}
-
-void Tile::setOccupiedState(bool isOccupied)
-{
-	m_isOccupied = isOccupied;
-}
-
-Piece* Tile::getPiece() const
-{
-	return m_piece;
+    return m_tileCoordinate;
 }
 
 bool Tile::isTileOccupied() const
 {
-	return m_isOccupied;
+    if(m_piece == nullptr)
+        return false;
+    else
+        return true;
 }
 
-int Tile::getCoordinate()
+void Tile::setPiece(Piece *piece)
 {
-	return m_coordinate;
+    m_piece = piece;
+    // If piece is available
+    if(m_piece)
+    {
+        m_piece->setPosition(m_tileCoordinate);
+    }
 }
 
-bool Tile::isEmptyTile() const
+Piece* Tile::getPiece() const
 {
-	if (m_piece)
-	{
-		return false;
-	}
-	return true;
+    return m_piece;
 }
 
-
-void Tile::mousePressEvent(QMouseEvent *)
+const BoardTiles Tile::createEmptyTiles()
 {
-	int coordinate = this->getCoordinate();
-	Piece* piece = BoardController::GetInstance()->getSelectedPiece();
-    Player* currentPlayer =BoardController::GetInstance()->getCurrentController();
-    if (piece  && BoardUntils::isSameAlliance(piece->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
-	{
-		for (Move* move : piece->calculateLegalMove(BoardController::GetInstance()->getBoard()))
-		{
-            if (move->getDestCoordinate() == coordinate && !currentPlayer->checkLegalMove(move))
-			{
-				BoardController::GetInstance()->movePiece(move);
-			}
-			delete move;
-		}
-	}
-	BoardController::GetInstance()->setSelectedPiece(this->getPiece());
-
-
-	// Set colors
-	resetColors();
-
-	Piece* pieceColor = BoardController::GetInstance()->getSelectedPiece();
-	if (pieceColor  && BoardUntils::isSameAlliance(pieceColor->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
-	{
-        this->setCurrentColor(CHOOSE_COLOR);
-		for (Move* move : pieceColor->calculateLegalMove(BoardController::GetInstance()->getBoard()))
-		{
-			Tile* tile = BoardController::GetInstance()->getBoard()->getTile(move->getDestCoordinate());
-            if(!currentPlayer->checkLegalMove(move))
-            {
-                if (move->isAttack())
-                {
-                    tile->setCurrentColor(ATTACK_COLOR);
-                }
-                else
-                {
-                    tile->setCurrentColor(MOVE_COLOR);
-                }
-            }
-			delete move;
-		}
-
-	}
-}
-void Tile::paintEvent(QPaintEvent *)
-{
-	QPainter painter(this);
-	painter.setBrush(m_curretColor);
-	painter.drawRect(rect());
+    BoardTiles tiles;
+    for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
+    {
+        tiles.insert(std::pair<int, Tile*>(i, new Tile(i, nullptr)));
+    }
 }
 
-void Tile::setCurrentColor(QBrush color)
+Tile* Tile::GetEmptyTiles(const int idx)
 {
-	m_curretColor = color;
-}
+    if(Tile::EMPTY_TILES.empty())
+    {
+        Tile::EMPTY_TILES = createEmptyTiles();
+    }
 
-QBrush Tile::getCurrentColor()
-{
-	return m_curretColor;
-}
-
-QBrush Tile::getDefaultColor()
-{
-	return m_defaultColor;
-}
-
-void Tile::resetColors() const
-{
-	for (Tile* tile: BoardController::GetInstance()->getBoard()->getTiles())
-	{
-		tile->setCurrentColor(tile->getDefaultColor());
-	}
+    if(idx < BoardUntils::NUM_TILES)
+    {
+        return Tile::EMPTY_TILES[idx];
+    }
+    else
+        return nullptr;
 }

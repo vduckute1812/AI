@@ -69,13 +69,13 @@ public:
 		return coordinate >= 0 && coordinate < NUM_TILES;
 	}
 
-	static bool isSameAlliance(Alliance piece1, Alliance piece2)
-	{
-		if ((piece1 == Alliance::BLACK && piece2 == Alliance::BLACK)
-			|| (piece1 == Alliance::WHITE && piece2 == Alliance::WHITE))
-		{
-			return true;
-		}
-		return false;
-	}
+    static bool isSameAlliance(Alliance piece1, Alliance piece2)
+    {
+        if ((piece1 == Alliance::BLACK && piece2 == Alliance::BLACK)
+            || (piece1 == Alliance::WHITE && piece2 == Alliance::WHITE))
+        {
+            return true;
+        }
+        return false;
+    }
 };

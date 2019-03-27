@@ -1,33 +1,31 @@
-#pragma once
-#include "Piece.h"
-
-enum MoveStatus
-{
-	DONE,
-	ILLEGAL_MOVE
-};
+#ifndef MOVE_H
+#define MOVE_H
 
 class Board;
+class Piece;
+
 class Move
 {
 public:
-	Move(const Board* board, const Piece* piece, int destinate);
-	~Move();
-
-	const Piece*			getMovePiece() const;
-	int						getDestCoordinate();
-	bool					isAttack();
-
-	int						GetHash() const;
-
-	bool					isDone(MoveStatus status) const;
-
-private:
-	const Board*	m_board;
-	const Piece*	m_movePiece;
-	const Piece*	m_attackPiece;
-
-	int				m_destCoordinate;
-	bool			m_isAttack;
+    Move(const Board* board, const Piece* movePiece, const int destCoord);
+protected:
+    const Board*    m_board;
+    const Piece*    m_movePiece;
+    int             m_destCoordinate;
 };
 
+class MajorMove: public Move
+{
+public:
+    MajorMove(const Board* board, const Piece* movePiece, const int destCoord);
+};
+
+class AttackMove: public Move
+{
+public:
+    AttackMove(const Board* board, const Piece* movePiece, const int destCoord, const Piece* attackedPiece);
+private:
+    const Piece*        m_attackedPiece;
+};
+
+#endif // MOVE_H

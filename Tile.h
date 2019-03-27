@@ -1,49 +1,33 @@
-#pragma once
-#include <QWidget>
-#include <QBrush>
+#ifndef TILE_H
+#define TILE_H
+#include "map"
 
-static const QBrush ODD_COLOR("white");
-static const QBrush EVEN_COLOR("brown");
-static const QBrush MOVE_COLOR	(QColor(150,150,150,100));
-static const QBrush ATTACK_COLOR(QColor(150,0,0,50));
-static const QBrush CHOOSE_COLOR(QColor(150,150,0,100));
-
+class Tile;
 class Piece;
 
-class Tile : public QWidget
+typedef std::map<int, Tile*> BoardTiles;
+
+class Tile
 {
-
 public:
-
-    explicit Tile(int coordinate, QWidget* parent = nullptr);
-    explicit Tile(int coordinate, Piece* piece, QWidget* parent = nullptr);
-
+    Tile(const int coordinate, Piece* piece);
     ~Tile();
-	
-	void		setPiece(Piece* piece);
-	void		setOccupiedState(bool isOccupied = false);
-	bool		isTileOccupied() const;
-	Piece*		getPiece() const;
-	int			getCoordinate();
-	bool		isEmptyTile() const;
 
-	void		mousePressEvent(QMouseEvent *) override;
-	void		paintEvent(QPaintEvent *) override;
+    bool            isTileOccupied() const;
 
-	void		setCurrentColor(QBrush);
-	QBrush		getCurrentColor();
+    void            setPiece(Piece*);
+    Piece*          getPiece() const;
 
-	QBrush		getDefaultColor();
+    int             getCoordinate() const;
 
-	void		resetColors() const;
+    static Tile*            GetEmptyTiles(const int indx);
+    static BoardTiles       EMPTY_TILES;
+    static const BoardTiles     createEmptyTiles();
 
+protected:
+    int         m_tileCoordinate;
+    Piece*      m_piece;
 
-private:
-	int			m_coordinate;
-	Piece*		m_piece;
-
-	QBrush		m_defaultColor;
-	QBrush		m_curretColor;
-
-	bool		m_isOccupied;
 };
+
+#endif // TILE_H
