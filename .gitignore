@@ -10,7 +10,7 @@ ChessGame/ChessGame/
 ChessGame/x64/
 
 ChessGame*
-moc_mainwindow.*
+moc_*
 ui_mainwindow.*
 *.o
 mainwindow.*

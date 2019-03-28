@@ -5,7 +5,7 @@
 #include "Piece.h"
 #include "King.h"
 #include "Board.h"
-
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +16,10 @@ int main(int argc, char *argv[])
 
     window.setFixedSize(BoardUntils::TILE_ROW_SIZE * BoardUntils::NUM_TILES_PER_ROW,
 					BoardUntils::TILE_COL_SIZE * BoardUntils::NUM_TILES_PER_ROW);
-	window.setWindowTitle("Board");
+    window.setWindowTitle("Chess Game");
+
+    window.setWindowIcon(QIcon("Resources/Kw.svg"));
+
 	window.show();
 	return a.exec();
 }

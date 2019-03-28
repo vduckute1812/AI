@@ -11,10 +11,11 @@
 
 #include <QTextStream>
 #include <QPainter>
+#include <QKeyEvent>
 
 Board::Board(BoardController* controller, QWidget *parent)
 {
-	Init();
+    Init();
 	m_boardController = controller;
 	m_boardController->GetInstance()->setBoard(this);
 	m_boardController->GetInstance()->setMoveMaker(Alliance::WHITE);
@@ -45,18 +46,29 @@ Board::Board(BoardController* controller, QWidget *parent)
             m_currentPlayer = m_whitePlayer;
     }
     startTimer(50);
+
+    printBoard();
 }
 
 Board::~Board()
 {
+    //Delete tiles
     for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
     {
         delete m_board.at(i);
     }
-    m_board.clear();
 
+    // Delete players
     delete m_blackPlayer;
     delete m_whitePlayer;
+
+    //Delete pieces
+    for (Piece* piece: m_blackPieces) {
+        delete piece;
+    }
+    for (Piece* piece: m_whitePieces) {
+        delete piece;
+    }
 }
 
 //Create emtpy tile board
@@ -71,7 +83,7 @@ void Board::Init()
 
 void Board::buildStandardBoard()
 {
-	QTextStream out;
+    QTextStream out(stdout);
 
 	m_boardController->GetInstance()->setPiece(	 new Rook	(0 , Alliance::BLACK ));
 	m_boardController->GetInstance()->setPiece(	 new Knight (1 , Alliance::BLACK ));
@@ -106,14 +118,6 @@ void Board::buildStandardBoard()
 	m_boardController->GetInstance()->setPiece(  new Pawn   (50, Alliance::WHITE ));
 	m_boardController->GetInstance()->setPiece(  new Pawn   (49, Alliance::WHITE ));
 	m_boardController->GetInstance()->setPiece(  new Pawn   (48, Alliance::WHITE ));
-
-    for (unsigned int i = 0; i < BoardUntils::NUM_TILES; ++i)
-	{
-		if (m_board.at(i)->isTileOccupied())
-		{
-			out << "Hash : " << QString(m_board.at(i)->getPiece()->getKeyCharacter()) << endl;
-		}
-	}
 }
 
 std::vector<Piece*>	Board::calculateActivePieces( const std::vector<Tile*> gameBoard,const Alliance alliance) const
@@ -190,7 +194,7 @@ std::vector<Tile*>	Board::getTiles() const
 
 void Board::printBoard() const
 {
-    QTextStream out;
+    QTextStream out(stdout);
     char key = 'x';
     for (unsigned int i = 0; i < BoardUntils::NUM_TILES; ++i)
 	{
@@ -198,9 +202,9 @@ void Board::printBoard() const
 		if (i % 8 == 0)
             out << endl;
 
-		key = m_board.at(i)->isTileOccupied() ? 'x' : m_board.at(i)->getPiece()->getKeyCharacter();
+        key = !m_board.at(i)->isTileOccupied() ? 'x' : m_board.at(i)->getPiece()->getKeyCharacter();
 		
-		if (!m_board.at(i)->isTileOccupied() && m_board.at(i)->getPiece()->getAlliance() == Alliance::BLACK)
+        if (m_board.at(i)->isTileOccupied() && m_board.at(i)->getPiece()->getAlliance() == Alliance::BLACK)
 		{
 			key = key + 'a' - 'A';
 		}
@@ -245,4 +249,12 @@ void Board::timerEvent(QTimerEvent *e)
 {
 	Q_UNUSED(e);
 	repaint();
+}
+
+void Board::keyPressEvent(QKeyEvent* e)
+{
+    QTextStream out(stdout);
+    out << "Key: " << e->key() << endl;
+    //16777234
+    //16777236
 }
