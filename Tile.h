@@ -20,10 +20,6 @@ public:
 
     int             getCoordinate() const;
 
-    static Tile*            GetEmptyTiles(const int indx);
-    static BoardTiles       EMPTY_TILES;
-    static const BoardTiles     createEmptyTiles();
-
 protected:
     int         m_tileCoordinate;
     Piece*      m_piece;

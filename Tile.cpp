@@ -41,26 +41,3 @@ Piece* Tile::getPiece() const
     return m_piece;
 }
 
-const BoardTiles Tile::createEmptyTiles()
-{
-    BoardTiles tiles;
-    for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
-    {
-        tiles.insert(std::pair<int, Tile*>(i, new Tile(i, nullptr)));
-    }
-}
-
-Tile* Tile::GetEmptyTiles(const int idx)
-{
-    if(Tile::EMPTY_TILES.empty())
-    {
-        Tile::EMPTY_TILES = createEmptyTiles();
-    }
-
-    if(idx < BoardUntils::NUM_TILES)
-    {
-        return Tile::EMPTY_TILES[idx];
-    }
-    else
-        return nullptr;
-}
