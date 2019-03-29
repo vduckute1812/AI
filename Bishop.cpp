@@ -4,7 +4,7 @@
 #include "Bishop.h"
 #include "BoardUntils.h"
 
-Bishop::Bishop(int position, Alliance pieceAlliance , QWidget *parent): Piece (position, pieceAlliance, PieceType::BISHOP, parent)
+Bishop::Bishop(Alliance pieceAlliance, int position, QWidget *parent): Piece (pieceAlliance, position, PieceType::BISHOP, parent)
 {
 }
 
@@ -23,9 +23,9 @@ bool Bishop::isEightColumnExclusion(int currentPosition, int candidateOffset) co
     return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == -7 || candidateOffset == 9);
 }
 
-std::vector<Move*> Bishop::calculateLegalMove(const Board* board) const
+MoveCollection Bishop::calculateLegalMove(const Board* board) const
 {
-    std::vector<Move*> legalMoves;
+    MoveCollection legalMoves;
 
 //        int candidateDestinationCoordinate;
 

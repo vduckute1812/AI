@@ -3,14 +3,20 @@ x64\
 *.sdf
 *.sln
 *.txt
+ChessGame
 ChessGame/.vs/
 ChessGame/ChessGame.VC.VC.opendb
 ChessGame/ChessGame.VC.db
 ChessGame/ChessGame/
 ChessGame/x64/
 
-ChessGame*
+ChessGame.pro.user
+Makefile
+
 moc_mainwindow.*
 ui_mainwindow.*
 *.o
 mainwindow.*
+
+*.autosave
+*.stash

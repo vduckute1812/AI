@@ -1,71 +1,26 @@
+#include "BoardUntils.h"
 #include "BoardController.h"
-#include "Board.h"
-#include "Move.h"
 
-void BoardController::setBoard( Board* board )
+BoardController::BoardController()
 {
-    m_board = board;
-    m_currentPiece = nullptr;
+
 }
 
-Board* BoardController::getBoard()
-{
-    return m_board;
-}
 
-void BoardController::setPiece( Piece* piece )
+BoardTiles BoardController::createTableTiles()
 {
-    m_board->getTiles().at(piece->getPosistion())->setPiece(piece);
-}
+    BoardTiles tableTiles;
+    Piece* NULL_PIECE = nullptr;
 
-void BoardController::movePiece(Move* move)
-{
-    int currentPosition = move->getMovePiece()->getPosistion();
-    Piece* movePieced = const_cast<Piece*> (move->getMovePiece());
-
-    if (movePieced->getPieceType() == PieceType::PAWN)
+    for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
     {
-        Pawn* pawn = static_cast<Pawn*>(movePieced);
-        if (pawn->isFirstMove())
-        {
-            pawn->setFirstMove(false);
-        }
+        tableTiles.insert(std::pair<int, Tile*>(i,  new Tile(i, NULL_PIECE)));
     }
 
-    if (move->isAttack())
-    {
-        m_board->getTiles().at(move->getDestCoordinate())->getPiece()->diedState(true);
-        m_board->getTiles().at(move->getDestCoordinate())->getPiece()->getRenderImg()->hide();
-
-        if (m_board->getTiles().at(move->getDestCoordinate())->getPiece()->getPieceType() == PieceType::KING)
-        {
-            // ENDGAME
-        }
-    }
-
-    m_board->getTiles().at(move->getDestCoordinate())->setPiece(movePieced);
-    m_board->getTiles().at(currentPosition)->setPiece(nullptr);
-
-    const Alliance currentMaker = BoardController::GetInstance()->getMoveMaker();
-    BoardController::GetInstance()->setMoveMaker(currentMaker == Alliance::BLACK ? Alliance::WHITE : Alliance::BLACK);
+    return tableTiles;
 }
 
-void BoardController::setMoveMaker(const Alliance& alliance)
+void BoardController::InitGame()
 {
-    m_nextMoveMaker = alliance;
-}
 
-void BoardController::setSelectedPiece(Piece* piece)
-{
-    m_currentPiece = piece;
-}
-
-Piece* BoardController::getSelectedPiece()
-{
-    return m_currentPiece;
-}
-
-Alliance BoardController::getMoveMaker()
-{
-    return m_nextMoveMaker;
 }

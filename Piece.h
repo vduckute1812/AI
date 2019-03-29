@@ -22,16 +22,20 @@ enum PieceType
 
 class Move;
 class Board;
+class Move;
+
+typedef std::vector<Move*> MoveCollection;
+
 class Piece: public QFrame
 {
 public:
-    explicit Piece(int position, Alliance pieceAlliance, PieceType pieceType, QWidget *parent = nullptr);
+    explicit Piece(Alliance pieceAlliance, int position, PieceType pieceType, QWidget *parent = nullptr);
     virtual ~Piece();
 
     virtual bool		isFirstColumnExclusion(int currentPosition, int candidateOffset) const = 0;
     virtual bool		isEightColumnExclusion(int currentPosition, int candidateOffset) const = 0;
 
-    virtual             std::vector<Move*> calculateLegalMove(const Board* board) const = 0;
+    virtual             MoveCollection calculateLegalMove(const Board* board) const = 0;
 
     void                setPosition(int position);
     int                 getPosition() const;

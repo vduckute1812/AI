@@ -1,7 +1,7 @@
 #include "Piece.h"
 #include "BoardUntils.h"
 
-Piece::Piece(int position, Alliance pieceAlliance, PieceType pieceType, QWidget *parent): QFrame(parent)
+Piece::Piece(Alliance pieceAlliance, int position, PieceType pieceType, QWidget *parent): QFrame(parent)
 {
     // Set attribute
     m_piecePosition = position;

@@ -11,11 +11,13 @@ typedef std::map<const int, Piece*> BoardConfig;
 class BoardBuilder
 {
 public:
-    explicit        BoardBuilder();
-    Board*          build();
-    BoardBuilder*   setPiece(BoardConfig config);
-    BoardBuilder*   setMoveMaker(const Alliance nextMoveMaker);
-    BoardBuilder*   setMoveTransition(Move* transitionMove);
+    explicit                BoardBuilder();
+    Board*                  build();
+    BoardBuilder*           setPiece(Piece* piece);
+    BoardBuilder*           setMoveMaker(const Alliance nextMoveMaker);
+    BoardBuilder*           setMoveTransition(Move* transitionMove);
+
+    BoardConfig             getBoardConfig() const;
 
 private:
     Board*          m_fromBoard;

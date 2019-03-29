@@ -12,12 +12,10 @@ Board* BoardBuilder::build()
     return new Board(this);
 }
 
-BoardBuilder* BoardBuilder::setPiece(BoardConfig config)
+BoardBuilder* BoardBuilder::setPiece(Piece* piece)
 {
-
-    for(BoardConfig::iterator it = config.begin(); it != config.end(); ++it) {
-        m_boardConfig.insert(std::pair<int, Piece*> (it->first, it->second));
-    }    return this;
+    m_boardConfig.insert(std::pair<int, Piece*> (piece->getPosition(), piece));
+    return this;
 }
 
 BoardBuilder* BoardBuilder::setMoveMaker(const Alliance nextMoveMaker)
@@ -31,3 +29,9 @@ BoardBuilder* BoardBuilder::setMoveTransition(Move* transitionMove)
     m_transitionMove = transitionMove;
     return this;
 }
+
+BoardConfig BoardBuilder::getBoardConfig() const
+{
+    return m_boardConfig;
+}
+

@@ -29,7 +29,7 @@ bool Tile::isTileOccupied() const
 void Tile::setPiece(Piece *piece)
 {
     m_piece = piece;
-    // If piece is available
+
     if(m_piece)
     {
         m_piece->setPosition(m_tileCoordinate);
@@ -40,4 +40,3 @@ Piece* Tile::getPiece() const
 {
     return m_piece;
 }
-

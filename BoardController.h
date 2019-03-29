@@ -1,27 +1,17 @@
 #ifndef BOARDCONTROLLER_H
 #define BOARDCONTROLLER_H
 
-#include "Singleton.h"
-#include "Piece.h"
+#include "BoardUI.h"
 
-class BoardController: public Singleton<BoardController>
+class BoardController
 {
 public:
-    void				setPiece		( Piece* piece );
-    void				movePiece		( Move* move );
-    void				setMoveMaker	( const Alliance& alliance );
-    void				setBoard		( Board* m_board );
-
-    Board*				getBoard();
-    Alliance            getMoveMaker();
-
-    void				setSelectedPiece(Piece* piece);
-    Piece*				getSelectedPiece();
+    void InitGame();
+    BoardController();
 
 private:
-    Alliance			m_nextMoveMaker;
-    Board*				m_board;
-    Piece*				m_currentPiece;
+    static BoardTiles createTableTiles();
+    BoardUI*        m_boardGame;
 };
 
 #endif // BOARDCONTROLLER_H
