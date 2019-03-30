@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ROOK_H
+#define ROOK_H
+
 #include "Piece.h"
 
 const static int ROOK_CANDIDATE_MOVE_COORDINATE[] = { -8, -1, 1, 8 };
@@ -17,3 +19,4 @@ public:
 
 };
 
+#endif

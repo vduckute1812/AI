@@ -1,5 +1,6 @@
 #include "Tile.h"
 #include "Piece.h"
+#include "BoardUI.h"
 #include "BoardUntils.h"
 
 Tile::Tile(const int coordinate, Piece* piece)
@@ -39,4 +40,20 @@ void Tile::setPiece(Piece *piece)
 Piece* Tile::getPiece() const
 {
     return m_piece;
+}
+
+namespace TILES
+{
+    BoardTiles createEmptyTiles()
+    {
+        BoardTiles tableTiles;
+        Piece* NULL_PIECE = nullptr;
+
+        for (int i = 0; i < BoardUntils::NUM_TILES; ++i)
+        {
+            tableTiles.insert(std::pair<int, Tile*>(i,  new Tile(i, NULL_PIECE)));
+        }
+
+        return tableTiles;
+    }
 }

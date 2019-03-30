@@ -1,11 +1,11 @@
 #ifndef MOVEMGR_H
 #define MOVEMGR_H
 
+#include "Singleton.h"
 
-class MoveMgr
+class MoveMgr: public Singleton<MoveMgr>
 {
 public:
-    MoveMgr();
 };
 
 #endif // MOVEMGR_H

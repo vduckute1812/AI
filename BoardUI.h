@@ -1,21 +1,28 @@
 #ifndef BOARDUI_H
 #define BOARDUI_H
-
-#include "Tile.h"
+#include <map>
+#include <QWidget>
 #include "Singleton.h"
 
+
 class Board;
+class Tile;
 
+typedef std::map<int, Tile*> BoardTiles;
 
-static BoardTiles   BOARD_TILES;
-
-
-class BoardUI: public Singleton<BoardUI>
+class BoardUI: public Singleton<BoardUI>, QWidget
 {
 public:
-    void InitBoardGame();
+    void            InitBoardGame();
+    BoardTiles      GetEmptyTiles();
+    void            ResetTiles();
+
+    void            SetBoard(Board* board);
+    Board*          GetCurrentBoard();
+
 private:
     Board*          m_board;
+    BoardTiles      m_tiles;
 };
 
 #endif // BOARDUI_H

@@ -1,16 +1,16 @@
 #ifndef BOARDCONTROLLER_H
 #define BOARDCONTROLLER_H
 
+#include "Singleton.h"
 #include "BoardUI.h"
 
-class BoardController
+class BoardController: public Singleton<BoardController>
 {
 public:
     void InitGame();
-    BoardController();
+    void setBoard(Board*);
 
 private:
-    static BoardTiles createTableTiles();
     BoardUI*        m_boardGame;
 };
 

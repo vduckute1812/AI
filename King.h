@@ -1,4 +1,5 @@
-#pragma once
+#ifndef KING_H
+#define KING_H
 
 #include "Piece.h"
 
@@ -16,3 +17,4 @@ public:
 	virtual std::vector<Move*> calculateLegalMove(const Board* board) const;
 };
 
+#endif

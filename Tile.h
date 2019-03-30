@@ -29,10 +29,13 @@ public:
     int             getCoordinate() const;
 
 protected:
-    static BoardTiles   createTableTiles();
 
     int         m_tileCoordinate;
     Piece*      m_piece;
 };
 
 #endif // TILE_H
+namespace TILES
+{
+    BoardTiles   createEmptyTiles();
+}

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PAWN_H
+#define PAWN_H
+
 #include "Piece.h"
 
 const static int PAWN_CANDIDATE_MOVE_COORDINATE[] = { 7, 8, 9, 16 };
@@ -24,3 +26,4 @@ private:
 	bool		m_isFirstMove;
 };
 
+#endif
