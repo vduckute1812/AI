@@ -3,6 +3,11 @@
 #include "Board.h"
 #include "BoardUI.h"
 
+BoardUI::BoardUI(QWidget* parrent): QWidget (parrent)
+{
+
+}
+
 void BoardUI::InitBoardGame()
 {
     m_board = BOARD::createStandardBoard();
@@ -24,7 +29,7 @@ void BoardUI::ResetTiles()
     }
 }
 
-Board* BoardUI::GetCurrentBoard()
+const Board* BoardUI::GetCurrentBoard()
 {
     return m_board;
 }
@@ -35,10 +40,21 @@ void BoardUI::SetBoard(Board *board)
     ResetTiles();
     BoardConfig config = m_board->getBoardConfig();
     BoardConfig::iterator tileConfig;
+
     for (tileConfig = config.begin(); tileConfig!=config.end(); ++tileConfig)
     {
         const int coordinate = tileConfig->first;
         Piece* piece = tileConfig->second;
         m_tiles.at(coordinate)->setPiece(piece);
+    }
+}
+
+void BoardUI::FreeTiles()
+{
+    BoardTiles::iterator tilePtr;
+    for (tilePtr = m_tiles.begin(); tilePtr != m_tiles.end(); ++tilePtr)
+    {
+        Tile* tileRelease = tilePtr->second;
+        delete tileRelease;
     }
 }

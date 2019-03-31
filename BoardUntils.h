@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BOARDUNTILS_H
+#define BOARDUNTILS_H
+
 #include "Piece.h"
 
 static const int FIRST_COLUMN[]   = { 0,  8, 16, 24, 32, 40, 48, 56 };
@@ -79,3 +81,5 @@ public:
         return false;
     }
 };
+
+#endif

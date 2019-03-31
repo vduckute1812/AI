@@ -65,7 +65,7 @@ Singleton<T>::Singleton()
 {
         if (s_instance == nullptr)
         {
-                s_instance = (T*)this;
+                s_instance = static_cast<T*>(this);
         }
 }
 

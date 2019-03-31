@@ -3,7 +3,7 @@
 #include "BoardUI.h"
 #include "BoardUntils.h"
 
-Tile::Tile(const int coordinate, Piece* piece)
+Tile::Tile(const int coordinate, Piece* piece, QWidget* parrent): QWidget (parrent)
 {
     m_tileCoordinate = coordinate;
     m_piece = piece;
@@ -40,6 +40,11 @@ void Tile::setPiece(Piece *piece)
 Piece* Tile::getPiece() const
 {
     return m_piece;
+}
+
+void Tile::mousePressEvent(QMouseEvent *)
+{
+
 }
 
 namespace TILES

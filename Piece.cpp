@@ -40,3 +40,8 @@ int Piece::getPosition() const
 {
     return m_piecePosition;
 }
+
+char Piece::getKeyCharacter() const
+{
+    return m_pieceType;
+}

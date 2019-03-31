@@ -9,10 +9,17 @@ Move::Move(const Board* board, const Piece* movePiece, const int destCoord)
     m_destCoordinate = destCoord;
 }
 
-MajorMove::MajorMove(const Board* board, const Piece* movePiece, const int destCoord) :Move(board, movePiece, destCoord)
-{}
-
-AttackMove::AttackMove(const Board* board, const Piece* movePiece, const int destCoord, const Piece* attackedPiece) :Move(board, movePiece, destCoord)
+char* Move::GetDescription()
 {
-    m_attackedPiece = attackedPiece;
+    return m_description;
+}
+
+void Move::Do()
+{
+
+}
+
+void Move::Undo()
+{
+
 }

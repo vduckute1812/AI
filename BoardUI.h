@@ -13,12 +13,14 @@ typedef std::map<int, Tile*> BoardTiles;
 class BoardUI: public Singleton<BoardUI>, QWidget
 {
 public:
+    BoardUI(QWidget* parrent = nullptr);
     void            InitBoardGame();
     BoardTiles      GetEmptyTiles();
     void            ResetTiles();
 
     void            SetBoard(Board* board);
-    Board*          GetCurrentBoard();
+    const Board*    GetCurrentBoard();
+    void            FreeTiles();
 
 private:
     Board*          m_board;

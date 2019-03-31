@@ -12,6 +12,7 @@ class BoardBuilder
 {
 public:
     explicit                BoardBuilder();
+
     Board*                  build();
     BoardBuilder*           setPiece(Piece* piece);
     BoardBuilder*           setMoveMaker(const Alliance nextMoveMaker);

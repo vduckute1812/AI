@@ -1,3 +1,5 @@
+#include "Piece.h"
+#include "Board.h"
 #include "BoardUntils.h"
 #include "BoardController.h"
 
@@ -10,4 +12,20 @@ void BoardController::InitGame()
 void BoardController::setBoard(Board* board)
 {
     m_boardGame->SetBoard(board);
+}
+
+void BoardController::movePiece(Piece* piece, Move* move)
+{
+
+}
+
+void BoardController::printCurrentBoard()
+{
+    m_boardGame->GetCurrentBoard()->printBoard();
+}
+
+void BoardController::freeGame()
+{
+    m_boardGame->FreeTiles();
+    m_boardGame->FreeInstance();
 }

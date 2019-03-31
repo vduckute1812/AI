@@ -43,6 +43,8 @@ public:
     PieceType			getPieceType() const;
     Alliance            getAlliance() const;
 
+    char                getKeyCharacter() const;
+
 protected:
     int                 m_piecePosition;
     Alliance			m_pieceAlliance;

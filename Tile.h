@@ -18,7 +18,7 @@ static const QBrush CHOOSE_COLOR("yellow");
 class Tile: public QWidget
 {
 public:
-    Tile(const int coordinate, Piece* piece);
+    explicit Tile(const int coordinate, Piece* piece, QWidget* parrent = nullptr);
     ~Tile();
 
     bool            isTileOccupied() const;
@@ -27,7 +27,7 @@ public:
     Piece*          getPiece() const;
 
     int             getCoordinate() const;
-
+    void            mousePressEvent(QMouseEvent *);
 protected:
 
     int         m_tileCoordinate;
