@@ -21,11 +21,12 @@ public:
     bool                        isTileOccupied(const int idx) const;
 
 private:
-    const BoardBuilder*         m_boardBuilder;
+    const BoardBuilder*         m_boardBuilder;    
 };
 
 
-namespace BOARD{
+namespace BOARD
+{
     Board*          createStandardBoard();
 }
 

@@ -27,10 +27,14 @@ public:
     Piece*          getPiece() const;
 
     int             getCoordinate() const;
-    void            mousePressEvent(QMouseEvent *);
+
+    void            paintEvent(QPaintEvent *) override;
+    void            mousePressEvent(QMouseEvent *) override;
 protected:
 
     int         m_tileCoordinate;
+    QBrush      m_currentColor;
+    QBrush      m_defaultColor;
     Piece*      m_piece;
 };
 

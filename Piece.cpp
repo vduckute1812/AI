@@ -14,6 +14,7 @@ Piece::Piece(Alliance pieceAlliance, int position, PieceType pieceType, QWidget 
     m_pieceImg->resize(QSize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE));
     m_pieceImg->setAlignment(Qt::AlignCenter);
     m_pieceImg->setAttribute(Qt::WA_DeleteOnClose);
+    m_pieceImg->show();
 }
 
 Piece::~Piece()

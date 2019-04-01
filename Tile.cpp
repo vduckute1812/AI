@@ -1,3 +1,4 @@
+#include <QPainter>
 #include "Tile.h"
 #include "Piece.h"
 #include "BoardUI.h"
@@ -7,6 +8,9 @@ Tile::Tile(const int coordinate, Piece* piece, QWidget* parrent): QWidget (parre
 {
     m_tileCoordinate = coordinate;
     m_piece = piece;
+    resize(BoardUntils::TILE_ROW_SIZE, BoardUntils::TILE_COL_SIZE);
+    m_defaultColor = (m_tileCoordinate + (m_tileCoordinate / BoardUntils::NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
+    m_currentColor = m_defaultColor;
 }
 
 Tile::~Tile()
@@ -45,6 +49,13 @@ Piece* Tile::getPiece() const
 void Tile::mousePressEvent(QMouseEvent *)
 {
 
+}
+
+void Tile::paintEvent(QPaintEvent *)
+{
+    QPainter painter(this);
+    painter.setBrush(m_currentColor);
+    painter.drawRect(rect());
 }
 
 namespace TILES

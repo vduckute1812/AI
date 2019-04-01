@@ -13,7 +13,6 @@ typedef std::map<int, Tile*> BoardTiles;
 class BoardUI: public Singleton<BoardUI>, QWidget
 {
 public:
-    BoardUI(QWidget* parrent = nullptr);
     void            InitBoardGame();
     BoardTiles      GetEmptyTiles();
     void            ResetTiles();
@@ -21,6 +20,7 @@ public:
     void            SetBoard(Board* board);
     const Board*    GetCurrentBoard();
     void            FreeTiles();
+    void            timerEvent(QTimerEvent *e) override;
 
 private:
     Board*          m_board;

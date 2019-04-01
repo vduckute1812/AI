@@ -14,11 +14,6 @@ void BoardController::setBoard(Board* board)
     m_boardGame->SetBoard(board);
 }
 
-void BoardController::movePiece(Piece* piece, Move* move)
-{
-
-}
-
 void BoardController::printCurrentBoard()
 {
     m_boardGame->GetCurrentBoard()->printBoard();

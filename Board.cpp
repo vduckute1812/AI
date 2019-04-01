@@ -32,6 +32,45 @@ const Piece* Board::getPieceOnBoard(int index)
     return m_boardBuilder->getBoardConfig().at(index);
 }
 
+bool Board::isTileOccupied(const int idx) const
+{
+    if(idx < 0 && idx >= BoardUntils::NUM_TILES)
+        return false;
+
+    BoardConfig::iterator piece = m_boardBuilder->getBoardConfig().find(idx);
+    if(piece != m_boardBuilder->getBoardConfig().end())
+        return true;
+
+    return false;
+}
+
+void Board::printBoard() const
+{
+    QTextStream out(stdout);
+    char key = 'x';
+    for (int idx = 0; idx < BoardUntils::NUM_TILES; ++idx)
+    {
+        if (idx % 8 == 0)
+            out << endl;
+
+        bool isTileOccupiedIdx = isTileOccupied(idx);
+
+        Piece* piece = nullptr;
+        if(isTileOccupiedIdx)
+        {
+            piece = m_boardBuilder->getBoardConfig().at(idx);
+        }
+
+        key = !isTileOccupiedIdx ? 'x' :piece->getKeyCharacter();
+
+        if(isTileOccupiedIdx && piece->getAlliance() == Alliance::BLACK)
+            key = key + 'a' - 'A';
+
+        out << " " << key;
+    }
+    out << endl;
+}
+
 namespace BOARD{
     Board* createStandardBoard()
     {
@@ -74,44 +113,4 @@ namespace BOARD{
 
         return boardBuilder->build();
     }
-}
-
-bool Board::isTileOccupied(const int idx) const
-{
-    if(idx < 0 && idx >= BoardUntils::NUM_TILES)
-        return false;
-
-    BoardConfig::iterator piece = m_boardBuilder->getBoardConfig().find(idx);
-    if(piece != m_boardBuilder->getBoardConfig().end())
-        return true;
-
-    return false;
-}
-
-
-void Board::printBoard() const
-{
-    QTextStream out(stdout);
-    char key = 'x';
-    for (int idx = 0; idx < BoardUntils::NUM_TILES; ++idx)
-    {
-        if (idx % 8 == 0)
-            out << endl;
-
-        bool isTileOccupiedIdx = isTileOccupied(idx);
-
-        Piece* piece = nullptr;
-        if(isTileOccupiedIdx)
-        {
-            piece = m_boardBuilder->getBoardConfig().at(idx);
-        }
-
-        key = !isTileOccupiedIdx ? 'x' :piece->getKeyCharacter();
-
-        if(isTileOccupiedIdx && piece->getAlliance() == Alliance::BLACK)
-            key = key + 'a' - 'A';
-
-        out << " " << key;
-    }
-    out << endl;
 }
