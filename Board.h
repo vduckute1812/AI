@@ -3,8 +3,8 @@
 
 #include <map>
 #include <vector>
+#include "Piece.h"
 
-class Piece;
 class BoardBuilder;
 
 typedef std::map<const int, Piece*> BoardConfig;
@@ -13,17 +13,17 @@ class Board
 {
 public:
     Board(const BoardBuilder*);
-    const BoardConfig           getBoardConfig();
-    const Piece*                getPieceOnBoard(int idx);
+    const BoardConfig           getBoardConfig() const;
+    const Piece*                getPieceOnBoard(int idx) const;
 
     void                        printBoard() const;
 
     bool                        isTileOccupied(const int idx) const;
 
 private:
+
     const BoardBuilder*         m_boardBuilder;    
 };
-
 
 namespace BOARD
 {

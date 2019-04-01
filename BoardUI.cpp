@@ -29,7 +29,10 @@ void BoardUI::InitBoardGame()
     BoardConfig::iterator piecePtr;
     for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
     {
-//        m_tiles.at(piecePtr->first)->setParent()
+        const int location = piecePtr->first;
+        Tile* tile = m_tiles.at(location);
+        Piece* piece = boardConfig.at(location);
+        piece->setParent(tile);
     }
 
     show();

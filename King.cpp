@@ -29,27 +29,26 @@ MoveCollection King::calculateLegalMove(const Board* board) const
 {
     MoveCollection legalMoves;
 
-//	int candidateDestinationCoordinate;	// candidate coordinate
+    int candidateDestinationCoordinate;	// candidate coordinate
 
-//	for (int currentCandidateOffset : KING_CANDIDATE_MOVE_COORDINATE)
-//	{
-//		candidateDestinationCoordinate = this->m_piecePosition + currentCandidateOffset;
-//		if (BoardUntils::isValidTileCandidate(candidateDestinationCoordinate))
-//		{
-//			if (isFirstColumnExclusion(this->m_piecePosition, currentCandidateOffset)
-//				|| isEightColumnExclusion(this->m_piecePosition, currentCandidateOffset))
-//			{
-//				continue;
-//			}
+    for (int currentCandidateOffset : KING_CANDIDATE_MOVE_COORDINATE)
+    {
+        candidateDestinationCoordinate = this->m_piecePosition + currentCandidateOffset;
+        if (BoardUntils::isValidTileCandidate(candidateDestinationCoordinate))
+        {
+            if (isFirstColumnExclusion(this->m_piecePosition, currentCandidateOffset)
+                || isEightColumnExclusion(this->m_piecePosition, currentCandidateOffset))
+            {
+                continue;
+            }
 
-//			const Tile* candidateTile = board->getTile(candidateDestinationCoordinate);
-
-//			if (!candidateTile->isTileOccupied() || !BoardUntils::isSameAlliance( this->getAlliance(), candidateTile->getPiece()->getAlliance()) )
-//			{
-//				legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
-//			}
-//		}
-//	}
+            if (!board->isTileOccupied(candidateDestinationCoordinate) ||
+            !BoardUntils::isSameAlliance( this->getAlliance(), board->getPieceOnBoard(candidateDestinationCoordinate)->getAlliance()) )
+            {
+                legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
+            }
+        }
+    }
 
 	return legalMoves;
 }

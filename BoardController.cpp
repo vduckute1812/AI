@@ -1,4 +1,3 @@
-#include "Piece.h"
 #include "Board.h"
 #include "BoardUntils.h"
 #include "BoardController.h"
@@ -7,6 +6,8 @@ void BoardController::InitGame()
 {
     m_boardGame = new BoardUI();
     m_boardGame->InitBoardGame();
+
+    const Board* board = m_boardGame->GetInstance()->GetCurrentBoard();
 }
 
 void BoardController::setBoard(Board* board)
@@ -17,6 +18,16 @@ void BoardController::setBoard(Board* board)
 void BoardController::printCurrentBoard()
 {
     m_boardGame->GetCurrentBoard()->printBoard();
+}
+
+void BoardController::setSelectedPiece(Piece* piece)
+{
+    m_selectedPiece = piece;
+}
+
+Piece* BoardController::getSelecetedPiece() const
+{
+    return m_selectedPiece;
 }
 
 void BoardController::freeGame()

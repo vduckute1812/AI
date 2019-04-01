@@ -3,7 +3,6 @@
 #include "Board.h"
 
 // Piece data
-#include "Piece.h"
 #include "Rook.h"
 #include "Knight.h"
 #include "Bishop.h"
@@ -19,17 +18,19 @@ Board::Board(const BoardBuilder* builder)
     m_boardBuilder = builder;
 }
 
-const BoardConfig Board::getBoardConfig()
+const BoardConfig Board::getBoardConfig() const
 {
     return m_boardBuilder->getBoardConfig();
 }
 
-const Piece* Board::getPieceOnBoard(int index)
+const Piece* Board::getPieceOnBoard(int index) const
 {
     if(index < 0 || index >= BoardUntils::NUM_TILES)
         return nullptr;
 
-    return m_boardBuilder->getBoardConfig().at(index);
+    Piece* piece = m_boardBuilder->getBoardConfig().at(index);
+
+    return piece;
 }
 
 bool Board::isTileOccupied(const int idx) const

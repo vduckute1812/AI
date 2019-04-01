@@ -17,44 +17,41 @@ Pawn::~Pawn()
 MoveCollection Pawn::calculateLegalMove(const Board* board) const
 {
     MoveCollection legalMoves;
-//	int candidateDestinationCoordinate;
-//	for (int currentCandidateOffset : PAWN_CANDIDATE_MOVE_COORDINATE)
-//	{
+    int candidateDestinationCoordinate;
+    for (int currentCandidateOffset : PAWN_CANDIDATE_MOVE_COORDINATE)
+    {
 
-//		candidateDestinationCoordinate = this->m_piecePosition + currentCandidateOffset * getDirection();
+        candidateDestinationCoordinate = this->m_piecePosition + currentCandidateOffset * getDirection();
 
-//		if (BoardUntils::isValidTileCandidate(candidateDestinationCoordinate))
-//		{
-//			const Tile* candidateTile = board->getTile(candidateDestinationCoordinate);
+        if (BoardUntils::isValidTileCandidate(candidateDestinationCoordinate))
+        {
+            if (currentCandidateOffset == 16 && this->isFirstMove())
+            {
+                int candidateCoordinate = this->m_piecePosition + 8 * getDirection();
+                if (board->isTileOccupied(candidateCoordinate))
+                    continue;
+            }
 
-//			if (currentCandidateOffset == 16 && this->isFirstMove())
-//			{
-//				int candidateCoordinate = this->m_piecePosition + 8 * getDirection();
-//				const Tile* checkTile = board->getTile(candidateCoordinate);
-//				if (checkTile->isTileOccupied())
-//					continue;
-//			}
+            if ( !board->isTileOccupied(candidateDestinationCoordinate) && ( currentCandidateOffset == 8								// MOVE
+                                                  ||   currentCandidateOffset == 16 && this->isFirstMove()) )	// JUMP
+            {
+                legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
+            }
 
-//			if ( !candidateTile->isTileOccupied() && ( currentCandidateOffset == 8								// MOVE
-//												  ||   currentCandidateOffset == 16 && this->isFirstMove()) )	// JUMP
-//			{
-//				legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
-//			}
+            else if (board->isTileOccupied(candidateDestinationCoordinate) &&
+                    (currentCandidateOffset == 7 || currentCandidateOffset == 9) &&
+                    !BoardUntils::isSameAlliance(this->getAlliance(), board->getPieceOnBoard(candidateDestinationCoordinate)->getAlliance()))
+            {
+                if (   isFirstColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection())
+                    || isEightColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection()))
+                {
+                    continue;
+                }
 
-//			else if (candidateTile->isTileOccupied() &&
-//					(currentCandidateOffset == 7 || currentCandidateOffset == 9) &&
-//					!BoardUntils::isSameAlliance(this->getAlliance(), candidateTile->getPiece()->getAlliance()))
-//			{
-//				if (   isFirstColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection())
-//					|| isEightColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection()))
-//				{
-//					continue;
-//				}
-
-//				legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
-//			}
-//		}
-//	}
+                legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
+            }
+        }
+    }
 
 	return legalMoves;
 }
