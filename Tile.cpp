@@ -72,48 +72,6 @@ QBrush Tile::getDefaultColor() const
 
 void Tile::mousePressEvent(QMouseEvent *)
 {
-    int coordinate = this->getCoordinate();
-    BoardTiles tiles = BoardUI::GetInstance()->GetEmptyTiles();
-    Piece* piece = BoardController::GetInstance()->getSelecetedPiece();
-    if (piece  && BoardUntils::isSameAlliance(piece->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
-    {
-            for (Move* move : piece->calculateLegalMove(BoardController::GetInstance()->getBoard()))
-            {
-                if (move->getDestCoordinate() == coordinate && !currentPlayer->checkLegalMove(move))
-                {
-                    BoardController::GetInstance()->movePiece(move);
-                }
-                delete move;
-            }
-        }
-//        BoardController::GetInstance()->setSelectedPiece(this->getPiece());
-
-
-//        // Set colors
-//        resetColors();
-
-//        Piece* pieceColor = BoardController::GetInstance()->getSelectedPiece();
-//        if (pieceColor  && BoardUntils::isSameAlliance(pieceColor->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
-//        {
-//            this->setCurrentColor(CHOOSE_COLOR);
-//            for (Move* move : pieceColor->calculateLegalMove(BoardController::GetInstance()->getBoard()))
-//            {
-//                Tile* tile = BoardController::GetInstance()->getBoard()->getTile(move->getDestCoordinate());
-//                if(!currentPlayer->checkLegalMove(move))
-//                {
-//                    if (move->isAttack())
-//                    {
-//                        tile->setCurrentColor(ATTACK_COLOR);
-//                    }
-//                    else
-//                    {
-//                        tile->setCurrentColor(MOVE_COLOR);
-//                    }
-//                }
-//                delete move;
-//            }
-
-//    }
 }
 
 void Tile::paintEvent(QPaintEvent *)
