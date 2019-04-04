@@ -3,13 +3,19 @@
 #include "Board.h"
 #include "BoardUI.h"
 #include "BoardUntils.h"
+#include "BoardController.h"
 
 
 void BoardUI::InitBoardGame()
 {
+    m_isLocked = false;
+
     m_tiles = TILES::createEmptyTiles();
     Board* initBoard = BOARD::createStandardBoard();
     SetBoard(initBoard);
+
+    // set default board
+    m_standardBoard = initBoard;
 
     setFixedSize(BoardUntils::TILE_ROW_SIZE * BoardUntils::NUM_TILES_PER_ROW,
                  BoardUntils::TILE_COL_SIZE * BoardUntils::NUM_TILES_PER_ROW);
@@ -35,11 +41,13 @@ void BoardUI::InitBoardGame()
         piece->setParent(tile);
     }
 
+    // Set move maker
+    BoardController::GetInstance()->setMoveMaker(Alliance::WHITE);
     show();
     startTimer(50);
 }
 
-BoardTiles BoardUI::GetEmptyTiles()
+BoardTiles BoardUI::GetTiles()
 {
     return m_tiles;
 }
@@ -74,10 +82,17 @@ void BoardUI::SetBoard(Board *board)
     }
 }
 
-void BoardUI::FreeTiles()
+void BoardUI::FreeBoardGame()
 {
     BoardTiles::iterator tilePtr;
     for (tilePtr = m_tiles.begin(); tilePtr != m_tiles.end(); ++tilePtr)
+    {
+        Tile* tileRelease = tilePtr->second;
+        delete tileRelease;
+    }
+
+    BoardConfig::iterator piecePtr;
+    for (piecePtr = m_standardBoard.begin(); tilePtr != m_standardBoard.end(); ++m_standardBoard)
     {
         Tile* tileRelease = tilePtr->second;
         delete tileRelease;

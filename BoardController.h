@@ -17,7 +17,11 @@ public:
     void        setSelectedPiece(Piece* piece);
     Piece*      getSelecetedPiece() const;
 
-    Alliance    getMoveMaker();
+    void        setMoveMaker(Alliance);
+    Alliance    getMoveMaker() const;
+
+    void        movePiece(Move*);
+
 private:
     Piece*          m_selectedPiece;
     BoardUI*        m_boardGame;

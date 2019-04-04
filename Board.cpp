@@ -18,6 +18,11 @@ Board::Board(const BoardBuilder* builder)
     m_boardBuilder = builder;
 }
 
+Alliance Board::getMoveMaker() const
+{
+    return m_boardBuilder->getMoveMaker();
+}
+
 const BoardConfig Board::getBoardConfig() const
 {
     return m_boardBuilder->getBoardConfig();
@@ -26,6 +31,9 @@ const BoardConfig Board::getBoardConfig() const
 const Piece* Board::getPieceOnBoard(int index) const
 {
     if(index < 0 || index >= BoardUntils::NUM_TILES)
+        return nullptr;
+
+    if(!isTileOccupied(index))
         return nullptr;
 
     Piece* piece = m_boardBuilder->getBoardConfig().at(index);
@@ -38,11 +46,12 @@ bool Board::isTileOccupied(const int idx) const
     if(idx < 0 && idx >= BoardUntils::NUM_TILES)
         return false;
 
-    BoardConfig::iterator piece = m_boardBuilder->getBoardConfig().find(idx);
-    if(piece != m_boardBuilder->getBoardConfig().end())
-        return true;
+    BoardConfig boardConfig = m_boardBuilder->getBoardConfig();
+    BoardConfig::iterator piece = boardConfig.find(idx);
+    if(piece == boardConfig.end())
+        return false;
 
-    return false;
+    return true;
 }
 
 void Board::printBoard() const

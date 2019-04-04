@@ -1,5 +1,6 @@
-#include <QPainter>
 #include "Tile.h"
+#include <QPainter>
+#include "Move.h"
 #include "Piece.h"
 #include "BoardUI.h"
 #include "BoardUntils.h"
@@ -26,13 +27,13 @@ int Tile::getCoordinate() const
 
 void Tile::resetColors() const
 {
-    BoardTiles boardTiles;
+    BoardTiles boardTiles = BoardUI::GetInstance()->GetTiles();
     BoardTiles::iterator tilePtr;
 
     for (tilePtr = boardTiles.begin(); tilePtr!= boardTiles.end(); ++tilePtr)
     {
         Tile* tile = tilePtr->second;
-        tile->setCurrentColor(m_defaultColor);
+        tile->setCurrentColor(tile->getDefaultColor());
     }
 }
 
@@ -72,6 +73,39 @@ QBrush Tile::getDefaultColor() const
 
 void Tile::mousePressEvent(QMouseEvent *)
 {
+    // Make move Piece
+    Piece* piece = BoardController::GetInstance()->getSelecetedPiece();
+    Alliance currentMoveMaker = BoardController::GetInstance()->getMoveMaker();
+    if (piece  && BoardUntils::isSameAlliance(piece->getAlliance(), currentMoveMaker))
+    {
+        for (Move* move : piece->calculateLegalMove(BoardUI::GetInstance()->GetCurrentBoard()))
+        {
+            delete move;
+        }
+    }
+
+    BoardController::GetInstance()->setSelectedPiece(this->getPiece());
+
+    // Set colors on Board. Render posible move
+    resetColors();
+    Piece* pieceColor = BoardController::GetInstance()->getSelecetedPiece();
+
+    if (pieceColor  && BoardUntils::isSameAlliance(pieceColor->getAlliance(), BoardController::GetInstance()->getMoveMaker()))
+    {
+        this->setCurrentColor(CHOOSE_COLOR);
+        for (Move* move : pieceColor->calculateLegalMove(BoardUI::GetInstance()->GetCurrentBoard()))
+        {
+            Tile* tile = BoardUI::GetInstance()->GetTiles().at(move->getDestCoordinate());
+            if(move->isAttackMove())
+            {
+                tile->setCurrentColor(ATTACK_COLOR);
+            }
+            else {
+                tile->setCurrentColor(MOVE_COLOR);
+            }
+            delete move;
+        }
+    }
 }
 
 void Tile::paintEvent(QPaintEvent *)

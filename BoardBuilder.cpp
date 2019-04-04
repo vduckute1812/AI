@@ -30,6 +30,11 @@ BoardBuilder* BoardBuilder::setMoveTransition(Move* transitionMove)
     return this;
 }
 
+Alliance BoardBuilder::getMoveMaker() const
+{
+    return m_nextMoveMaker;
+}
+
 BoardConfig BoardBuilder::getBoardConfig() const
 {
     return m_boardConfig;

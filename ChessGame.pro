@@ -1,41 +1,55 @@
 QT += gui core
 
+
+# The following define makes your compiler emit warnings if you use
+# any Qt feature that has been marked deprecated (the exact warnings
+# depend on your compiler). Please consult the documentation of the
+# deprecated API in order to know how to port your code away from it.
+DEFINES += QT_DEPRECATED_WARNINGS
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ChessGame
-TEMPLATE = app
-
-HEADERS += \
-    Tile.h \
-    Piece.h \
-    MoveMgr.h \
-    Move.h \
-    BoardUntils.h \
-    BoardUI.h \
-    BoardBuilder.h \
-    Board.h \
-    Bishop.h \
-    Singleton.h \
-    BoardController.h \
-    Rook.h \
-    Queen.h \
-    Pawn.h \
-    Knight.h \
-    King.h
+# You can also make your code fail to compile if it uses deprecated APIs.
+# In order to do so, uncomment the following line.
+# You can also select to disable deprecated APIs only up to a certain version of Qt.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Tile.cpp \
-    Piece.cpp \
-    MoveMgr.cpp \
-    Move.cpp \
-    main.cpp \
-    BoardUI.cpp \
-    Board.cpp \
+        main.cpp \
     Bishop.cpp \
+    Board.cpp \
     BoardBuilder.cpp \
     BoardController.cpp \
-    Rook.cpp \
-    Queen.cpp \
-    Pawn.cpp \
+    BoardUI.cpp \
+    King.cpp \
     Knight.cpp \
-    King.cpp
+    Move.cpp \
+    MoveMgr.cpp \
+    Pawn.cpp \
+    Piece.cpp \
+    Queen.cpp \
+    Rook.cpp \
+    Tile.cpp
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    Bishop.h \
+    Board.h \
+    BoardBuilder.h \
+    BoardController.h \
+    BoardUI.h \
+    BoardUntils.h \
+    King.h \
+    Knight.h \
+    Move.h \
+    MoveMgr.h \
+    Pawn.h \
+    Piece.h \
+    Queen.h \
+    Rook.h \
+    Singleton.h \
+    Tile.h

@@ -13,7 +13,10 @@ class Board
 {
 public:
     Board(const BoardBuilder*);
+
     const BoardConfig           getBoardConfig() const;
+    Alliance                    getMoveMaker() const;
+
     const Piece*                getPieceOnBoard(int idx) const;
 
     void                        printBoard() const;

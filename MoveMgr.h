@@ -8,14 +8,24 @@ class Move;
 
 typedef std::vector<Move*> MoveCollection;
 
-class MoveMgr: public Singleton<MoveMgr>
+class MoveMgr
 {
 public:
-    void        Do(Move*);
-    void        Undo();
+    MoveMgr();
+    ~MoveMgr();
+
+    void                Do(Move* move);
+    bool                HasUndo();
+    void                Undo();
+
+    unsigned int        GetIndex() const;
+    static MoveMgr*     GetInstance();
+    static void         FreeInstance();
 
 private:
-    int                 m_moveIdx;
+    static MoveMgr*     s_instance;
+
+    unsigned int        m_moveIdx;
     MoveCollection      m_trackMoves;
 };
 

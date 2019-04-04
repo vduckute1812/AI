@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
     boardController->printCurrentBoard();
 
-    boardController->FreeInstance();
+//    boardController->FreeInstance();
 
     return a.exec();
 }

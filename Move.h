@@ -20,6 +20,9 @@ public:
     void            Do();
     void            Undo();
 
+    int             getDestCoordinate();
+    bool            isAttackMove();
+
 protected:
     const Board*    m_board;
     const Piece*    m_movePiece;

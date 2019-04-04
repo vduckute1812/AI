@@ -18,6 +18,7 @@ public:
     BoardBuilder*           setMoveMaker(const Alliance nextMoveMaker);
     BoardBuilder*           setMoveTransition(Move* transitionMove);
 
+    Alliance                getMoveMaker() const;
     BoardConfig             getBoardConfig() const;
 
 private:

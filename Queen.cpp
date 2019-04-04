@@ -30,8 +30,8 @@ MoveCollection Queen::calculateLegalMove(const Board* board) const
                 break;
             }
 
-            if (!board->isTileOccupied(candidateCoordinationOffset) ||
-            !BoardUntils::isSameAlliance(this->getAlliance(), board->getPieceOnBoard(candidateCoordinationOffset)->getAlliance()))
+            if (!board->isTileOccupied(candidateDestinationCoordinate) ||
+            !BoardUntils::isSameAlliance(this->getAlliance(), board->getPieceOnBoard(candidateDestinationCoordinate)->getAlliance()))
             {
                 legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
             }

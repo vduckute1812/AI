@@ -33,7 +33,7 @@ MoveCollection Pawn::calculateLegalMove(const Board* board) const
             }
 
             if ( !board->isTileOccupied(candidateDestinationCoordinate) && ( currentCandidateOffset == 8								// MOVE
-                                                  ||   currentCandidateOffset == 16 && this->isFirstMove()) )	// JUMP
+                                                  ||   (currentCandidateOffset == 16 && this->isFirstMove())) )	// JUMP
             {
                 legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
             }
