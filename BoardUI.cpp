@@ -91,11 +91,13 @@ void BoardUI::FreeBoardGame()
         delete tileRelease;
     }
 
+    BoardConfig boardConfig = m_standardBoard->getBoardConfig();
     BoardConfig::iterator piecePtr;
-    for (piecePtr = m_standardBoard.begin(); tilePtr != m_standardBoard.end(); ++m_standardBoard)
+
+    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
     {
-        Tile* tileRelease = tilePtr->second;
-        delete tileRelease;
+        Piece* piece = piecePtr->second;
+        delete piece;
     }
 }
 

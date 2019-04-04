@@ -41,7 +41,7 @@ Piece* BoardController::getSelecetedPiece() const
 
 void BoardController::freeGame()
 {
-    m_boardGame->FreeTiles();
+    m_boardGame->FreeBoardGame();
     m_boardGame->FreeInstance();
 }
 
