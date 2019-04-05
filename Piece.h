@@ -45,6 +45,8 @@ public:
 
     char                getKeyCharacter() const;
 
+    QLabel*             getRenderImg() const;
+
 protected:
     int                 m_piecePosition;
     Alliance			m_pieceAlliance;

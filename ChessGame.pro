@@ -29,7 +29,8 @@ SOURCES += \
     Piece.cpp \
     Queen.cpp \
     Rook.cpp \
-    Tile.cpp
+    Tile.cpp \
+    MainApplication.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -52,4 +53,5 @@ HEADERS += \
     Queen.h \
     Rook.h \
     Singleton.h \
-    Tile.h
+    Tile.h \
+    MainApplication.h

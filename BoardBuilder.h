@@ -15,6 +15,7 @@ public:
 
     Board*                  build();
     BoardBuilder*           setPiece(Piece* piece);
+    BoardBuilder*           setPiece(const int position, Piece* movePiece);
     BoardBuilder*           setMoveMaker(const Alliance nextMoveMaker);
     BoardBuilder*           setMoveTransition(Move* transitionMove);
 

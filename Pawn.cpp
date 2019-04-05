@@ -35,7 +35,7 @@ MoveCollection Pawn::calculateLegalMove(const Board* board) const
             if ( !board->isTileOccupied(candidateDestinationCoordinate) && ( currentCandidateOffset == 8								// MOVE
                                                   ||   (currentCandidateOffset == 16 && this->isFirstMove())) )	// JUMP
             {
-                legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
+                legalMoves.push_back(new Move(board, this, board->getPieceOnBoard(candidateDestinationCoordinate), candidateDestinationCoordinate));
             }
 
             else if (board->isTileOccupied(candidateDestinationCoordinate) &&
@@ -48,7 +48,7 @@ MoveCollection Pawn::calculateLegalMove(const Board* board) const
                     continue;
                 }
 
-                legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
+                legalMoves.push_back(new Move(board, this, board->getPieceOnBoard(candidateDestinationCoordinate), candidateDestinationCoordinate));
             }
         }
     }

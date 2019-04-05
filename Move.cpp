@@ -2,12 +2,15 @@
 #include "Board.h"
 #include "Piece.h"
 #include "BoardUntils.h"
+#include "BoardBuilder.h"
 
-Move::Move(const Board* board, const Piece* movePiece, const int destCoord)
+Move::Move(const Board* board, const Piece* movePiece, const Piece* attackPiece, const int destCoord)
 {
     m_board = board;
     m_movePiece = movePiece;
+    m_attackPiece = attackPiece;
     m_destCoordinate = destCoord;
+    m_movedCoordinate = movePiece->getPosition();
 }
 
 char* Move::GetDescription()
@@ -30,12 +33,47 @@ bool Move::isAttackMove()
     return true;
 }
 
-void Move::Do()
+Board* Move::Do()
 {
+    BoardBuilder* builder = new BoardBuilder();
 
+    BoardConfig boardConfig = m_board->getBoardConfig();
+    BoardConfig::iterator piecePtr;
+
+    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
+    {
+        builder->setPiece(piecePtr->second);
+    }
+
+    Piece* piece = boardConfig.at(m_movedCoordinate);
+
+    builder->setPiece(m_movedCoordinate, nullptr);
+    builder->setPiece(m_destCoordinate, piece);
+
+    builder->setMoveMaker(m_board->getOpponentMaker());
+
+    return builder->build();
 }
 
-void Move::Undo()
+Board* Move::Undo()
 {
+//    std::share_ptr
+    BoardBuilder* builder = new BoardBuilder();
 
+    BoardConfig boardConfig = m_board->getBoardConfig();
+    BoardConfig::iterator piecePtr;
+
+    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
+    {
+        builder->setPiece(piecePtr->second);
+    }
+
+    Piece* piece = boardConfig.at(m_destCoordinate);
+
+    builder->setPiece(m_movedCoordinate, piece);
+    builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line
+
+    builder->setMoveMaker(m_board->getOpponentMaker());
+
+    return builder->build();
 }

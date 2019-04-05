@@ -5,6 +5,11 @@
 #include "BoardUntils.h"
 #include "BoardController.h"
 
+BoardUI::~BoardUI()
+{
+    BoardController::GetInstance()->freeGame();
+    BoardController::GetInstance()->FreeInstance();
+}
 
 void BoardUI::InitBoardGame()
 {
@@ -69,6 +74,11 @@ const Board* BoardUI::GetCurrentBoard()
 
 void BoardUI::SetBoard(Board *board)
 {
+    if(m_board != nullptr)
+    {
+        delete m_board;
+    }
+
     m_board = board;
     ResetTiles();
     BoardConfig config = m_board->getBoardConfig();

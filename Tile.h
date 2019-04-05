@@ -19,7 +19,6 @@ class Tile: public QWidget
 {
 public:
     explicit Tile(const int coordinate, Piece* piece, QWidget* parrent = nullptr);
-    ~Tile();
 
     bool            isTileOccupied() const;
 

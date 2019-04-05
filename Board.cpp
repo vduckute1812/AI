@@ -23,6 +23,13 @@ Alliance Board::getMoveMaker() const
     return m_boardBuilder->getMoveMaker();
 }
 
+Alliance Board::getOpponentMaker() const
+{
+    Alliance current = m_boardBuilder->getMoveMaker();
+    return current == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+}
+
+
 const BoardConfig Board::getBoardConfig() const
 {
     return m_boardBuilder->getBoardConfig();
@@ -47,8 +54,9 @@ bool Board::isTileOccupied(const int idx) const
         return false;
 
     BoardConfig boardConfig = m_boardBuilder->getBoardConfig();
-    BoardConfig::iterator piece = boardConfig.find(idx);
-    if(piece == boardConfig.end())
+
+    BoardConfig::iterator piecePtr = boardConfig.find(idx);
+    if(piecePtr == boardConfig.end())
         return false;
 
     return true;

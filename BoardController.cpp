@@ -21,7 +21,7 @@ void BoardController::setMoveMaker(Alliance moveMaker)
 
 Alliance BoardController::getMoveMaker() const
 {
-    return m_moveMaker;
+    return m_boardGame->GetCurrentBoard()->getMoveMaker();
 }
 
 void BoardController::printCurrentBoard()
@@ -47,5 +47,5 @@ void BoardController::freeGame()
 
 void BoardController::movePiece(Move* move)
 {
-//    MoveMgr::GetInstance()->
+    MoveMgr::GetInstance()->Do(move);
 }

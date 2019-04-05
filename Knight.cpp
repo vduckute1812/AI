@@ -35,7 +35,7 @@ MoveCollection Knight::calculateLegalMove(const Board* board)  const
             if (!board->isTileOccupied(candidateDestinationCoordinate) ||
             !BoardUntils::isSameAlliance(this->getAlliance(), board->getPieceOnBoard(candidateDestinationCoordinate)->getAlliance()))
             {
-                legalMoves.push_back(new Move(board, this, candidateDestinationCoordinate));
+                legalMoves.push_back(new Move(board, this, board->getPieceOnBoard(candidateDestinationCoordinate), candidateDestinationCoordinate));
             }
         }
     }

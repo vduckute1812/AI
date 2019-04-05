@@ -15,11 +15,6 @@ Tile::Tile(const int coordinate, Piece* piece, QWidget* parrent): QWidget (parre
     m_currentColor = m_defaultColor;
 }
 
-Tile::~Tile()
-{
-
-}
-
 int Tile::getCoordinate() const
 {
     return m_tileCoordinate;
@@ -48,11 +43,16 @@ bool Tile::isTileOccupied() const
 
 void Tile::setPiece(Piece *piece)
 {
-    m_piece = piece;
+    if(m_piece)
+        m_piece->getRenderImg()->hide();
 
+    m_piece = piece;
     if(m_piece)
     {
         m_piece->setPosition(m_tileCoordinate);
+        piece->setParent(this);
+        piece->getRenderImg()->setParent(this);
+        piece->getRenderImg()->show();
     }
 }
 
@@ -74,12 +74,15 @@ QBrush Tile::getDefaultColor() const
 void Tile::mousePressEvent(QMouseEvent *)
 {
     // Make move Piece
+    int coordinate = this->getCoordinate();
     Piece* piece = BoardController::GetInstance()->getSelecetedPiece();
     Alliance currentMoveMaker = BoardController::GetInstance()->getMoveMaker();
     if (piece  && BoardUntils::isSameAlliance(piece->getAlliance(), currentMoveMaker))
     {
         for (Move* move : piece->calculateLegalMove(BoardUI::GetInstance()->GetCurrentBoard()))
         {
+             if (move->getDestCoordinate() == coordinate)
+                 BoardController::GetInstance()->movePiece(move);
             delete move;
         }
     }

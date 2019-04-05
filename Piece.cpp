@@ -46,3 +46,9 @@ char Piece::getKeyCharacter() const
 {
     return m_pieceType;
 }
+
+QLabel* Piece::getRenderImg() const
+{
+    return m_pieceImg;
+}
+

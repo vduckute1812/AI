@@ -16,6 +16,7 @@ public:
 
     const BoardConfig           getBoardConfig() const;
     Alliance                    getMoveMaker() const;
+    Alliance                    getOpponentMaker() const;
 
     const Piece*                getPieceOnBoard(int idx) const;
 

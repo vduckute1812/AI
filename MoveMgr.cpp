@@ -63,8 +63,10 @@ void MoveMgr::Do(Move *move)
 
     m_moveIdx++;
 
-    move->Do();
+    Board* board = move->Do();
     m_trackMoves.push_back(move);
+
+    BoardUI::GetInstance()->SetBoard(board);
 
     BoardUI::GetInstance()->Lock(false);
     BoardUI::GetInstance()->blockSignals(false);
