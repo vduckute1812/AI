@@ -12,7 +12,7 @@ typedef std::map<int, Tile*> BoardTiles;
 static const QBrush ODD_COLOR   ("white");
 static const QBrush EVEN_COLOR  ("brown");
 static const QBrush MOVE_COLOR	("gray");
-static const QBrush ATTACK_COLOR("darkRed");
+static const QBrush ATTACK_COLOR(QColor(255, 100, 0 , 200));    // orangle
 static const QBrush CHOOSE_COLOR("yellow");
 
 class Tile: public QWidget
@@ -26,7 +26,6 @@ public:
     Piece*          getPiece() const;
 
     int             getCoordinate() const;
-    void            resetColors() const;
 
     void            setCurrentColor(QBrush color);
     QBrush          getDefaultColor() const;

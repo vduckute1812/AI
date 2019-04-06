@@ -43,6 +43,9 @@ void MoveMgr::FreeInstance()
 
 //////////////////////////////////////////////////////////////////////////
 
+
+// Use for generate board after move
+
 void MoveMgr::Do(Move *move)
 {
     if(!move)
@@ -74,6 +77,8 @@ void MoveMgr::Do(Move *move)
 
 }
 
+
+// Undo and redo just use in GUI
 bool MoveMgr::HasUndo()
 {
     return m_moveIdx > 0;
@@ -83,6 +88,8 @@ void MoveMgr::Undo()
 {
     BoardUI::GetInstance()->Lock(true);
     BoardUI::GetInstance()->blockSignals(true);
+
+    BoardUI::GetInstance()->ResetColorTiles();
 
     if(HasUndo())
     {
@@ -109,7 +116,7 @@ void MoveMgr::Redo()
     if(HasRedo())
     {
         unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
-        Board* board = m_trackMoves[currentIdx]->Do();
+        Board* board = m_trackMoves[currentIdx]->Redo();
         BoardUI::GetInstance()->SetBoard(board);
         m_moveIdx++;
     }
@@ -117,6 +124,7 @@ void MoveMgr::Redo()
     BoardUI::GetInstance()->Lock(false);
     BoardUI::GetInstance()->blockSignals(false);
 }
+
 
 int MoveMgr::GetIndex() const
 {

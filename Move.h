@@ -18,6 +18,8 @@ public:
     char*           GetDescription();
 
     Board*          Do();
+
+    Board*          Redo();
     Board*          Undo();
 
     int             getDestCoordinate();

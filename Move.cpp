@@ -5,9 +5,6 @@
 #include "BoardUntils.h"
 #include "BoardBuilder.h"
 
-#include <QTextStream>
-
-
 Move::Move(const Board* board, const Piece* movePiece, const Piece* attackPiece, const int destCoord)
 {
     m_board = board;
@@ -42,7 +39,9 @@ Board* Move::Do()
 {
     BoardBuilder* builder = new BoardBuilder();
 
-    BoardConfig boardConfig = m_board->getBoardConfig();
+    BoardConfig boardConfig;
+
+    boardConfig = m_board->getBoardConfig();
 
     BoardConfig::iterator piecePtr;
 
@@ -71,7 +70,6 @@ Board* Move::Undo()
 {
     BoardBuilder* builder = new BoardBuilder();
 
-//    BoardConfig boardConfig = m_board->getBoardConfig();
     const Board* currentBoard = BoardUI::GetInstance()->GetCurrentBoard();
     BoardConfig boardConfig = currentBoard->getBoardConfig();
 
@@ -81,8 +79,6 @@ Board* Move::Undo()
     {
         builder->setPiece(piecePtr->second);
     }
-    QTextStream out(stdout);
-    out << endl << m_destCoordinate;
 
     Piece* piece = boardConfig.at(m_destCoordinate);
 
@@ -95,6 +91,34 @@ Board* Move::Undo()
     builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line
 
     builder->setMoveMaker(currentBoard->getOpponentMaker());
+    return builder->build();
+}
 
+Board* Move::Redo()
+{
+    BoardBuilder* builder = new BoardBuilder();
+
+//    BoardConfig boardConfig = m_board->getBoardConfig();
+    const Board* currentBoard = BoardUI::GetInstance()->GetCurrentBoard();
+    BoardConfig boardConfig = currentBoard->getBoardConfig();
+
+    BoardConfig::iterator piecePtr;
+
+    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
+    {
+        builder->setPiece(piecePtr->second);
+    }
+
+    Piece* piece = boardConfig.at(m_movedCoordinate);
+
+    if(piece->isFirstMove())
+    {
+        piece->setFirstMove(false);
+    }
+
+    builder->setPiece(m_movedCoordinate, nullptr);
+    builder->setPiece(m_destCoordinate, piece); // need optimize this line
+
+    builder->setMoveMaker(currentBoard->getOpponentMaker());
     return builder->build();
 }

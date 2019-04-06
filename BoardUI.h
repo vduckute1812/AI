@@ -19,6 +19,7 @@ public:
     void            InitBoardGame();
     BoardTiles      GetTiles();
     void            ResetTiles();
+    void            ResetColorTiles();
 
     void            SetBoard(Board* board);
     const Board*    GetCurrentBoard();

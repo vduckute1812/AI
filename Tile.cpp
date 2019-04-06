@@ -20,19 +20,6 @@ int Tile::getCoordinate() const
     return m_tileCoordinate;
 }
 
-void Tile::resetColors() const
-{
-    BoardTiles boardTiles = BoardUI::GetInstance()->GetTiles();
-    BoardTiles::iterator tilePtr;
-
-    for (tilePtr = boardTiles.begin(); tilePtr!= boardTiles.end(); ++tilePtr)
-    {
-        Tile* tile = tilePtr->second;
-        tile->setCurrentColor(tile->getDefaultColor());
-    }
-}
-
-
 bool Tile::isTileOccupied() const
 {
     if(m_piece == nullptr)
@@ -95,7 +82,7 @@ void Tile::mousePressEvent(QMouseEvent *)
     BoardController::GetInstance()->setSelectedPiece(this->getPiece());
 
     // Set colors on Board. Render posible move
-    resetColors();
+    BoardUI::GetInstance()->ResetColorTiles();
     Piece* pieceColor = BoardController::GetInstance()->getSelecetedPiece();
 
     if (pieceColor  && BoardUntils::isSameAlliance(pieceColor->getAlliance(), BoardController::GetInstance()->getMoveMaker()))

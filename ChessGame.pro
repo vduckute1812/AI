@@ -30,7 +30,8 @@ SOURCES += \
     Queen.cpp \
     Rook.cpp \
     Tile.cpp \
-    MainApplication.cpp
+    MainApplication.cpp \
+    Mimimax.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -54,4 +55,5 @@ HEADERS += \
     Rook.h \
     Singleton.h \
     Tile.h \
-    MainApplication.h
+    MainApplication.h \
+    Mimimax.h

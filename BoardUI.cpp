@@ -70,6 +70,17 @@ void BoardUI::ResetTiles()
     }
 }
 
+void BoardUI::ResetColorTiles()
+{
+    BoardTiles::iterator tilePtr;
+
+    for (tilePtr = m_tiles.begin(); tilePtr!= m_tiles.end(); ++tilePtr)
+    {
+        Tile* tile = tilePtr->second;
+        tile->setCurrentColor(tile->getDefaultColor());
+    }
+}
+
 const Board* BoardUI::GetCurrentBoard()
 {
     return m_board;
@@ -126,5 +137,10 @@ void BoardUI::keyPressEvent(QKeyEvent *event)
     {
         MoveMgr::GetInstance()->Undo();
     }
+    else if (event->key() == Qt::Key::Key_Right)
+    {
+        MoveMgr::GetInstance()->Redo();
+    }
+
 }
 
