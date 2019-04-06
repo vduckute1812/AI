@@ -9,8 +9,11 @@ public:
     MainApplication(QWidget* parent = nullptr);
     ~MainApplication();
 
+    void Init();
+
+
 private:
-    BoardController*    boardController;
+    BoardController*    m_boardController;
 };
 
 #endif // MAINAPPLICATION_H

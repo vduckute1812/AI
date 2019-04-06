@@ -10,17 +10,23 @@ typedef std::vector<Move*> MoveCollection;
 
 class MoveMgr
 {
+
 public:
     MoveMgr();
     ~MoveMgr();
 
     void                Do(Move* move);
+
     bool                HasUndo();
     void                Undo();
+
+    bool                HasRedo();
+    void                Redo();
 
     int                 GetIndex() const;
     static MoveMgr*     GetInstance();
     static void         FreeInstance();
+
 
 private:
     static MoveMgr*     s_instance;

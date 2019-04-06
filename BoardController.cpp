@@ -5,7 +5,8 @@
 
 void BoardController::InitGame()
 {
-    m_boardGame = BoardUI::GetInstance()->InitBoardGame();
+    BoardUI::GetInstance()->InitBoardGame();
+    m_boardGame = BoardUI::GetInstance();
 }
 
 void BoardController::setBoard(Board* board)
@@ -47,9 +48,4 @@ void BoardController::freeGame()
 void BoardController::movePiece(Move* move)
 {
     MoveMgr::GetInstance()->Do(move);
-}
-
-void BoardController::unDo()
-{
-    MoveMgr::GetInstance()->Undo();
 }

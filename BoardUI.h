@@ -12,10 +12,11 @@ typedef std::map<int, Tile*> BoardTiles;
 
 class BoardUI: public Singleton<BoardUI>, public QWidget
 {
+
 public:
     ~BoardUI() override;
 
-    BoardUI*        InitBoardGame();
+    void            InitBoardGame();
     BoardTiles      GetTiles();
     void            ResetTiles();
 

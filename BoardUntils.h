@@ -8,7 +8,7 @@ static const int SECOND_COLUMN[]  = { 1,  9, 17, 25, 33, 41, 49, 57 };
 static const int SEVENTH_COLUMN[] = { 6, 14, 22, 30, 38, 46, 54, 62 };
 static const int EIGHTH_COLUMN[]  = { 7, 15, 23, 31, 39, 47, 55, 63 };
 
-struct BoardUntils
+class BoardUntils
 {
 public:
 	const static int NUM_TILES = 64;

@@ -80,12 +80,40 @@ bool MoveMgr::HasUndo()
 
 void MoveMgr::Undo()
 {
+    BoardUI::GetInstance()->Lock(true);
+    BoardUI::GetInstance()->blockSignals(true);
+
     unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
     if(HasUndo())
     {
-        m_trackMoves[currentIdx]->Undo();
         m_moveIdx--;
+        m_trackMoves[currentIdx]->Undo();
     }
+
+    BoardUI::GetInstance()->Lock(false);
+    BoardUI::GetInstance()->blockSignals(false);
+}
+
+bool MoveMgr::HasRedo()
+{
+    return m_moveIdx < static_cast<int>(m_trackMoves.size());
+}
+
+void MoveMgr::Redo()
+{
+    BoardUI::GetInstance()->Lock(true);
+    BoardUI::GetInstance()->blockSignals(true);
+
+    unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
+
+    if(HasRedo())
+    {
+        m_trackMoves[currentIdx]->Do();
+        m_moveIdx++;
+    }
+
+    BoardUI::GetInstance()->Lock(false);
+    BoardUI::GetInstance()->blockSignals(false);
 }
 
 int MoveMgr::GetIndex() const

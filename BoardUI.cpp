@@ -4,6 +4,7 @@
 #include "BoardUI.h"
 #include "BoardUntils.h"
 #include "BoardController.h"
+#include "MoveMgr.h"
 
 BoardUI::~BoardUI()
 {
@@ -11,8 +12,8 @@ BoardUI::~BoardUI()
     BoardController::GetInstance()->FreeInstance();
 }
 
-BoardUI* BoardUI::InitBoardGame()
-{
+void BoardUI::InitBoardGame()
+{    
     m_isLocked = false;
 
     m_tiles = TILES::createEmptyTiles();
@@ -48,10 +49,8 @@ BoardUI* BoardUI::InitBoardGame()
 
     // Set move maker
     BoardController::GetInstance()->setMoveMaker(Alliance::WHITE);
-    show();
+//    show();
     startTimer(50);
-
-    return this;
 }
 
 BoardTiles BoardUI::GetTiles()
@@ -118,3 +117,4 @@ void BoardUI::timerEvent(QTimerEvent *e)
     Q_UNUSED(e);
     repaint();
 }
+
