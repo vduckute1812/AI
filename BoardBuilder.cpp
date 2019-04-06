@@ -1,10 +1,14 @@
 #include "Move.h"
 #include "Board.h"
+#include "BoardUntils.h"
 #include "BoardBuilder.h"
 
 BoardBuilder::BoardBuilder()
 {
-
+    for ( int position = 0; position < BoardUntils::NUM_TILES; ++position)
+    {
+        m_boardConfig.insert(std::pair<int, Piece*> (position, nullptr));
+    }
 }
 
 Board* BoardBuilder::build()
@@ -14,31 +18,14 @@ Board* BoardBuilder::build()
 
 BoardBuilder* BoardBuilder::setPiece(Piece* piece)
 {
-    m_boardConfig.insert(std::pair<int, Piece*> (piece->getPosition(), piece));
+    if (piece != nullptr)
+        m_boardConfig.at(piece->getPosition()) = piece;
     return this;
 }
 
-BoardBuilder* BoardBuilder::setPiece(const int position, Piece* piece)
+BoardBuilder* BoardBuilder::setPiece(int position, Piece* piece)
 {
-
-    BoardConfig::iterator piecePtr = m_boardConfig.find(position);
-    if(piecePtr != m_boardConfig.end()) // have piece on tile
-    {
-        if(piece == nullptr)
-        {
-            m_boardConfig.erase(position);          // remove piece
-        }
-        else
-        {
-            m_boardConfig.at(position) = piece;     // replace
-            piece->setPosition(position);
-        }
-    }
-    else    // dont have -> add piece
-    {
-        m_boardConfig.insert(std::pair<int, Piece*> (position, piece));
-        piece->setPosition(position);
-    }
+    m_boardConfig.at(position) = piece;
     return this;
 }
 

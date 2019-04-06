@@ -5,6 +5,7 @@
 #include "BoardUntils.h"
 #include "BoardController.h"
 #include "MoveMgr.h"
+#include <QKeyEvent>
 
 BoardUI::~BoardUI()
 {
@@ -42,9 +43,10 @@ void BoardUI::InitBoardGame()
     for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
     {
         const int location = piecePtr->first;
-        Tile* tile = m_tiles.at(location);
+        Tile* tile = m_tiles.at(location);        
         Piece* piece = boardConfig.at(location);
-        piece->setParent(tile);
+        if(piece != nullptr)
+            piece->setParent(tile);
     }
 
     // Set move maker
@@ -116,5 +118,13 @@ void BoardUI::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
     repaint();
+}
+
+void BoardUI::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key::Key_Left)
+    {
+        MoveMgr::GetInstance()->Undo();
+    }
 }
 

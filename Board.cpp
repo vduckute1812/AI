@@ -18,6 +18,11 @@ Board::Board(const BoardBuilder* builder)
     m_boardBuilder = builder;
 }
 
+Board::~Board()
+{
+    delete m_boardBuilder;
+}
+
 Alliance Board::getMoveMaker() const
 {
     return m_boardBuilder->getMoveMaker();
@@ -55,10 +60,9 @@ bool Board::isTileOccupied(const int idx) const
 
     BoardConfig boardConfig = m_boardBuilder->getBoardConfig();
 
-    BoardConfig::iterator piecePtr = boardConfig.find(idx);
-    if(piecePtr == boardConfig.end())
+    Piece* piece = boardConfig.at(idx);
+    if(piece == nullptr)
         return false;
-
     return true;
 }
 

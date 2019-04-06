@@ -51,6 +51,7 @@ void MoveMgr::Do(Move *move)
     BoardUI::GetInstance()->Lock(true);
     BoardUI::GetInstance()->blockSignals(true);
 
+
     // remove pre-move
     unsigned int currentIndex =  static_cast<unsigned int>(m_moveIdx);
     for (; currentIndex < m_trackMoves.size(); ++currentIndex)
@@ -59,7 +60,7 @@ void MoveMgr::Do(Move *move)
     }
 
     // after delete pre-move. Set size of available track
-    m_trackMoves.resize(currentIndex);
+    m_trackMoves.resize(static_cast<unsigned int>(m_moveIdx));
 
     m_moveIdx++;
 
@@ -83,11 +84,12 @@ void MoveMgr::Undo()
     BoardUI::GetInstance()->Lock(true);
     BoardUI::GetInstance()->blockSignals(true);
 
-    unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
     if(HasUndo())
     {
         m_moveIdx--;
-        m_trackMoves[currentIdx]->Undo();
+        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
+        Board* board = m_trackMoves[currentIdx]->Undo();
+        BoardUI::GetInstance()->SetBoard(board);
     }
 
     BoardUI::GetInstance()->Lock(false);
@@ -104,11 +106,11 @@ void MoveMgr::Redo()
     BoardUI::GetInstance()->Lock(true);
     BoardUI::GetInstance()->blockSignals(true);
 
-    unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
-
     if(HasRedo())
     {
-        m_trackMoves[currentIdx]->Do();
+        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
+        Board* board = m_trackMoves[currentIdx]->Do();
+        BoardUI::GetInstance()->SetBoard(board);
         m_moveIdx++;
     }
 

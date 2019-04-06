@@ -43,16 +43,16 @@ bool Tile::isTileOccupied() const
 
 void Tile::setPiece(Piece *piece)
 {
-    if(m_piece)
+    if(m_piece != nullptr)
         m_piece->getRenderImg()->hide();
 
     m_piece = piece;
-    if(m_piece)
+    if(piece != nullptr)
     {
         m_piece->setPosition(m_tileCoordinate);
-        piece->setParent(this);
-        piece->getRenderImg()->setParent(this);
-        piece->getRenderImg()->show();
+        m_piece->setParent(this);
+        m_piece->getRenderImg()->setParent(this);
+        m_piece->getRenderImg()->show();
     }
 }
 
@@ -85,7 +85,10 @@ void Tile::mousePressEvent(QMouseEvent *)
              {
                  BoardController::GetInstance()->movePiece(move);
              }
-            delete move;
+             else
+             {
+                 delete move;
+             }
         }
     }
 

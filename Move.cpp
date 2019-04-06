@@ -1,8 +1,12 @@
 #include "Move.h"
 #include "Board.h"
 #include "Piece.h"
+#include "BoardUI.h"
 #include "BoardUntils.h"
 #include "BoardBuilder.h"
+
+#include <QTextStream>
+
 
 Move::Move(const Board* board, const Piece* movePiece, const Piece* attackPiece, const int destCoord)
 {
@@ -39,11 +43,16 @@ Board* Move::Do()
     BoardBuilder* builder = new BoardBuilder();
 
     BoardConfig boardConfig = m_board->getBoardConfig();
+
     BoardConfig::iterator piecePtr;
 
     for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
     {
-        builder->setPiece(piecePtr->second);
+        Piece* piece = piecePtr->second;
+        if(piece != nullptr)
+        {
+            builder->setPiece(piece);
+        }
     }
 
     Piece* piece = boardConfig.at(m_movedCoordinate);
@@ -57,22 +66,27 @@ Board* Move::Do()
     return builder->build();
 }
 
+// Use for GUI
 Board* Move::Undo()
 {
-//    std::share_ptr
     BoardBuilder* builder = new BoardBuilder();
 
-    BoardConfig boardConfig = m_board->getBoardConfig();
+//    BoardConfig boardConfig = m_board->getBoardConfig();
+    const Board* currentBoard = BoardUI::GetInstance()->GetCurrentBoard();
+    BoardConfig boardConfig = currentBoard->getBoardConfig();
+
     BoardConfig::iterator piecePtr;
 
     for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
     {
         builder->setPiece(piecePtr->second);
     }
+    QTextStream out(stdout);
+    out << endl << m_destCoordinate;
 
     Piece* piece = boardConfig.at(m_destCoordinate);
 
-    if(m_isFirstMove)
+    if(m_isFirstMove && piece)
     {
         piece->setFirstMove(true);
     }
@@ -80,7 +94,7 @@ Board* Move::Undo()
     builder->setPiece(m_movedCoordinate, piece);
     builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line
 
-    builder->setMoveMaker(m_board->getOpponentMaker());
+    builder->setMoveMaker(currentBoard->getOpponentMaker());
 
     return builder->build();
 }

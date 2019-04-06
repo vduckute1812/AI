@@ -13,6 +13,7 @@ class Board
 {
 public:
     Board(const BoardBuilder*);
+    ~Board();
 
     const BoardConfig           getBoardConfig() const;
     Alliance                    getMoveMaker() const;

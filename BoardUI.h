@@ -24,6 +24,7 @@ public:
     const Board*    GetCurrentBoard();
     void            FreeBoardGame();
     void            timerEvent(QTimerEvent *e) override;
+    void            keyPressEvent(QKeyEvent *event) override;
 
     bool            IsLocked() const { return m_isLocked; }
     void            Lock(bool yes) { m_isLocked = yes; }
