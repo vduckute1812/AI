@@ -15,7 +15,7 @@ class BoardUI: public Singleton<BoardUI>, public QWidget
 public:
     ~BoardUI() override;
 
-    void            InitBoardGame();
+    BoardUI*        InitBoardGame();
     BoardTiles      GetTiles();
     void            ResetTiles();
 

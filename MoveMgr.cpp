@@ -52,14 +52,14 @@ void MoveMgr::Do(Move *move)
     BoardUI::GetInstance()->blockSignals(true);
 
     // remove pre-move
-    unsigned int idx;
-    for (idx = m_moveIdx; idx < m_trackMoves.size(); ++idx)
+    unsigned int currentIndex =  static_cast<unsigned int>(m_moveIdx);
+    for (; currentIndex < m_trackMoves.size(); ++currentIndex)
     {
-        delete m_trackMoves[idx];
+        delete m_trackMoves[currentIndex];
     }
 
     // after delete pre-move. Set size of available track
-    m_trackMoves.resize(m_moveIdx);
+    m_trackMoves.resize(currentIndex);
 
     m_moveIdx++;
 
@@ -80,14 +80,15 @@ bool MoveMgr::HasUndo()
 
 void MoveMgr::Undo()
 {
+    unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
     if(HasUndo())
     {
+        m_trackMoves[currentIdx]->Undo();
         m_moveIdx--;
-        m_trackMoves[m_moveIdx]->Undo();
     }
 }
 
-unsigned int MoveMgr::GetIndex() const
+int MoveMgr::GetIndex() const
 {
     return m_moveIdx;
 }

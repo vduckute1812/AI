@@ -1,11 +1,16 @@
 #ifndef MAINAPPLICATION_H
 #define MAINAPPLICATION_H
+#include <QMainWindow>
 
-
-class MainApplication
+class BoardController;
+class MainApplication: public QMainWindow
 {
 public:
-    MainApplication();
+    MainApplication(QWidget* parent = nullptr);
+    ~MainApplication();
+
+private:
+    BoardController*    boardController;
 };
 
 #endif // MAINAPPLICATION_H

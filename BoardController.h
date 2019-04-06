@@ -21,6 +21,7 @@ public:
     Alliance    getMoveMaker() const;
 
     void        movePiece(Move*);
+    void        unDo();
 
 private:
     Piece*          m_selectedPiece;

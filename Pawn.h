@@ -18,12 +18,6 @@ public:
 	virtual std::vector<Move*> calculateLegalMove(const Board* board) const;
 
 	int			getDirection() const;
-
-	bool		isFirstMove() const;
-	void		setFirstMove(bool firstMove);
-
-private:
-	bool		m_isFirstMove;
 };
 
 #endif

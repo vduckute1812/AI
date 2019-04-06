@@ -47,11 +47,16 @@ public:
 
     QLabel*             getRenderImg() const;
 
+    void                setFirstMove(bool firstMove);
+    bool                isFirstMove() const;
+
 protected:
     int                 m_piecePosition;
     Alliance			m_pieceAlliance;
     PieceType           m_pieceType;
     QLabel*             m_pieceImg;
+
+    bool                m_isFirstMove;
 };
 
 #endif // PIECE_H

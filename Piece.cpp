@@ -3,6 +3,8 @@
 
 Piece::Piece(Alliance pieceAlliance, int position, PieceType pieceType, QWidget *parent): QFrame(parent)
 {
+    m_isFirstMove = true;
+
     // Set attribute
     m_piecePosition = position;
     m_pieceAlliance = pieceAlliance;
@@ -52,3 +54,12 @@ QLabel* Piece::getRenderImg() const
     return m_pieceImg;
 }
 
+bool Piece::isFirstMove() const
+{
+    return m_isFirstMove;
+}
+
+void Piece::setFirstMove(bool firstMove)
+{
+    m_isFirstMove = firstMove;
+}

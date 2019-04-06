@@ -6,9 +6,7 @@
 
 Pawn::Pawn(Alliance pieceAlliance, int piecePos, QWidget *parent) : Piece(pieceAlliance, piecePos, PieceType::PAWN, parent)
 {
-	m_isFirstMove = true;
 }
-
 
 Pawn::~Pawn()
 {
@@ -20,7 +18,6 @@ MoveCollection Pawn::calculateLegalMove(const Board* board) const
     int candidateDestinationCoordinate;
     for (int currentCandidateOffset : PAWN_CANDIDATE_MOVE_COORDINATE)
     {
-
         candidateDestinationCoordinate = this->m_piecePosition + currentCandidateOffset * getDirection();
 
         if (BoardUntils::isValidTileCandidate(candidateDestinationCoordinate))
@@ -67,11 +64,6 @@ int Pawn::getDirection() const
 	return -1;
 } 
 
-bool Pawn::isFirstMove() const
-{
-	return m_isFirstMove;
-}
-
 bool Pawn::isFirstColumnExclusion(int currentPosition, int candidateOffset) const
 {
 	return BoardUntils::isFirstColumn(currentPosition) && (candidateOffset == -9 || candidateOffset == 7);
@@ -80,9 +72,4 @@ bool Pawn::isFirstColumnExclusion(int currentPosition, int candidateOffset) cons
 bool Pawn::isEightColumnExclusion(int currentPosition, int candidateOffset) const
 {
 	return BoardUntils::isEighthColumn(currentPosition) && (candidateOffset == -7 || candidateOffset == 9);
-}
-
-void Pawn::setFirstMove(bool firstMove)
-{
-	m_isFirstMove = firstMove;
 }

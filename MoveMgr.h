@@ -18,14 +18,14 @@ public:
     bool                HasUndo();
     void                Undo();
 
-    unsigned int        GetIndex() const;
+    int                 GetIndex() const;
     static MoveMgr*     GetInstance();
     static void         FreeInstance();
 
 private:
     static MoveMgr*     s_instance;
 
-    unsigned int        m_moveIdx;
+    int                 m_moveIdx;
     MoveCollection      m_trackMoves;
 };
 

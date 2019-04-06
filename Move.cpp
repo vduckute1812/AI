@@ -11,6 +11,7 @@ Move::Move(const Board* board, const Piece* movePiece, const Piece* attackPiece,
     m_attackPiece = attackPiece;
     m_destCoordinate = destCoord;
     m_movedCoordinate = movePiece->getPosition();
+    m_isFirstMove = m_movePiece->isFirstMove();
 }
 
 char* Move::GetDescription()
@@ -46,6 +47,7 @@ Board* Move::Do()
     }
 
     Piece* piece = boardConfig.at(m_movedCoordinate);
+    piece->setFirstMove(false);
 
     builder->setPiece(m_movedCoordinate, nullptr);
     builder->setPiece(m_destCoordinate, piece);
@@ -69,6 +71,11 @@ Board* Move::Undo()
     }
 
     Piece* piece = boardConfig.at(m_destCoordinate);
+
+    if(m_isFirstMove)
+    {
+        piece->setFirstMove(true);
+    }
 
     builder->setPiece(m_movedCoordinate, piece);
     builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line

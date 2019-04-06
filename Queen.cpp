@@ -40,7 +40,7 @@ MoveCollection Queen::calculateLegalMove(const Board* board) const
                 break;
             }
 
-            if (board->isTileOccupied(candidateCoordinationOffset))
+            if (board->isTileOccupied(candidateDestinationCoordinate))
             {
                 break;
             }
@@ -53,7 +53,6 @@ MoveCollection Queen::calculateLegalMove(const Board* board) const
                     break;
                 }
             }
-
 
             candidateDestinationCoordinate += candidateCoordinationOffset;
         }

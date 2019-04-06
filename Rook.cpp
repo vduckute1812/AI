@@ -39,7 +39,7 @@ MoveCollection Rook::calculateLegalMove(const Board* board) const
                 break;
             }
 
-            if (board->isTileOccupied(candidateCoordinationOffset))
+            if (board->isTileOccupied(candidateDestinationCoordinate))
             {
                 break;
             }

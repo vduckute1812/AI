@@ -28,6 +28,7 @@ protected:
     const Piece*    m_movePiece;
     const Piece*    m_attackPiece;
 
+    bool            m_isFirstMove;
     int             m_movedCoordinate;
     int             m_destCoordinate;
     char            m_description[20];

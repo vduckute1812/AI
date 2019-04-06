@@ -11,7 +11,7 @@ BoardUI::~BoardUI()
     BoardController::GetInstance()->FreeInstance();
 }
 
-void BoardUI::InitBoardGame()
+BoardUI* BoardUI::InitBoardGame()
 {
     m_isLocked = false;
 
@@ -50,6 +50,8 @@ void BoardUI::InitBoardGame()
     BoardController::GetInstance()->setMoveMaker(Alliance::WHITE);
     show();
     startTimer(50);
+
+    return this;
 }
 
 BoardTiles BoardUI::GetTiles()
