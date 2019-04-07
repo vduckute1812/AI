@@ -4,7 +4,8 @@
 #include "Bishop.h"
 #include "BoardUntils.h"
 
-Bishop::Bishop(Alliance pieceAlliance, int position, QWidget *parent): Piece (pieceAlliance, position, PieceType::BISHOP, parent)
+Bishop::Bishop(Alliance pieceAlliance, int position, QWidget *parent):
+    Piece (pieceAlliance, position, PieceType::BISHOP, PieceValue::BISHOP_VALUE, parent)
 {
 }
 

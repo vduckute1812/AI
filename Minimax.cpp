@@ -57,6 +57,10 @@ Move* Minimax::execute(const Board* board, int depth)
         else if(board->getMoveMaker() == Alliance::BLACK && currentValue <= lowestSeenValue)
         {
             lowestSeenValue = currentValue;
+
+            if(bestMove)
+                delete bestMove;
+
             bestMove = move;
         }
         // release memory

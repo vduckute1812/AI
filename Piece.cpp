@@ -1,7 +1,7 @@
 #include "Piece.h"
 #include "BoardUntils.h"
 
-Piece::Piece(Alliance pieceAlliance, int position, PieceType pieceType, QWidget *parent): QFrame(parent)
+Piece::Piece(Alliance pieceAlliance, int position, PieceType pieceType, PieceValue pieceValue, QWidget *parent): QFrame(parent)
 {
     m_isFirstMove = true;
 
@@ -9,6 +9,7 @@ Piece::Piece(Alliance pieceAlliance, int position, PieceType pieceType, QWidget 
     m_piecePosition = position;
     m_pieceAlliance = pieceAlliance;
     m_pieceType = pieceType;
+    m_pieceValue = pieceValue;
 
     // Set image
     m_pieceImg = new QLabel(this);
@@ -27,6 +28,11 @@ Piece::~Piece()
 PieceType Piece::getPieceType() const
 {
     return m_pieceType;
+}
+
+PieceValue Piece::getPieceValue() const
+{
+    return m_pieceValue;
 }
 
 Alliance Piece::getAlliance() const
