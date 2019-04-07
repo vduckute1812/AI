@@ -8,6 +8,9 @@
 class BoardBuilder;
 
 typedef std::map<const int, Piece*> BoardConfig;
+typedef std::vector<const Piece*> CollectPiece;
+
+typedef std::vector<Move*> CollectMove;
 
 class Board
 {
@@ -18,6 +21,12 @@ public:
     const BoardConfig           getBoardConfig() const;
     Alliance                    getMoveMaker() const;
     Alliance                    getOpponentMaker() const;
+
+    CollectPiece                getCurrentPieces() const;
+    CollectPiece                getOpponentPieces() const;
+
+    CollectMove                 getLegalMoves() const;
+    CollectMove                 getOpponentMoves() const;
 
     const Piece*                getPieceOnBoard(int idx) const;
 

@@ -8,7 +8,11 @@ enum TypeMove
 {
     MAJOR_MOVE,
     ATTACK_MOVE,
-    DEFEND_MOVE // NOT YET
+    DEFEND_MOVE, // NOT YET
+    PAWN_PROMOTION,  // NOT YET
+    KING_SIDE_CASTLE, // NOT YET
+    QUEEN_SIDE_CASTLE, // NOT YET
+    CHECK_MOVE  // NOT YET
 };
 
 class Move
@@ -17,16 +21,19 @@ public:
     Move(const Board* board, const Piece* movePiece, const Piece* attackMove, const int destCoord);
     char*           GetDescription();
 
-    Board*          Do();
+    Board*          Execute();
 
     Board*          Redo();
     Board*          Undo();
+
+    Board*          getTransitionBoard() const;
 
     int             getDestCoordinate();
     bool            isAttackMove();
 
 protected:
     const Board*    m_board;
+    Board*          m_toBoard;
     const Piece*    m_movePiece;
     const Piece*    m_attackPiece;
 

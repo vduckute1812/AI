@@ -31,7 +31,9 @@ SOURCES += \
     Rook.cpp \
     Tile.cpp \
     MainApplication.cpp \
-    Mimimax.cpp
+    BoardEvaluator.cpp \
+    Minimax.cpp \
+    StandardBoardEvaluator.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -56,4 +58,6 @@ HEADERS += \
     Singleton.h \
     Tile.h \
     MainApplication.h \
-    Mimimax.h
+    BoardEvaluator.h \
+    Minimax.h \
+    StandardBoardEvaluator.h

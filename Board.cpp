@@ -1,5 +1,4 @@
 #include <QTextStream>
-
 #include "Board.h"
 
 // Piece data
@@ -34,11 +33,77 @@ Alliance Board::getOpponentMaker() const
     return current == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
 }
 
+CollectPiece Board::getCurrentPieces() const
+{
+    CollectPiece pieces;
+
+    for (int idx = 0; idx < BoardUntils::NUM_TILES; ++idx)
+    {
+        if(isTileOccupied(idx))
+        {
+            const Piece* piece = getPieceOnBoard(idx);
+            if(BoardUntils::isSameAlliance(piece->getAlliance(), getMoveMaker()))
+            {
+                pieces.push_back(piece);
+            }
+        }
+    }
+    return pieces;
+}
+
+CollectPiece Board::getOpponentPieces() const
+{
+    CollectPiece pieces;
+
+    for (int idx = 0; idx < BoardUntils::NUM_TILES; ++idx)
+    {
+        if(isTileOccupied(idx))
+        {
+            const Piece* piece = getPieceOnBoard(idx);
+            if(!BoardUntils::isSameAlliance(piece->getAlliance(), getMoveMaker()))
+            {
+                pieces.push_back(piece);
+            }
+        }
+    }
+    return pieces;
+}
 
 const BoardConfig Board::getBoardConfig() const
 {
     return m_boardBuilder->getBoardConfig();
 }
+
+CollectMove Board::getLegalMoves() const
+{
+    CollectMove moves;
+    CollectPiece pieces = getCurrentPieces();
+
+    for (const Piece* piece: pieces)
+    {
+        CollectMove subMoves = piece->calculateLegalMove(this);
+        for (Move* move: subMoves) {
+            moves.push_back(move);
+        }
+    }
+    return moves;
+}
+
+CollectMove Board::getOpponentMoves() const
+{
+    CollectMove moves;
+    CollectPiece pieces = getOpponentPieces();
+
+    for (const Piece* piece: pieces)
+    {
+        CollectMove subMoves = piece->calculateLegalMove(this);
+        for (Move* move: subMoves) {
+            moves.push_back(move);
+        }
+    }
+    return moves;
+}
+
 
 const Piece* Board::getPieceOnBoard(int index) const
 {
@@ -69,7 +134,9 @@ bool Board::isTileOccupied(const int idx) const
 void Board::printBoard() const
 {
     QTextStream out(stdout);
-    char key = 'x';
+    char key;
+    out << "============================" <<endl;
+
     for (int idx = 0; idx < BoardUntils::NUM_TILES; ++idx)
     {
         if (idx % 8 == 0)
@@ -83,13 +150,14 @@ void Board::printBoard() const
             piece = m_boardBuilder->getBoardConfig().at(idx);
         }
 
-        key = !isTileOccupiedIdx ? 'x' :piece->getKeyCharacter();
+        key = !isTileOccupiedIdx ? '_' :piece->getKeyCharacter();
 
         if(isTileOccupiedIdx && piece->getAlliance() == Alliance::BLACK)
             key = key + 'a' - 'A';
 
         out << " " << key;
     }
+
     out << endl;
 }
 

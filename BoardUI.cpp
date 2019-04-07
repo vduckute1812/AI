@@ -52,7 +52,7 @@ void BoardUI::InitBoardGame()
     // Set move maker
     BoardController::GetInstance()->setMoveMaker(Alliance::WHITE);
 //    show();
-    startTimer(50);
+    startTimer(100);
 }
 
 BoardTiles BoardUI::GetTiles()
@@ -88,11 +88,12 @@ const Board* BoardUI::GetCurrentBoard()
 
 void BoardUI::SetBoard(Board *board)
 {
+    BoardUI::GetInstance()->ResetColorTiles();
+
     if(m_board != nullptr)
     {
         delete m_board;
     }
-
     m_board = board;
     ResetTiles();
     BoardConfig config = m_board->getBoardConfig();
@@ -104,6 +105,8 @@ void BoardUI::SetBoard(Board *board)
         Piece* piece = tileConfig->second;
         m_tiles.at(coordinate)->setPiece(piece);
     }
+
+    m_board->printBoard();
 }
 
 void BoardUI::FreeBoardGame()

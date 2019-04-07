@@ -1,4 +1,5 @@
 #include "Move.h"
+#include "Board.h"
 #include "BoardUI.h"
 #include "MoveMgr.h"
 
@@ -67,7 +68,7 @@ void MoveMgr::Do(Move *move)
 
     m_moveIdx++;
 
-    Board* board = move->Do();
+    Board* board = move->Execute();
     m_trackMoves.push_back(move);
 
     BoardUI::GetInstance()->SetBoard(board);
@@ -88,8 +89,6 @@ void MoveMgr::Undo()
 {
     BoardUI::GetInstance()->Lock(true);
     BoardUI::GetInstance()->blockSignals(true);
-
-    BoardUI::GetInstance()->ResetColorTiles();
 
     if(HasUndo())
     {

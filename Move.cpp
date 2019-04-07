@@ -8,6 +8,7 @@
 Move::Move(const Board* board, const Piece* movePiece, const Piece* attackPiece, const int destCoord)
 {
     m_board = board;
+    m_toBoard = nullptr;
     m_movePiece = movePiece;
     m_attackPiece = attackPiece;
     m_destCoordinate = destCoord;
@@ -35,7 +36,13 @@ bool Move::isAttackMove()
     return true;
 }
 
-Board* Move::Do()
+Board* Move::getTransitionBoard() const
+{
+    return m_toBoard;
+}
+
+
+Board* Move::Execute()
 {
     BoardBuilder* builder = new BoardBuilder();
 
@@ -61,16 +68,18 @@ Board* Move::Do()
     builder->setPiece(m_destCoordinate, piece);
 
     builder->setMoveMaker(m_board->getOpponentMaker());
-
-    return builder->build();
+    Board* board = builder->build();
+    m_toBoard = board;
+    return board;
 }
 
 // Use for GUI
 Board* Move::Undo()
 {
     BoardBuilder* builder = new BoardBuilder();
-
     const Board* currentBoard = BoardUI::GetInstance()->GetCurrentBoard();
+//    const Board* currentBoard = m_movedBoard;
+
     BoardConfig boardConfig = currentBoard->getBoardConfig();
 
     BoardConfig::iterator piecePtr;
@@ -98,8 +107,8 @@ Board* Move::Redo()
 {
     BoardBuilder* builder = new BoardBuilder();
 
-//    BoardConfig boardConfig = m_board->getBoardConfig();
     const Board* currentBoard = BoardUI::GetInstance()->GetCurrentBoard();
+//    const Board* currentBoard = m_board;
     BoardConfig boardConfig = currentBoard->getBoardConfig();
 
     BoardConfig::iterator piecePtr;
