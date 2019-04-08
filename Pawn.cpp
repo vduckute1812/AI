@@ -4,7 +4,8 @@
 #include "Board.h"
 #include "BoardUntils.h"
 
-Pawn::Pawn(Alliance pieceAlliance, int piecePos, QWidget *parent) : Piece(pieceAlliance, piecePos, PieceType::PAWN, parent)
+Pawn::Pawn(Alliance pieceAlliance, int piecePos, QWidget *parent) :
+    Piece(pieceAlliance, piecePos, PieceType::PAWN, PieceValue::PAWN_VALUE, parent)
 {
 }
 

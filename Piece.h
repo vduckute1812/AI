@@ -20,6 +20,16 @@ enum PieceType
     PAWN	= 'P'
 };
 
+enum PieceValue
+{
+    ROOK_VALUE =    500,
+    KNIGHT_VALUE =  300,
+    BISHOP_VALUE =  300,
+    QUEEN_VALUE =   900,
+    KING_VALUE =    1000,
+    PAWN_VALUE =    100
+};
+
 class Move;
 class Board;
 class Move;
@@ -29,13 +39,15 @@ typedef std::vector<Move*> MoveCollection;
 class Piece: public QFrame
 {
 public:
-    explicit Piece(Alliance pieceAlliance, int position, PieceType pieceType, QWidget *parent = nullptr);
+    explicit Piece(Alliance pieceAlliance, int position, PieceType pieceType, PieceValue pieceValue, QWidget *parent = nullptr);
     virtual ~Piece();
 
     virtual bool		isFirstColumnExclusion(int currentPosition, int candidateOffset) const = 0;
     virtual bool		isEightColumnExclusion(int currentPosition, int candidateOffset) const = 0;
 
     virtual             MoveCollection calculateLegalMove(const Board* board) const = 0;
+
+    virtual             PieceValue getPieceValue() const;
 
     void                setPosition(int position);
     int                 getPosition() const;
@@ -54,6 +66,7 @@ protected:
     int                 m_piecePosition;
     Alliance			m_pieceAlliance;
     PieceType           m_pieceType;
+    PieceValue          m_pieceValue;
     QLabel*             m_pieceImg;
 
     bool                m_isFirstMove;

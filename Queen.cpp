@@ -4,7 +4,8 @@
 #include "Board.h"
 #include "BoardUntils.h"
 
-Queen::Queen(Alliance pieceAlliance, int piecePos, QWidget *parent) : Piece(pieceAlliance, piecePos, PieceType::QUEEN, parent)
+Queen::Queen(Alliance pieceAlliance, int piecePos, QWidget *parent) :
+    Piece(pieceAlliance, piecePos, PieceType::QUEEN, PieceValue::QUEEN_VALUE, parent)
 {
 }
 
