@@ -8,6 +8,7 @@
 #include "Queen.h"
 #include "King.h"
 #include "Pawn.h"
+#include "Move.h"
 
 #include "BoardUntils.h"
 #include "BoardBuilder.h"
@@ -104,7 +105,6 @@ CollectMove Board::getOpponentMoves() const
     return moves;
 }
 
-
 const Piece* Board::getPieceOnBoard(int index) const
 {
     if(index < 0 || index >= BoardUntils::NUM_TILES)
@@ -159,6 +159,35 @@ void Board::printBoard() const
     }
 
     out << endl;
+}
+
+bool Board::isCheckedByEnemy() const
+{
+    CollectPiece pieces = getCurrentPieces();
+    const Piece* king = nullptr;
+    for (const Piece* piece: pieces)
+    {
+        if(piece->getPieceType() == PieceType::KING)
+        {
+            king = piece;
+            break;
+        }
+    }
+
+    if(king == nullptr)
+    {
+        // END GAME
+        return true;
+    }
+
+    for (Move* move: getOpponentMoves())
+    {
+        if(move->getDestCoordinate() == king->getPosition())
+            return true;
+        delete move;
+    }
+
+    return false;
 }
 
 namespace BOARD{

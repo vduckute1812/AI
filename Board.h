@@ -33,6 +33,7 @@ public:
     void                        printBoard() const;
 
     bool                        isTileOccupied(const int idx) const;
+    bool                        isCheckedByEnemy() const;
 
 private:
 
