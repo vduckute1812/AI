@@ -26,14 +26,17 @@ public:
     Board*          Redo();
     Board*          Undo();
 
-    Board*          getTransitionBoard() const;
+    const Board*    getTransitionBoard() const;
 
-    int             getDestCoordinate();
+    int             getMoveCoordinate() const;
+    int             getDestCoordinate() const;
     bool            isAttackMove();
+
+    bool            isLegalMove() const;
 
 protected:
     const Board*    m_board;
-    Board*          m_toBoard;
+    const Board*    m_toBoard;
     const Piece*    m_movePiece;
     const Piece*    m_attackPiece;
 

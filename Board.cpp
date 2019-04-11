@@ -34,7 +34,7 @@ Alliance Board::getOpponentMaker() const
     return current == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
 }
 
-CollectPiece Board::getCurrentPieces() const
+CollectPiece Board::getPieces(Alliance alliance) const
 {
     CollectPiece pieces;
 
@@ -43,25 +43,7 @@ CollectPiece Board::getCurrentPieces() const
         if(isTileOccupied(idx))
         {
             const Piece* piece = getPieceOnBoard(idx);
-            if(BoardUntils::isSameAlliance(piece->getAlliance(), getMoveMaker()))
-            {
-                pieces.push_back(piece);
-            }
-        }
-    }
-    return pieces;
-}
-
-CollectPiece Board::getOpponentPieces() const
-{
-    CollectPiece pieces;
-
-    for (int idx = 0; idx < BoardUntils::NUM_TILES; ++idx)
-    {
-        if(isTileOccupied(idx))
-        {
-            const Piece* piece = getPieceOnBoard(idx);
-            if(!BoardUntils::isSameAlliance(piece->getAlliance(), getMoveMaker()))
+            if(BoardUntils::isSameAlliance(piece->getAlliance(), alliance))
             {
                 pieces.push_back(piece);
             }
@@ -75,30 +57,16 @@ const BoardConfig Board::getBoardConfig() const
     return m_boardBuilder->getBoardConfig();
 }
 
-CollectMove Board::getLegalMoves() const
+CollectMove Board::getLegalMoves(Alliance alliance) const
 {
     CollectMove moves;
-    CollectPiece pieces = getCurrentPieces();
+    CollectPiece pieces = getPieces(alliance);
 
     for (const Piece* piece: pieces)
     {
         CollectMove subMoves = piece->calculateLegalMove(this);
-        for (Move* move: subMoves) {
-            moves.push_back(move);
-        }
-    }
-    return moves;
-}
-
-CollectMove Board::getOpponentMoves() const
-{
-    CollectMove moves;
-    CollectPiece pieces = getOpponentPieces();
-
-    for (const Piece* piece: pieces)
-    {
-        CollectMove subMoves = piece->calculateLegalMove(this);
-        for (Move* move: subMoves) {
+        for (Move* move: subMoves)
+        {
             moves.push_back(move);
         }
     }
@@ -159,35 +127,6 @@ void Board::printBoard() const
     }
 
     out << endl;
-}
-
-bool Board::isCheckedByEnemy() const
-{
-    CollectPiece pieces = getCurrentPieces();
-    const Piece* king = nullptr;
-    for (const Piece* piece: pieces)
-    {
-        if(piece->getPieceType() == PieceType::KING)
-        {
-            king = piece;
-            break;
-        }
-    }
-
-    if(king == nullptr)
-    {
-        // END GAME
-        return true;
-    }
-
-    for (Move* move: getOpponentMoves())
-    {
-        if(move->getDestCoordinate() == king->getPosition())
-            return true;
-        delete move;
-    }
-
-    return false;
 }
 
 namespace BOARD{

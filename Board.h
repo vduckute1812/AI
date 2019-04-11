@@ -22,18 +22,15 @@ public:
     Alliance                    getMoveMaker() const;
     Alliance                    getOpponentMaker() const;
 
-    CollectPiece                getCurrentPieces() const;
-    CollectPiece                getOpponentPieces() const;
+    CollectPiece                getPieces(Alliance alliance) const;
 
-    CollectMove                 getLegalMoves() const;
-    CollectMove                 getOpponentMoves() const;
+    CollectMove                 getLegalMoves(Alliance alliance) const;
 
     const Piece*                getPieceOnBoard(int idx) const;
 
     void                        printBoard() const;
 
     bool                        isTileOccupied(const int idx) const;
-    bool                        isCheckedByEnemy() const;
 
 private:
 

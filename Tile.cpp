@@ -1,6 +1,7 @@
 #include "Tile.h"
 #include <QPainter>
 #include "Move.h"
+#include "Board.h"
 #include "Piece.h"
 #include "BoardUI.h"
 #include "BoardUntils.h"
@@ -68,14 +69,21 @@ void Tile::mousePressEvent(QMouseEvent *)
     {
         for (Move* move : piece->calculateLegalMove(BoardUI::GetInstance()->GetCurrentBoard()))
         {
-             if (move->getDestCoordinate() == coordinate)
-             {
-                 BoardController::GetInstance()->movePiece(move);
-             }
-             else
-             {
-                 delete move;
-             }
+            if(move->isLegalMove())
+            {
+                if (move->getDestCoordinate() == coordinate)
+                {
+                    BoardController::GetInstance()->movePiece(move);
+                }
+                else
+                {
+                    delete move;
+                }
+            }
+            else
+            {
+                delete move;
+            }
         }
     }
 
@@ -91,12 +99,15 @@ void Tile::mousePressEvent(QMouseEvent *)
         for (Move* move : pieceColor->calculateLegalMove(BoardUI::GetInstance()->GetCurrentBoard()))
         {
             Tile* tile = BoardUI::GetInstance()->GetTiles().at(move->getDestCoordinate());
-            if(move->isAttackMove())
+            if(move->isLegalMove())
             {
-                tile->setCurrentColor(ATTACK_COLOR);
-            }
-            else {
-                tile->setCurrentColor(MOVE_COLOR);
+                if(move->isAttackMove())
+                {
+                    tile->setCurrentColor(ATTACK_COLOR);
+                }
+                else {
+                    tile->setCurrentColor(MOVE_COLOR);
+                }
             }
             delete move;
         }

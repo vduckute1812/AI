@@ -21,7 +21,12 @@ char* Move::GetDescription()
     return m_description;
 }
 
-int Move::getDestCoordinate()
+int Move::getMoveCoordinate() const
+{
+    return m_movedCoordinate;
+}
+
+int Move::getDestCoordinate() const
 {
     return m_destCoordinate;
 }
@@ -36,7 +41,7 @@ bool Move::isAttackMove()
     return true;
 }
 
-Board* Move::getTransitionBoard() const
+const Board* Move::getTransitionBoard() const
 {
     return m_toBoard;
 }
@@ -131,3 +136,57 @@ Board* Move::Redo()
     builder->setMoveMaker(currentBoard->getOpponentMaker());
     return builder->build();
 }
+
+
+bool Move::isLegalMove() const
+{
+    const Board* boardUI = BoardUI::GetInstance()->GetCurrentBoard();
+    BoardConfig boardConfig = boardUI->getBoardConfig();
+    int moveCoord = this->getMoveCoordinate();
+    int destCoord = this->getDestCoordinate();
+
+    Piece* movePiece = boardConfig[moveCoord];
+    Piece* destPiece = boardConfig[destCoord];
+
+    movePiece->setPosition(destCoord);
+
+    boardConfig[moveCoord] = nullptr;
+    boardConfig[destCoord] = movePiece;
+
+    bool isLegal = true;
+
+    int kingPosition = 0;
+    CollectPiece pieces = boardUI->getPieces(boardUI->getMoveMaker());
+    for (const Piece* piece: pieces)
+    {
+        if(piece->getPieceType() == PieceType::KING)
+        {
+            kingPosition = piece->getPosition();
+            break;
+        }
+    }
+
+    CollectMove moves = boardUI->getLegalMoves(boardUI->getOpponentMaker());
+    for (Move* move: moves)
+    {
+        if(move->getDestCoordinate() == kingPosition)
+        {
+            delete move;
+
+            isLegal = false;
+            break;
+        }
+        else
+        {
+            delete move;
+        }
+    }
+
+    movePiece->setPosition(moveCoord);
+
+    boardConfig[moveCoord] = movePiece;
+    boardConfig[destCoord] = destPiece;
+
+    return isLegal;
+}
+

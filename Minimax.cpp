@@ -38,7 +38,7 @@ Move* Minimax::execute(const Board* board, int depth)
     QTextStream out(stdout);
     out << board->getMoveMaker() << " IS THINKING with depth " << depth <<endl;
 
-    CollectMove moves = board->getLegalMoves();
+    CollectMove moves = board->getLegalMoves(board->getMoveMaker());
 
 //    int numMoves = static_cast<int>(moves.size());
 
@@ -88,7 +88,7 @@ double Minimax::min(const Board* board, int depth) const
     }
 
     double lowestSeenValue = MAX_VALUE;
-    for (Move* move: board->getLegalMoves())
+    for (Move* move: board->getLegalMoves(board->getMoveMaker()))
     {
         Board* transitionBoard = move->Execute();
         double currentValue = max(transitionBoard, depth - 1);
@@ -112,7 +112,7 @@ double Minimax::max(const Board* board, int depth) const
     }
 
     double highestSeenValue = MIN_VALUE;
-    for (Move* move: board->getLegalMoves())
+    for (Move* move: board->getLegalMoves(board->getMoveMaker()))
     {
         Board* transitionBoard = move->Execute();
         double currentValue = min(transitionBoard, depth - 1);
