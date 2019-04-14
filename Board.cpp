@@ -9,6 +9,7 @@
 #include "King.h"
 #include "Pawn.h"
 #include "Move.h"
+#include "Piece.h"
 
 #include "BoardUntils.h"
 #include "BoardBuilder.h"
@@ -34,7 +35,7 @@ Alliance Board::getOpponentMaker() const
     return current == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
 }
 
-CollectPiece Board::getPieces(Alliance alliance) const
+CollectPiece Board::getPieces(const Alliance alliance) const
 {
     CollectPiece pieces;
 
@@ -57,7 +58,7 @@ const BoardConfig Board::getBoardConfig() const
     return m_boardBuilder->getBoardConfig();
 }
 
-CollectMove Board::getLegalMoves(Alliance alliance) const
+CollectMove Board::getLegalMoves(const Alliance alliance) const
 {
     CollectMove moves;
     CollectPiece pieces = getPieces(alliance);
@@ -125,9 +126,60 @@ void Board::printBoard() const
 
         out << " " << key;
     }
-
     out << endl;
 }
+
+
+
+bool Board::isInCheck(const Alliance alliance) const
+{
+    bool isChecked = false;
+
+    int kingPosition = -1;
+    CollectPiece pieces = getPieces(alliance);
+    for (const Piece* piece: pieces)
+    {
+        if(piece->getPieceType() == PieceType::KING)
+        {
+            kingPosition = piece->getPosition();
+            break;
+        }
+    }
+
+    Alliance moveMaker = alliance == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+
+    CollectMove moves = getLegalMoves(moveMaker);
+    for (Move* move: moves)
+    {
+        if(move->getDestCoordinate() == kingPosition)
+        {
+            isChecked = true;
+            break;
+        }
+    }
+    return isChecked;
+}
+
+bool Board::hasEscapeMoves(const Alliance alliance) const
+{
+    CollectPiece pieces = getPieces(alliance);
+
+    CollectMove moves = getLegalMoves(alliance);
+
+    bool hasEscapeMove = false;
+
+    for (Move* move: moves)
+    {
+        if(move->isLegalMove())
+        {
+            hasEscapeMove = true;
+            break;
+        }
+    }
+
+    return hasEscapeMove;
+}
+
 
 namespace BOARD{
     Board* createStandardBoard()
@@ -136,8 +188,8 @@ namespace BOARD{
         boardBuilder->setPiece(new Rook(Alliance::BLACK,   0 ));
         boardBuilder->setPiece(new Knight(Alliance::BLACK, 1 ));
         boardBuilder->setPiece(new Bishop(Alliance::BLACK, 2 ));
-        boardBuilder->setPiece(new Queen(Alliance::BLACK,  3 ));
-        boardBuilder->setPiece(new King(Alliance::BLACK,   4 ));
+        boardBuilder->setPiece(new King(Alliance::BLACK,   3 ));
+        boardBuilder->setPiece(new Queen(Alliance::BLACK,  4 ));
         boardBuilder->setPiece(new Bishop(Alliance::BLACK, 5 ));
         boardBuilder->setPiece(new Knight(Alliance::BLACK, 6 ));
         boardBuilder->setPiece(new Rook(Alliance::BLACK,   7 ));
@@ -172,3 +224,4 @@ namespace BOARD{
         return boardBuilder->build();
     }
 }
+

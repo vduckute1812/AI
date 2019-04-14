@@ -31,9 +31,9 @@ SOURCES += \
     Rook.cpp \
     Tile.cpp \
     MainApplication.cpp \
-    BoardEvaluator.cpp \
     Minimax.cpp \
-    StandardBoardEvaluator.cpp
+    StandardBoardEvaluator.cpp \
+    BoardEvaluator.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

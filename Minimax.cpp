@@ -4,13 +4,16 @@
 #include "Move.h"
 #include "Board.h"
 #include "BoardEvaluator.h"
+#include "StandardBoardEvaluator.h"
 
 const static double MAX_VALUE = 1e10;
 const static double MIN_VALUE = -1e10;
 
-Minimax::Minimax()
+Minimax::Minimax(int searchDepth)
 {
-    m_boardEvaluator = nullptr;
+    m_boardEvaluated    = 0;
+    m_searchDepth       = searchDepth;
+    m_boardEvaluator    = new StandardBoardEvaluator();
 }
 
 Minimax::~Minimax()
@@ -18,15 +21,15 @@ Minimax::~Minimax()
 
 }
 
-
 int Minimax::getNumboardsEvaluated()
 {
-    return 0;
+    return m_boardEvaluated;
 }
 
 Move* Minimax::execute(const Board* board, int depth)
 {
     double currentValue;
+//    int freqTableIndex = 0;
 
     clock_t start, end;
     start = clock();
@@ -39,8 +42,6 @@ Move* Minimax::execute(const Board* board, int depth)
     out << board->getMoveMaker() << " IS THINKING with depth " << depth <<endl;
 
     CollectMove moves = board->getLegalMoves(board->getMoveMaker());
-
-//    int numMoves = static_cast<int>(moves.size());
 
     for (Move* move: moves) {
 
@@ -72,7 +73,6 @@ Move* Minimax::execute(const Board* board, int depth)
         delete transitionBoard;
     }
 
-
     /* Do the work. */
     end = clock();
     m_executeTime = static_cast<double>((end-start)/ CLOCKS_PER_SEC);
@@ -80,10 +80,14 @@ Move* Minimax::execute(const Board* board, int depth)
     return bestMove;
 }
 
-double Minimax::min(const Board* board, int depth) const
+double Minimax::min(const Board* board, int depth)
 {
-    if(depth == 0/*|| game over*/)
+    if(depth == 0|| isEndgame(board))
     {
+        if(depth == 0)
+        {
+             m_boardEvaluated++;
+        }
         return this->m_boardEvaluator->evaluate(board, depth);
     }
 
@@ -104,10 +108,14 @@ double Minimax::min(const Board* board, int depth) const
     return lowestSeenValue;
 }
 
-double Minimax::max(const Board* board, int depth) const
+double Minimax::max(const Board* board, int depth)
 {
-    if(depth == 0/*|| game over*/)
+    if(depth == 0|| isEndgame(board))
     {
+        if(depth == 0)
+        {
+            m_boardEvaluated++;
+        }
         return this->m_boardEvaluator->evaluate(board, depth);
     }
 
@@ -126,4 +134,9 @@ double Minimax::max(const Board* board, int depth) const
     }
 
     return highestSeenValue;
+}
+
+bool Minimax::isEndgame(const Board* board)
+{
+    return !board->hasEscapeMoves(board->getMoveMaker());
 }

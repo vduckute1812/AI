@@ -7,20 +7,23 @@ class BoardEvaluator;
 class Minimax
 {
 public:
-    Minimax();
+    Minimax(int searchDepth);
     ~Minimax();
 
     int     getNumboardsEvaluated();
 
     Move*   execute(const Board*, int depth);
 
-    double  min(const Board* board, int depth) const;
-    double  max(const Board* board, int depth) const;
+    double  min(const Board* board, int depth);
+    double  max(const Board* board, int depth);
+
+    bool    isEndgame(const Board* board);
 
 private:
     BoardEvaluator* m_boardEvaluator;
-    double m_boardEvaluated;
-    double m_executeTime;
+    int             m_boardEvaluated;
+    int             m_searchDepth;
+    double          m_executeTime;
 
 };
 

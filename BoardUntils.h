@@ -80,6 +80,11 @@ public:
         }
         return false;
     }
+
+    static Alliance getOpponentAllianace(Alliance alliance)
+    {
+        return alliance == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    }
 };
 
 #endif
