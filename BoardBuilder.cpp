@@ -26,6 +26,10 @@ BoardBuilder* BoardBuilder::setPiece(Piece* piece)
 BoardBuilder* BoardBuilder::setPiece(int position, Piece* piece)
 {
     m_boardConfig.at(position) = piece;
+    if(piece)
+    {
+        piece->setPosition(position);
+    }
     return this;
 }
 

@@ -69,9 +69,9 @@ void Tile::mousePressEvent(QMouseEvent *)
     {
         for (Move* move : piece->calculateLegalMove(BoardUI::GetInstance()->GetCurrentBoard()))
         {
-            if(move->isLegalMove())
+            if (move->getDestCoordinate() == coordinate)
             {
-                if (move->getDestCoordinate() == coordinate)
+                if(move->isLegalMove())
                 {
                     BoardController::GetInstance()->movePiece(move);
                 }

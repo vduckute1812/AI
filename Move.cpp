@@ -78,6 +78,34 @@ Board* Move::Execute()
     return board;
 }
 
+Board* Move::UndoExecute()
+{
+    BoardBuilder* builder = new BoardBuilder();
+    const Board* currentBoard = m_toBoard;
+
+    BoardConfig boardConfig = currentBoard->getBoardConfig();
+
+    BoardConfig::iterator piecePtr;
+
+    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
+    {
+        builder->setPiece(piecePtr->second);
+    }
+
+    Piece* piece = boardConfig.at(m_destCoordinate);
+
+    if(m_isFirstMove && piece)
+    {
+        piece->setFirstMove(true);
+    }
+
+    builder->setPiece(m_movedCoordinate, piece);
+    builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line
+
+    builder->setMoveMaker(currentBoard->getOpponentMaker());
+    return builder->build();
+}
+
 // Use for GUI
 Board* Move::Undo()
 {
@@ -137,26 +165,17 @@ Board* Move::Redo()
     return builder->build();
 }
 
-
-bool Move::isLegalMove() const
+bool Move::isLegalMove()
 {
-    const Board* boardUI = BoardUI::GetInstance()->GetCurrentBoard();
+    Board* board = this->Execute();
+
+    const Board* boardUI = board;
     BoardConfig boardConfig = boardUI->getBoardConfig();
-    int moveCoord = this->getMoveCoordinate();
-    int destCoord = this->getDestCoordinate();
-
-    Piece* movePiece = boardConfig[moveCoord];
-    Piece* destPiece = boardConfig[destCoord];
-
-    movePiece->setPosition(destCoord);
-
-    boardConfig[moveCoord] = nullptr;
-    boardConfig[destCoord] = movePiece;
 
     bool isLegal = true;
+    int kingPosition = -1;
 
-    int kingPosition = 0;
-    CollectPiece pieces = boardUI->getPieces(boardUI->getMoveMaker());
+    CollectPiece pieces = boardUI->getPieces(boardUI->getOpponentMaker());
     for (const Piece* piece: pieces)
     {
         if(piece->getPieceType() == PieceType::KING)
@@ -166,27 +185,22 @@ bool Move::isLegalMove() const
         }
     }
 
-    CollectMove moves = boardUI->getLegalMoves(boardUI->getOpponentMaker());
+    CollectMove moves = boardUI->getLegalMoves(boardUI->getMoveMaker());
     for (Move* move: moves)
     {
         if(move->getDestCoordinate() == kingPosition)
         {
-            delete move;
-
             isLegal = false;
             break;
         }
-        else
-        {
-            delete move;
-        }
+
+        delete move;
     }
 
-    movePiece->setPosition(moveCoord);
+    Board* boardUndo = this->UndoExecute();
 
-    boardConfig[moveCoord] = movePiece;
-    boardConfig[destCoord] = destPiece;
+    delete board;
+    delete boardUndo;
 
     return isLegal;
 }
-

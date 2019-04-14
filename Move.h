@@ -22,7 +22,9 @@ public:
     char*           GetDescription();
 
     Board*          Execute();
+    Board*          UndoExecute();
 
+    // Use on Board
     Board*          Redo();
     Board*          Undo();
 
@@ -32,7 +34,7 @@ public:
     int             getDestCoordinate() const;
     bool            isAttackMove();
 
-    bool            isLegalMove() const;
+    bool            isLegalMove();
 
 protected:
     const Board*    m_board;
