@@ -71,7 +71,7 @@ int StandardBoardEvaluator::attacks(const Board *board, const Alliance alliance)
             int attackPieceCoord = move->getDestCoordinate();
             const Piece* attackPiece = board->getPieceOnBoard(attackPieceCoord);
 
-            if(movedPiece->getPieceValue() <= attackPiece->getPieceValue())
+            if(movedPiece->getPieceValue() < attackPiece->getPieceValue())
             {
                 attackScore ++;
             }

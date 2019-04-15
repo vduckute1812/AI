@@ -12,6 +12,7 @@ const static double MIN_VALUE = -1e4;
 Minimax::Minimax(int searchDepth)
 {
     m_boardEvaluated    = 0;
+    m_quiescenceCount = 0;
     m_searchDepth       = searchDepth;
     m_boardEvaluator    = new StandardBoardEvaluator();
 }
@@ -26,7 +27,7 @@ int Minimax::getNumboardsEvaluated()
     return m_boardEvaluated;
 }
 
-Move* Minimax::execute(const Board* board, int depth)
+Move* Minimax::execute(const Board* board)
 {
     double currentValue;
 //    int freqTableIndex = 0;
@@ -39,26 +40,31 @@ Move* Minimax::execute(const Board* board, int depth)
     double lowestSeenValue = MAX_VALUE;
 
     QTextStream out(stdout);
-    out << board->getMoveMaker() << " IS THINKING with depth " << depth <<endl;
+    out << board->getMoveMaker() << " IS THINKING with depth " << m_searchDepth <<endl;
 
     CollectMove moves = board->getLegalMoves(board->getMoveMaker());
 
     for (Move* move: moves) {
-
+        if(!move->isLegalMove())
+        {
+            delete move;
+            continue;
+        }
         Board* transitionBoard = move->Execute();
-
+        m_quiescenceCount = 0;
         currentValue = transitionBoard->getMoveMaker() == Alliance::WHITE ?
-                    min(transitionBoard, depth - 1): max(transitionBoard, depth - 1);
+                    min(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue):
+                    max(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue);
 
         Board* undoBoard = move->UndoExecute();
         delete undoBoard;
 
-        if(board->getMoveMaker() == Alliance::WHITE && currentValue >= hightestSeenValue)
+        if(board->getMoveMaker() == Alliance::WHITE && currentValue > hightestSeenValue)
         {
             hightestSeenValue = currentValue;
             bestMove = move;
         }
-        else if(board->getMoveMaker() == Alliance::BLACK && currentValue <= lowestSeenValue)
+        else if(board->getMoveMaker() == Alliance::BLACK && currentValue < lowestSeenValue)
         {
             lowestSeenValue = currentValue;
 
@@ -83,7 +89,7 @@ Move* Minimax::execute(const Board* board, int depth)
     return bestMove;
 }
 
-double Minimax::min(const Board* board, int depth)
+double Minimax::min(const Board* board, int depth, double highest, double lowest)
 {
     if(depth == 0|| isEndgame(board))
     {
@@ -98,7 +104,7 @@ double Minimax::min(const Board* board, int depth)
     for (Move* move: board->getLegalMoves(board->getMoveMaker()))
     {
         Board* transitionBoard = move->Execute();
-        double currentValue = max(transitionBoard, depth - 1);
+        double currentValue = max(transitionBoard, depth - 1, highest, lowest);
         if(currentValue <= lowestSeenValue)
         {
             lowestSeenValue = currentValue;
@@ -114,7 +120,7 @@ double Minimax::min(const Board* board, int depth)
     return lowestSeenValue;
 }
 
-double Minimax::max(const Board* board, int depth)
+double Minimax::max(const Board* board, int depth, double highest, double lowest)
 {
     if(depth == 0|| isEndgame(board))
     {
@@ -129,7 +135,7 @@ double Minimax::max(const Board* board, int depth)
     for (Move* move: board->getLegalMoves(board->getMoveMaker()))
     {
         Board* transitionBoard = move->Execute();
-        double currentValue = min(transitionBoard, depth - 1);
+        double currentValue = min(transitionBoard, depth - 1, highest, lowest);
         if(currentValue >= highestSeenValue)
         {
             highestSeenValue = currentValue;
@@ -149,3 +155,28 @@ bool Minimax::isEndgame(const Board* board)
 {
     return !board->hasEscapeMoves(board->getMoveMaker());
 }
+
+int Minimax::calculateQuiescenceDepth(const Move* moveTransition, int depth)
+{
+    if(depth == 1 && m_quiescenceCount < MAX_QUIESCENCE)
+    {
+//        board->isInCheck(BoardUntils::getOpponentAllianace(alliance))
+        int activityMeasure = 0;
+        const Board* transitionBoard = moveTransition->getTransitionBoard();
+        if (transitionBoard->isInCheck(transitionBoard->getMoveMaker()))
+        {
+            activityMeasure += 2;
+        }
+//        for(const Move* move: BoardUtils.lastNMoves(moveTransition.getToBoard(), 4)) {
+//            if(move.isAttack()) {
+//                activityMeasure += 1;
+//            }
+//        }
+//        if(activityMeasure > 3) {
+//            this.quiescenceCount++;
+//            return 2;
+//        }
+    }
+    return 0;
+}
+

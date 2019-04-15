@@ -53,7 +53,7 @@ void BoardUI::InitBoardGame()
     // Set move maker
     BoardController::GetInstance()->setMoveMaker(Alliance::WHITE);
 //    show();
-    startTimer(100);
+    startTimer(1);
 }
 
 BoardTiles BoardUI::GetTiles()
@@ -133,8 +133,8 @@ void BoardUI::OnUpdate()
 {
     if(m_board->isAIPlayer())
     {
-        Minimax* minimax = new Minimax(1);
-        Move* move = minimax->execute(m_board, 1);
+        Minimax* minimax = new Minimax(5);  //depth = 5
+        Move* move = minimax->execute(m_board);
         BoardController::GetInstance()->movePiece(move);
         delete minimax;
     }
