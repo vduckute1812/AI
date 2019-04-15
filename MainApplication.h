@@ -9,6 +9,8 @@ public:
     MainApplication(QWidget* parent = nullptr);
     ~MainApplication();
 
+    bool isAIplayer() const;
+
     void Init();
 
 

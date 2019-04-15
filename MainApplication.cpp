@@ -15,6 +15,12 @@ MainApplication::~MainApplication()
     boardController->freeGame();
 }
 
+bool MainApplication::isAIplayer() const
+{
+    return false;
+}
+
+
 void MainApplication::Init()
 {
     m_boardController = BoardController::GetInstance();

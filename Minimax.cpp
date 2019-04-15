@@ -6,8 +6,8 @@
 #include "BoardEvaluator.h"
 #include "StandardBoardEvaluator.h"
 
-const static double MAX_VALUE = 1e10;
-const static double MIN_VALUE = -1e10;
+const static double MAX_VALUE = 1e4;
+const static double MIN_VALUE = -1e4;
 
 Minimax::Minimax(int searchDepth)
 {
@@ -101,6 +101,9 @@ double Minimax::min(const Board* board, int depth)
             lowestSeenValue = currentValue;
         }
         // release memory
+        Board* undoBoard = move->UndoExecute();
+        delete undoBoard;
+
         delete move;
         delete transitionBoard;
     }
@@ -129,6 +132,9 @@ double Minimax::max(const Board* board, int depth)
             highestSeenValue = currentValue;
         }
         // release memory
+        Board* undoBoard = move->UndoExecute();
+        delete undoBoard;
+
         delete move;
         delete transitionBoard;
     }

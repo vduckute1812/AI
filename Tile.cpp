@@ -61,6 +61,9 @@ QBrush Tile::getDefaultColor() const
 
 void Tile::mousePressEvent(QMouseEvent *)
 {
+    if(BoardUI::GetInstance()->IsLocked())
+        return;
+
     // Make move Piece
     int coordinate = this->getCoordinate();
     Piece* piece = BoardController::GetInstance()->getSelecetedPiece();

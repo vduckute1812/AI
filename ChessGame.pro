@@ -33,7 +33,8 @@ SOURCES += \
     MainApplication.cpp \
     Minimax.cpp \
     StandardBoardEvaluator.cpp \
-    BoardEvaluator.cpp
+    BoardEvaluator.cpp \
+    Observer.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -60,4 +61,5 @@ HEADERS += \
     MainApplication.h \
     BoardEvaluator.h \
     Minimax.h \
-    StandardBoardEvaluator.h
+    StandardBoardEvaluator.h \
+    Observer.h

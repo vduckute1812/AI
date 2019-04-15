@@ -49,7 +49,7 @@ void MoveMgr::FreeInstance()
 
 void MoveMgr::Do(Move *move)
 {
-    if(!move)
+    if(!move || BoardUI::GetInstance()->IsLocked())
         return;
 
     BoardUI::GetInstance()->Lock(true);
@@ -87,6 +87,9 @@ bool MoveMgr::HasUndo()
 
 void MoveMgr::Undo()
 {
+    if(BoardUI::GetInstance()->IsLocked())
+        return;
+
     BoardUI::GetInstance()->Lock(true);
     BoardUI::GetInstance()->blockSignals(true);
 
@@ -109,6 +112,9 @@ bool MoveMgr::HasRedo()
 
 void MoveMgr::Redo()
 {
+    if(BoardUI::GetInstance()->IsLocked())
+        return;
+
     BoardUI::GetInstance()->Lock(true);
     BoardUI::GetInstance()->blockSignals(true);
 
