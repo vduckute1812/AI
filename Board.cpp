@@ -17,6 +17,8 @@
 Board::Board(const BoardBuilder* builder)
 {
     m_boardBuilder = builder;
+    m_isAIblack = true;
+    m_isAIwhite = false;
 }
 
 Board::~Board()
@@ -178,6 +180,24 @@ bool Board::hasEscapeMoves(const Alliance alliance) const
     }
 
     return hasEscapeMove;
+}
+
+void Board::setAIblack(bool isAIblack)
+{
+    m_isAIblack = isAIblack;
+}
+
+void Board::setAIwhite(bool isAIwhite)
+{
+    m_isAIwhite = isAIwhite;
+}
+
+bool Board::isAIPlayer()
+{
+    Alliance moveMaker = getMoveMaker();
+
+    return (m_isAIwhite && (moveMaker == Alliance::WHITE))
+            || (m_isAIblack && (moveMaker == Alliance::BLACK));
 }
 
 

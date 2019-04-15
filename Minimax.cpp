@@ -50,6 +50,9 @@ Move* Minimax::execute(const Board* board, int depth)
         currentValue = transitionBoard->getMoveMaker() == Alliance::WHITE ?
                     min(transitionBoard, depth - 1): max(transitionBoard, depth - 1);
 
+        Board* undoBoard = move->UndoExecute();
+        delete undoBoard;
+
         if(board->getMoveMaker() == Alliance::WHITE && currentValue >= hightestSeenValue)
         {
             hightestSeenValue = currentValue;

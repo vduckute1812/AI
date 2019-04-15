@@ -2,8 +2,8 @@
 #define BOARDUI_H
 #include <map>
 #include <QWidget>
+#include <QObject>
 #include "Singleton.h"
-
 
 class Board;
 class Tile;
@@ -24,17 +24,21 @@ public:
     void            SetBoard(Board* board);
     const Board*    GetCurrentBoard();
     void            FreeBoardGame();
+
+    void            OnUpdate();
+
     void            timerEvent(QTimerEvent *e) override;
     void            keyPressEvent(QKeyEvent *event) override;
 
     bool            IsLocked() const { return m_isLocked; }
-    void            Lock(bool yes) { m_isLocked = yes; }
+    void            Lock(bool yes = true) { m_isLocked = yes; }
 
 private:
     Board*          m_board;    //current Board
     BoardTiles      m_tiles;
 
     Board*          m_standardBoard;
+
 
     volatile bool				m_isLocked;
 };

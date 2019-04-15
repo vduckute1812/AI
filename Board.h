@@ -35,9 +35,16 @@ public:
     bool                        isInCheck(const Alliance alliance) const;
     bool                        hasEscapeMoves(const Alliance alliance) const;
 
+    void                        setAIblack(bool black);
+    void                        setAIwhite(bool white);
+
+    bool                        isAIPlayer();
+
 private:
 
-    const BoardBuilder*         m_boardBuilder;    
+    const BoardBuilder*         m_boardBuilder;
+    bool                        m_isAIblack;
+    bool                        m_isAIwhite;
 };
 
 namespace BOARD

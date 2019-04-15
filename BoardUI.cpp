@@ -5,6 +5,7 @@
 #include "BoardUntils.h"
 #include "BoardController.h"
 #include "MoveMgr.h"
+#include "Minimax.h"
 #include <QKeyEvent>
 
 BoardUI::~BoardUI()
@@ -128,10 +129,24 @@ void BoardUI::FreeBoardGame()
     }
 }
 
+void BoardUI::OnUpdate()
+{
+    if(m_board->isAIPlayer())
+    {
+        Minimax* minimax = new Minimax(1);
+        Move* move = minimax->execute(m_board, 1);
+        BoardController::GetInstance()->movePiece(move);
+        delete minimax;
+    }
+}
+
 void BoardUI::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
     repaint();
+
+    // OnUpdate in here
+    OnUpdate();
 }
 
 void BoardUI::keyPressEvent(QKeyEvent *event)
