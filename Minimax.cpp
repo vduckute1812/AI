@@ -5,6 +5,7 @@
 #include "Board.h"
 #include "BoardEvaluator.h"
 #include "StandardBoardEvaluator.h"
+#include <algorithm>    // std::max
 
 const static double MAX_VALUE = 1e4;
 const static double MIN_VALUE = -1e4;
@@ -100,24 +101,31 @@ double Minimax::min(const Board* board, int depth, double highest, double lowest
         return this->m_boardEvaluator->evaluate(board, depth);
     }
 
-    double lowestSeenValue = MAX_VALUE;
+    double currentLowest = lowest;
     for (Move* move: board->getLegalMoves(board->getMoveMaker()))
     {
         Board* transitionBoard = move->Execute();
-        double currentValue = max(transitionBoard, depth - 1, highest, lowest);
-        if(currentValue <= lowestSeenValue)
-        {
-            lowestSeenValue = currentValue;
-        }
+        currentLowest = std::min(currentLowest, max(transitionBoard, calculateQuiescenceDepth(move, depth), highest, currentLowest));
+
+//        if(currentLowest <= lowestSeenValue)
+//        {
+//            lowestSeenValue = currentLowest;
+//        }
+
         // release memory
         Board* undoBoard = move->UndoExecute();
         delete undoBoard;
 
         delete move;
         delete transitionBoard;
+
+        if(currentLowest <= highest)
+        {
+            return highest;
+        }
     }
 
-    return lowestSeenValue;
+    return currentLowest;
 }
 
 double Minimax::max(const Board* board, int depth, double highest, double lowest)
@@ -131,24 +139,31 @@ double Minimax::max(const Board* board, int depth, double highest, double lowest
         return this->m_boardEvaluator->evaluate(board, depth);
     }
 
-    double highestSeenValue = MIN_VALUE;
+    double currentHighest  = highest;
     for (Move* move: board->getLegalMoves(board->getMoveMaker()))
     {
         Board* transitionBoard = move->Execute();
-        double currentValue = min(transitionBoard, depth - 1, highest, lowest);
-        if(currentValue >= highestSeenValue)
-        {
-            highestSeenValue = currentValue;
-        }
+        currentHighest = std::max(currentHighest, min(transitionBoard, calculateQuiescenceDepth(move, depth), currentHighest, lowest));
+//        if(currentValue >= highestSeenValue)
+//        {
+//            highestSeenValue = currentValue;
+//        }
+
         // release memory
         Board* undoBoard = move->UndoExecute();
         delete undoBoard;
 
         delete move;
         delete transitionBoard;
+
+        if(currentHighest >= lowest)
+        {
+            return lowest;
+        }
+
     }
 
-    return highestSeenValue;
+    return currentHighest;
 }
 
 bool Minimax::isEndgame(const Board* board)
@@ -167,16 +182,20 @@ int Minimax::calculateQuiescenceDepth(const Move* moveTransition, int depth)
         {
             activityMeasure += 2;
         }
+
+
 //        for(const Move* move: BoardUtils.lastNMoves(moveTransition.getToBoard(), 4)) {
 //            if(move.isAttack()) {
-//                activityMeasure += 1;
-//            }
+            if(moveTransition->isAttackMove()) {
+                activityMeasure += 1;
+            }
 //        }
-//        if(activityMeasure > 3) {
-//            this.quiescenceCount++;
-//            return 2;
-//        }
+        if(activityMeasure > 3)
+        {
+            m_quiescenceCount++;
+            return 2;
+        }
     }
-    return 0;
+    return depth - 1;
 }
 

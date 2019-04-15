@@ -32,7 +32,7 @@ public:
 
     int             getMoveCoordinate() const;
     int             getDestCoordinate() const;
-    bool            isAttackMove();
+    bool            isAttackMove() const;
 
     bool            isLegalMove();
 

@@ -133,7 +133,7 @@ void BoardUI::OnUpdate()
 {
     if(m_board->isAIPlayer())
     {
-        Minimax* minimax = new Minimax(5);  //depth = 5
+        Minimax* minimax = new Minimax(2);  //depth = 5
         Move* move = minimax->execute(m_board);
         BoardController::GetInstance()->movePiece(move);
         delete minimax;

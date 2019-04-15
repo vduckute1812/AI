@@ -31,7 +31,7 @@ int Move::getDestCoordinate() const
     return m_destCoordinate;
 }
 
-bool Move::isAttackMove()
+bool Move::isAttackMove() const
 {
     const Piece* destPiece = m_board->getPieceOnBoard(m_destCoordinate);
     if (destPiece == nullptr)
