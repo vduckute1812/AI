@@ -1,12 +1,14 @@
 #include "MoveMgr.h"
 #include "MainApplication.h"
 #include "BoardController.h"
+#include "MoveMgr.h"
 #include <QToolBar>
+#include <QMenuBar>
 #include <QDockWidget>
 
 MainApplication::MainApplication(QWidget* parent): QMainWindow (parent)
 {
-    m_boardController = nullptr;
+
 }
 
 MainApplication::~MainApplication()
@@ -15,32 +17,31 @@ MainApplication::~MainApplication()
     boardController->freeGame();
 }
 
-bool MainApplication::isAIplayer() const
+void MainApplication::BuildMenus()
 {
-    return false;
+    menuBar()->clear();
+    //////////////////////////////////////////////////////////////////////////
 }
 
-
-void MainApplication::Init()
+void MainApplication::BuildToolMenus()
 {
-    m_boardController = BoardController::GetInstance();
-    m_boardController->InitGame();
-    m_boardController->printCurrentBoard();
+    delete m_undoToolbar;
+    m_undoToolbar = addToolBar("Undo");
+    m_undoToolbar->setObjectName("UndoToolbar");
 
-//    QPixmap doPix(QString("Resources/")+QString("do.png"));
-//    QPixmap undoPix(QString("Resources/")+QString("undo.png"));
+    m_undoAct = m_undoToolbar->addAction(QString("Resources/undo.png"), "Undo (Ctrl+Z)");
+    connect(m_undoAct, SIGNAL(triggered()), this, SLOT(UndoAct()));
 
-//    QActionGroup* g = new QActionGroup(this);
-//    connect(g, SIGNAL(triggered(QAction*)), this, SLOT(ActionGrp(QAction*)));
-
-//    QToolBar* toolbar = addToolBar("main Toolbar");
-//    QAction* redoAction = toolbar->addAction(QIcon(doPix), "Do action");
-//    QAction* undoAction = toolbar->addAction(QIcon(undoPix), "Undo action");
-
-//    connect(redoAction, SIGNAL(triggered()), this, SLOT(MoveMgr::Redo()), Qt::QueuedConnection);
-//    connect(undoAction, SIGNAL(triggered()), this, SLOT(MoveMgr::Undo()), Qt::QueuedConnection);
-
-//    QDockWidget* board = new QDockWidget(BoardUI::GetInstance());
-//    setCentralWidget(board);
+    m_redoAct = m_undoToolbar->addAction(QString("Resources/do.png"), "Redo (Ctrl+Y)");
+    connect(m_redoAct, SIGNAL(triggered()), this, SLOT(RedoAct()));
 }
 
+void MainApplication::UndoAct()
+{
+    MoveMgr::GetInstance()->Undo();
+}
+
+void MainApplication::RedoAct()
+{
+    MoveMgr::GetInstance()->Redo();
+}

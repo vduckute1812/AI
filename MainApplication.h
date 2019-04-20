@@ -9,13 +9,21 @@ public:
     MainApplication(QWidget* parent = nullptr);
     ~MainApplication();
 
-    bool isAIplayer() const;
+    void BuildMenus();
+    void BuildToolMenus();
 
-    void Init();
-
+public slots:
+    void UndoAct();
+    void RedoAct();
 
 private:
-    BoardController*    m_boardController;
+
+    QToolBar*				m_undoToolbar;
+    QToolBar*				m_modeToolbar;
+
+    QAction*				m_undoAct;
+    QAction*				m_redoAct;
+
 };
 
 #endif // MAINAPPLICATION_H
