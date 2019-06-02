@@ -1,90 +1,38 @@
 #ifndef BOARDUNTILS_H
 #define BOARDUNTILS_H
+#include "Defines.h"
 
-#include "Piece.h"
 
-static const int FIRST_COLUMN[]   = { 0,  8, 16, 24, 32, 40, 48, 56 };
-static const int SECOND_COLUMN[]  = { 1,  9, 17, 25, 33, 41, 49, 57 };
-static const int SEVENTH_COLUMN[] = { 6, 14, 22, 30, 38, 46, 54, 62 };
-static const int EIGHTH_COLUMN[]  = { 7, 15, 23, 31, 39, 47, 55, 63 };
-
-class BoardUntils
+enum CheckColumn
 {
-public:
-	const static int NUM_TILES = 64;
+    FIRST   = 0,
+    SECOND  = 1,
+    NEAR_END_OF_ROW = NUM_TILES_PER_COL - 2,
+    END_OF_COL      = NUM_TILES_PER_COL - 1
+};
 
-	const static int TILE_ROW_SIZE = 50;
-	
-	const static int TILE_COL_SIZE = 50;
+struct BoardUntils
+{
 
-	const static int NUM_TILES_PER_ROW = 8;
+    static int getMaxTiles() {return NUM_TILES_PER_ROW * NUM_TILES_PER_COL;}
 
-	static bool isFirstColumn(int coordinate)
-	{
-		for (int candidateCoordinate: FIRST_COLUMN)
-		{
-			if (coordinate == candidateCoordinate)
-				return true;
-		}
-
-		return false;
-	}
-
-	static bool isSecondColumn(int coordinate)
-	{
-		for (int candidateCoordinate: SECOND_COLUMN)
-		{
-			if (coordinate == candidateCoordinate)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	static bool isSeventhColumn(int coordinate)
-	{
-		for (int candidateCoordinate : SEVENTH_COLUMN)
-		{
-			if (coordinate == candidateCoordinate)
-				return true;
-		}
-
-		return false;
-	}
-
-	static bool isEighthColumn(int coordinate)
-	{
-		for (int candidateCoordinate : EIGHTH_COLUMN)
-		{
-			if (coordinate == candidateCoordinate)
-				return true;
-		}
-
-		return false;
-	}
-
-
-	static bool isValidTileCandidate(int coordinate)
-	{
-		return coordinate >= 0 && coordinate < NUM_TILES;
-	}
-
-    static bool isSameAlliance(Alliance piece1, Alliance piece2)
+    static bool isinColumn(CheckColumn numColumn ,int coordinate)
     {
-        if ((piece1 == Alliance::BLACK && piece2 == Alliance::BLACK)
-            || (piece1 == Alliance::WHITE && piece2 == Alliance::WHITE))
+        if(coordinate < 0 && coordinate > getMaxTiles() - 1)
         {
-            return true;
+            throw "Not in range of board!";
+        }
+
+        int firstColum = numColumn;
+        while(firstColum < getMaxTiles() - 1)
+        {
+            if(firstColum == coordinate)
+                return true;
+
+            firstColum += NUM_TILES_PER_COL;
         }
         return false;
     }
-
-    static Alliance getOpponentAllianace(Alliance alliance)
-    {
-        return alliance == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-    }
 };
 
-#endif
+#endif // BOARDUNTILS_H

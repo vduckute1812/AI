@@ -1,31 +1,20 @@
 #ifndef BOARDCONTROLLER_H
 #define BOARDCONTROLLER_H
-#include "Piece.h"
-#include "Singleton.h"
-#include "BoardUI.h"
+#include <QWidget>
 
-class Move;
-class BoardController: public Singleton<BoardController>
+class Piece;
+class BoardController: public QWidget
 {
 public:
-    void        InitGame();
-    void        setBoard(Board*);
+    BoardController(QWidget* parent = nullptr);
+    void     mousePressEvent(QMouseEvent *) override;
 
-    void        printCurrentBoard();
-    void        freeGame();
-
-    void        setSelectedPiece(Piece* piece);
-    Piece*      getSelecetedPiece() const;
-
-    void        setMoveMaker(Alliance);
-    Alliance    getMoveMaker() const;
-
-    void        movePiece(Move*);
+    void        SetSelecetedPiece(Piece* piece);
+    Piece*      GetSelecetedPiece() const {return m_piece;}
 
 private:
-    Piece*          m_selectedPiece;
-    BoardUI*        m_boardGame;
-    Alliance        m_moveMaker;
+    Piece*      m_piece;
+    int         m_coordinate;
 };
 
 #endif // BOARDCONTROLLER_H

@@ -1,39 +1,20 @@
 #ifndef TILE_H
 #define TILE_H
-#include <map>
-#include <QBrush>
 #include <QWidget>
 
-class Tile;
 class Piece;
-
-typedef std::map<int, Tile*> BoardTiles;
-
-static const QBrush ODD_COLOR   ("white");
-static const QBrush EVEN_COLOR  ("brown");
-static const QBrush MOVE_COLOR	("gray");
-static const QBrush ATTACK_COLOR(QColor(255, 100, 0 , 200));    // orangle
-static const QBrush CHOOSE_COLOR("yellow");
-
-class Tile: public QWidget
+class Tile : public QWidget
 {
 public:
-    explicit Tile(const int coordinate, Piece* piece, QWidget* parrent = nullptr);
+    explicit Tile(const int coordinate, Piece* piece = nullptr, QWidget* parrent = nullptr);
 
-    bool            isTileOccupied() const;
+    int     GetCoordinate();
+    bool    HasPieceOnTile();
+    Piece*  GetPiece();
 
-    void            setPiece(Piece*);
-    Piece*          getPiece() const;
+    void    mousePressEvent(QMouseEvent *) override;
 
-    int             getCoordinate() const;
-
-    void            setCurrentColor(QBrush color);
-    QBrush          getDefaultColor() const;
-
-    void            paintEvent(QPaintEvent *) override;
-    void            mousePressEvent(QMouseEvent *) override;
 protected:
-
     int         m_tileCoordinate;
     QBrush      m_currentColor;
     QBrush      m_defaultColor;
@@ -41,7 +22,3 @@ protected:
 };
 
 #endif // TILE_H
-namespace TILES
-{
-    BoardTiles   createEmptyTiles();
-}

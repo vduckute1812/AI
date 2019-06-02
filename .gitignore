@@ -20,3 +20,8 @@ mainwindow.*
 
 *.autosave
 *.stash
+
+*.bin
+*.ipch
+
+.vscode/

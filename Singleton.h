@@ -1,8 +1,6 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
-#pragma once
-
 ///////////////////////////////////////////////////////////////////////////////
 // Singleton implementation
 
@@ -17,6 +15,8 @@ public:
 protected:
         Singleton();
         virtual ~Singleton();
+
+        virtual void Init() {}
 
 private:
         static T* s_instance;
@@ -35,7 +35,8 @@ T* Singleton<T>::GetInstance()
         // doesn't create the instance automatically
         if (s_instance == nullptr)
         {
-                s_instance = new T();
+                s_instance = new T;
+                s_instance->Init();
         }
 
         return s_instance;
@@ -79,6 +80,5 @@ Singleton<T>::~Singleton()
 
 //
 ///////////////////////////////////////////////////////////////////////////////
-
 
 #endif // SINGLETON_H

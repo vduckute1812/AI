@@ -1,51 +1,20 @@
-#include "Board.h"
-#include "BoardUntils.h"
+#include "Defines.h"
+#include <QMouseEvent>
 #include "BoardController.h"
-#include "MoveMgr.h"
 
-void BoardController::InitGame()
+typedef vec2<int32_t> vec2i;
+
+BoardController::BoardController(QWidget* parent /*= nullptr*/) : QWidget(parent)
 {
-    BoardUI::GetInstance()->InitBoardGame();
-    m_boardGame = BoardUI::GetInstance();
+
 }
 
-void BoardController::setBoard(Board* board)
+void BoardController::mousePressEvent(QMouseEvent *)
 {
-    m_boardGame->SetBoard(board);
+//    vec2i pointer2D(event->x(), event->y());
 }
 
-void BoardController::setMoveMaker(Alliance moveMaker)
+void BoardController::SetSelecetedPiece(Piece* piece)
 {
-    m_moveMaker = moveMaker;
-}
-
-Alliance BoardController::getMoveMaker() const
-{
-    return m_boardGame->GetCurrentBoard()->getMoveMaker();
-}
-
-void BoardController::printCurrentBoard()
-{
-    m_boardGame->GetCurrentBoard()->printBoard();
-}
-
-void BoardController::setSelectedPiece(Piece* piece)
-{
-    m_selectedPiece = piece;
-}
-
-Piece* BoardController::getSelecetedPiece() const
-{
-    return m_selectedPiece;
-}
-
-void BoardController::freeGame()
-{
-    m_boardGame->FreeBoardGame();
-    m_boardGame->FreeInstance();
-}
-
-void BoardController::movePiece(Move* move)
-{
-    MoveMgr::GetInstance()->Do(move);
+    m_piece = piece;
 }

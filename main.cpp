@@ -1,14 +1,8 @@
-#include <QtWidgets/QApplication>
-#include "BoardController.h"
+#include <QCoreApplication>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    BoardController* boardController = BoardController::GetInstance();
-    boardController->InitGame();
-    boardController->printCurrentBoard();
-
-    BoardUI::GetInstance()->show();
+    QCoreApplication a(argc, argv);
 
     return a.exec();
 }
