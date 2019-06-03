@@ -13,7 +13,7 @@ ChessGame/x64/
 ChessGame.pro.user
 Makefile
 
-moc_mainwindow.*
+moc_*
 ui_mainwindow.*
 *.o
 mainwindow.*

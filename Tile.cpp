@@ -50,7 +50,7 @@ BoardTiles Tile::createEmptyTiles()
 
     for (int i = 0; i < NUM_TILES; ++i)
     {
-        tableTiles.insert(std::pair<int, Tile*>(i,  new Tile(i, NULL_PIECE)));
+        tableTiles.push_back(new Tile(i, NULL_PIECE));
     }
 
     return tableTiles;

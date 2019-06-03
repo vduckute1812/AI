@@ -23,7 +23,8 @@ while (MainWnd::GetInstance()->IsLocked()) \
 Sleep(5)
 
 class Tile;
-typedef std::map<int, Tile*> BoardTiles;
+class Piece;
+typedef std::vector<Tile*> BoardTiles;
 class BoardGameWnd : public QWidget, public Singleton<BoardGameWnd>, public Messenger
 {
     Q_OBJECT
@@ -61,8 +62,9 @@ public:
 private:
     volatile bool			m_isLocked;
 
-    BoardTiles              m_tiles;
+    std::vector<Piece*>     m_pieces;
     Board*                  m_boardState;
+    BoardTiles              m_tiles;
     BoardController*        m_boardController;
 };
 

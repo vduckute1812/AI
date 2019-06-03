@@ -29,12 +29,8 @@ void BoardGameWnd::Init()
     Board* initBoard = BoardGameWnd::CreateStandardBoard();
     SetBoard(initBoard);
 
-//    // set default board
-//    m_boardState = initBoard;
-
     setMinimumSize(TILE_ROW_SIZE * NUM_TILES_PER_ROW,
                  TILE_COL_SIZE * NUM_TILES_PER_ROW);
-
 
     QGridLayout *gridLayout = new QGridLayout();
 
@@ -43,11 +39,9 @@ void BoardGameWnd::Init()
     gridLayout->setSpacing(0);
     for (tilePtr = m_tiles.begin(); tilePtr != m_tiles.end(); ++tilePtr)
     {
-        Tile* tile = tilePtr->second;
+        Tile* tile = *tilePtr;
         tile->setParent(this);
         gridLayout->addWidget(tile, tile->GetCoordinate() / NUM_TILES_PER_ROW, tile->GetCoordinate() % NUM_TILES_PER_ROW);
-//        tile->move(tile->getCoordinate() % BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_ROW_SIZE,
-//            tile->getCoordinate() / BoardUntils::NUM_TILES_PER_ROW * BoardUntils::TILE_COL_SIZE);
     }
 
 //    // Set piece on board

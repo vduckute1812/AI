@@ -4,7 +4,7 @@
 
 class Tile;
 class Piece;
-typedef std::map<int, Tile*> BoardTiles;
+typedef std::vector<Tile*> BoardTiles;
 
 static const QBrush ODD_COLOR   ("white");
 static const QBrush EVEN_COLOR  ("brown");
