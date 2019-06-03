@@ -1,7 +1,6 @@
 #include "Piece.h"
 #include "Defines.h"
 
-
 Piece::Piece(Alliance pieceAlliance, int position, PieceType pieceType, PieceValue pieceValue, QWidget *parent): QFrame(parent)
 {
     m_isFirstMove = true;

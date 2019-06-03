@@ -1,14 +1,14 @@
 #include <QApplication>
-#include "BoardGameWnd.h"
-#include "BoardController.h"
+#include "MainWnd.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    BoardController* boardController = BoardController::GetInstance();
-    BoardGameWnd* boardWnd = BoardGameWnd::GetInstance();
-    boardWnd->SetController(boardController);
-    boardWnd->show();
+
+    MainWnd* mainWnd = MainWnd::GetInstance();
+    mainWnd->Init();
+
+    mainWnd->Show();
 
     return a.exec();
 }
