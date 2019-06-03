@@ -19,6 +19,8 @@ SOURCES += \
         BoardGameWnd.cpp \
         MainWnd.cpp \
         Messenger.cpp \
+        Move.cpp \
+        MoveMng.cpp \
         Piece.cpp \
         Tile.cpp \
         main.cpp
@@ -36,6 +38,8 @@ HEADERS += \
     Defines.h \
     MainWnd.h \
     Messenger.h \
+    Move.h \
+    MoveMng.h \
     Piece.h \
     Singleton.h \
     Tile.h

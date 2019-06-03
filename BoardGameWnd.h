@@ -22,6 +22,8 @@ QApplication::setOverrideCursor(Qt::BlankCursor)
 while (MainWnd::GetInstance()->IsLocked()) \
 Sleep(5)
 
+class Tile;
+typedef std::map<int, Tile*> BoardTiles;
 class BoardGameWnd : public QWidget, public Singleton<BoardGameWnd>, public Messenger
 {
     Q_OBJECT
@@ -29,6 +31,8 @@ class BoardGameWnd : public QWidget, public Singleton<BoardGameWnd>, public Mess
 public:
     BoardGameWnd(BoardController* controller = nullptr, QWidget* parent = nullptr);
     ~BoardGameWnd();
+
+    static Board*           CreateStandardBoard();
 
     struct EditModeDef
     {
@@ -43,15 +47,21 @@ public:
 
     virtual void            Init();
 
-    BoardController*        GetEditModeController() { return m_boardController; }
+    void                    SetController(BoardController*);
+    void                    SetBoard(Board* board);
+    const Board*            GetCurrentBoard() {return m_boardState;}
 
+    BoardController*        GetEditModeController() { return m_boardController; }
 
     bool					IsLocked() const { return m_isLocked; }
     void					Lock(bool yes) { m_isLocked = yes; }
 
+    void                    SetBoardState(Board* board);
+
 private:
     volatile bool			m_isLocked;
 
+    BoardTiles              m_tiles;
     Board*                  m_boardState;
     BoardController*        m_boardController;
 };
