@@ -7,27 +7,39 @@ TARGET = ChessGame
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    Board.cpp \
+    Bishop.cpp \
     BoardController.cpp \
     BoardGameWnd.cpp \
+    King.cpp \
+    Knight.cpp \
     MainWnd.cpp \
     Messenger.cpp \
     Move.cpp \
     MoveMng.cpp \
+    Pawn.cpp \
     Piece.cpp \
+    PieceFactory.cpp \
+    Queen.cpp \
+    Rook.cpp \
     Tile.cpp
 
 HEADERS += \
-    Board.h \
+    Bishop.h \
     BoardController.h \
     BoardGameWnd.h \
     BoardUntils.h \
     Defines.h \
+    King.h \
+    Knight.h \
     MainWnd.h \
     Messenger.h \
     Move.h \
     MoveMng.h \
+    Pawn.h \
     Piece.h \
+    PieceFactory.h \
+    Queen.h \
+    Rook.h \
     Singleton.h \
     Tile.h
 

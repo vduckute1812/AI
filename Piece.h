@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QLabel>
 
+
 enum Alliance
 {
     WHITE = 'w',
@@ -33,19 +34,25 @@ enum PieceValue
 class Move;
 class Board;
 class Move;
+class Piece;
 
 typedef std::vector<Move*> MoveCollection;
+
+typedef std::pair<unsigned int, Piece*> PieceInf;
+
+typedef std::vector<PieceInf> BoardConfig;
+typedef std::vector<const Piece*> CollectPiece;
 
 class Piece: public QFrame
 {
 public:
-    explicit Piece(Alliance pieceAlliance, int position, PieceType pieceType, PieceValue pieceValue, QWidget *parent = nullptr);
+    explicit Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent = nullptr, int position = -1);
     virtual ~Piece();
 
     virtual bool		isFirstColumnExclusion(int currentPosition, int candidateOffset) const = 0;
     virtual bool		isEightColumnExclusion(int currentPosition, int candidateOffset) const = 0;
 
-    virtual             MoveCollection CalculateLegalMove(const Board* board) const = 0;
+    virtual             MoveCollection calculateLegalMove(const BoardConfig board) const = 0;
 
     virtual             PieceValue GetPieceValue() const;
 

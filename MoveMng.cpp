@@ -1,7 +1,6 @@
 #include "MoveMng.h"
 #include "Move.h"
 #include "BoardGameWnd.h"
-#include "Board.h"
 
 MoveMgr* MoveMgr::s_instance = nullptr;
 
@@ -49,32 +48,32 @@ void MoveMgr::FreeInstance()
 
 void MoveMgr::Do(Move *move)
 {
-    if(!move || BoardGameWnd::GetInstance()->IsLocked())
-        return;
+//    if(!move || BoardGameWnd::GetInstance()->IsLocked())
+//        return;
 
-    BoardGameWnd::GetInstance()->Lock(true);
-    BoardGameWnd::GetInstance()->blockSignals(true);
+//    BoardGameWnd::GetInstance()->Lock(true);
+//    BoardGameWnd::GetInstance()->blockSignals(true);
 
 
-    // remove pre-move
-    unsigned int currentIndex =  static_cast<unsigned int>(m_moveIdx);
-    for (; currentIndex < m_trackMoves.size(); ++currentIndex)
-    {
-        delete m_trackMoves[currentIndex];
-    }
+//    // remove pre-move
+//    unsigned int currentIndex =  static_cast<unsigned int>(m_moveIdx);
+//    for (; currentIndex < m_trackMoves.size(); ++currentIndex)
+//    {
+//        delete m_trackMoves[currentIndex];
+//    }
 
-    // after delete pre-move. Set size of available track
-    m_trackMoves.resize(static_cast<unsigned int>(m_moveIdx));
+//    // after delete pre-move. Set size of available track
+//    m_trackMoves.resize(static_cast<unsigned int>(m_moveIdx));
 
-    m_moveIdx++;
+//    m_moveIdx++;
 
-    Board* board = move->Execute();
-    m_trackMoves.push_back(move);
+//    Board* board = move->Execute();
+//    m_trackMoves.push_back(move);
 
-    BoardGameWnd::GetInstance()->SetBoardState(board);
+//    BoardGameWnd::GetInstance()->SetBoardState(board);
 
-    BoardGameWnd::GetInstance()->Lock(false);
-    BoardGameWnd::GetInstance()->blockSignals(false);
+//    BoardGameWnd::GetInstance()->Lock(false);
+//    BoardGameWnd::GetInstance()->blockSignals(false);
 
 }
 
@@ -87,22 +86,22 @@ bool MoveMgr::HasUndo()
 
 void MoveMgr::Undo()
 {
-    if(BoardGameWnd::GetInstance()->IsLocked())
-        return;
+//    if(BoardGameWnd::GetInstance()->IsLocked())
+//        return;
 
-    BoardGameWnd::GetInstance()->Lock(true);
-    BoardGameWnd::GetInstance()->blockSignals(true);
+//    BoardGameWnd::GetInstance()->Lock(true);
+//    BoardGameWnd::GetInstance()->blockSignals(true);
 
-    if(HasUndo())
-    {
-        m_moveIdx--;
-        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
-        Board* board = m_trackMoves[currentIdx]->Undo();
-        BoardGameWnd::GetInstance()->SetBoardState(board);
-    }
+//    if(HasUndo())
+//    {
+//        m_moveIdx--;
+//        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
+//        Board* board = m_trackMoves[currentIdx]->Undo();
+//        BoardGameWnd::GetInstance()->SetBoardState(board);
+//    }
 
-    BoardGameWnd::GetInstance()->Lock(false);
-    BoardGameWnd::GetInstance()->blockSignals(false);
+//    BoardGameWnd::GetInstance()->Lock(false);
+//    BoardGameWnd::GetInstance()->blockSignals(false);
 }
 
 bool MoveMgr::HasRedo()
@@ -112,22 +111,22 @@ bool MoveMgr::HasRedo()
 
 void MoveMgr::Redo()
 {
-    if(BoardGameWnd::GetInstance()->IsLocked())
-        return;
+//    if(BoardGameWnd::GetInstance()->IsLocked())
+//        return;
 
-    BoardGameWnd::GetInstance()->Lock(true);
-    BoardGameWnd::GetInstance()->blockSignals(true);
+//    BoardGameWnd::GetInstance()->Lock(true);
+//    BoardGameWnd::GetInstance()->blockSignals(true);
 
-    if(HasRedo())
-    {
-        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
-        Board* board = m_trackMoves[currentIdx]->Redo();
-        BoardGameWnd::GetInstance()->SetBoardState(board);
-        m_moveIdx++;
-    }
+//    if(HasRedo())
+//    {
+//        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
+//        Board* board = m_trackMoves[currentIdx]->Redo();
+//        BoardGameWnd::GetInstance()->SetBoardState(board);
+//        m_moveIdx++;
+//    }
 
-    BoardGameWnd::GetInstance()->Lock(false);
-    BoardGameWnd::GetInstance()->blockSignals(false);
+//    BoardGameWnd::GetInstance()->Lock(false);
+//    BoardGameWnd::GetInstance()->blockSignals(false);
 }
 
 

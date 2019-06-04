@@ -32,7 +32,7 @@ void MainWnd::Init()
     m_boardDock = CreateDock("Board Game", "", boardWnd);
     AppendDock(m_boardDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::LeftDockWidgetArea);
 
-//    setCentralWidget(boardWnd);
+    setCentralWidget(boardWnd);
 }
 
 QDockWidget* MainWnd::CreateDock(const char *name, QString iconStr, QWidget *widget)
@@ -95,7 +95,7 @@ const QIcon& MainWnd::LoadIcon(QString iconStr)
 
 void MainWnd::Show()
 {
-    showMaximized();
+    show();
     QApplication::processEvents(); // Make sure it is all processed before state restoration.
 }
 
