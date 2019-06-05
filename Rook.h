@@ -11,7 +11,7 @@ public:
     Rook(Alliance pieceAlliance, QWidget *parent = nullptr, int piecePos = -1);
     virtual ~Rook();
 
-    virtual std::vector<Move*> calculateLegalMove(const BoardConfig board) const;
+    virtual std::vector<Move*> calculateLegalMove(const BoardState board) const;
 
 	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
 

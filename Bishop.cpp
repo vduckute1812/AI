@@ -24,47 +24,47 @@ bool Bishop::isEightColumnExclusion(int currentPosition, int candidateOffset) co
     return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition) /*is last column*/  && (candidateOffset == -7 || candidateOffset == 9);
 }
 
-MoveCollection Bishop::calculateLegalMove(const BoardConfig board) const
+MoveCollection Bishop::calculateLegalMove(const BoardState board) const
 {
     MoveCollection legalMoves;
 
-//        int candidateDestinationCoordinate;
+        int candidateDestinationCoordinate;
 
-//        for (int candidateCoordinationOffset : BISHOP_CANDIDATE_MOVE_COORDINATE)
-//        {
-//            candidateDestinationCoordinate = this->m_piecePosition + candidateCoordinationOffset;
+        for (int candidateCoordinationOffset : BISHOP_CANDIDATE_MOVE_COORDINATE)
+        {
+            candidateDestinationCoordinate = this->m_piecePosition + candidateCoordinationOffset;
 
-//            while (BoardUntils::IsValidTileCandidate(candidateDestinationCoordinate))
-//            {
-//                if (isFirstColumnExclusion(this->m_piecePosition, candidateCoordinationOffset)
-//                    || isEightColumnExclusion(this->m_piecePosition, candidateCoordinationOffset)){
-//                    break;
-//                }
+            while (BoardUntils::IsValidTileCandidate(candidateDestinationCoordinate))
+            {
+                if (isFirstColumnExclusion(this->m_piecePosition, candidateCoordinationOffset)
+                    || isEightColumnExclusion(this->m_piecePosition, candidateCoordinationOffset)){
+                    break;
+                }
 
-//                if (!BoardGameWnd::IsTileOccupied(board, candidateDestinationCoordinate) ||
-//                !BoardUntils::IsSameAlliance( this->GetAlliance(), BoardGameWnd::GetPieceOnBoard(board, candidateDestinationCoordinate)->GetAlliance()) )
-//                {
-//                    legalMoves.push_back(new Move(board, this, BoardGameWnd::GetPieceOnBoard(board, candidateDestinationCoordinate)), candidateDestinationCoordinate));
-//                }
-//                else // Stop by Enemy or Alliance
-//                {
-//                    break;
-//                }
+                if (!BoardState::IsTileOccupied(board, candidateDestinationCoordinate) ||
+                !BoardUntils::IsSameAlliance( this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestinationCoordinate)->GetAlliance()) )
+                {
+                    legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestinationCoordinate), candidateDestinationCoordinate));
+                }
+                else // Stop by Enemy or Alliance
+                {
+                    break;
+                }
 
-//                if (BoardUntils::isFirstColumn(candidateDestinationCoordinate)
-//                    || BoardUntils::isEighthColumn(candidateDestinationCoordinate))
-//                {
-//                    break;
-//                }
+                if (BoardUntils::IsNumColumn(1, candidateDestinationCoordinate)
+                    || BoardUntils::IsNumColumn(NUM_TILES_PER_COL, candidateDestinationCoordinate))
+                {
+                    break;
+                }
 
-//                if (board->isTileOccupied(candidateDestinationCoordinate))
-//                {
-//                    break;
-//                }
+                if (BoardState::IsTileOccupied(board, candidateDestinationCoordinate))
+                {
+                    break;
+                }
 
-//                candidateDestinationCoordinate += candidateCoordinationOffset;
-//            }
-//        }
+                candidateDestinationCoordinate += candidateCoordinationOffset;
+            }
+        }
 
     return legalMoves;
 }

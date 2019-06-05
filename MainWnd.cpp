@@ -60,13 +60,13 @@ void MainWnd::AppendDock(QDockWidget *dock, Qt::DockWidgetAreas allowedAreas, Qt
 
 const QIcon& MainWnd::LoadIcon(QString iconStr)
 {
-    static QString extensions[] = { ".svg", ".png", ".tga", ".ico", ".bmp" };
+    const QList<QString> extensions = { ".svg", ".png", ".tga", ".ico", ".bmp" };
 
     QIcon* icon = nullptr;
 
     if(!iconStr.isEmpty())
     {
-        for (int i = 0; i < static_cast<int>(extensions->size()); ++i)
+        for (int i = 0; i < static_cast<int>(extensions.size()); ++i)
         {
             QString fn(QString("Resources/") + iconStr + extensions[i]);
             QFileInfo info(fn);

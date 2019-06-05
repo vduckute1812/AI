@@ -2,8 +2,8 @@
 #define BOARDCONTROLLER_H
 #include <QWidget>
 #include "Singleton.h"
+#include "Piece.h"
 
-class Piece;
 class BoardController: public Singleton<BoardController>, public QWidget
 {
 public:
@@ -13,9 +13,13 @@ public:
     void        SetSelecetedPiece(Piece* piece);
     Piece*      GetSelecetedPiece() const {return m_piece;}
 
+    Alliance    GetMoveMaker();
+    void        SetMoveMaker(Alliance maker);
+
 private:
     Piece*      m_piece;
     int         m_coordinate;
+    Alliance    m_moveMaker;
 };
 
 #endif // BOARDCONTROLLER_H

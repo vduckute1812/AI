@@ -14,7 +14,7 @@ public:
     virtual bool		isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
     virtual bool		isEightColumnExclusion(int currentPosition, int candidateOffset) const;
 
-    virtual             MoveCollection calculateLegalMove(const BoardConfig board) const;
+    virtual             MoveCollection calculateLegalMove(const BoardState board) const;
 
 };
 

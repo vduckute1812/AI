@@ -24,8 +24,8 @@ public:
     int             GetCoordinate();
     bool            HasPieceOnTile();
 
-    void            setCurrentColor(QBrush color);
-    QBrush          getDefaultColor() const;
+    void            SetCurrentColor(QBrush color);
+    QBrush          GetDefaultColor() const;
 
     static          BoardTiles createEmptyTiles();
 

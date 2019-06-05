@@ -41,6 +41,19 @@ typedef std::vector<Move*> MoveCollection;
 typedef std::pair<unsigned int, Piece*> PieceInf;
 
 typedef std::vector<PieceInf> BoardConfig;
+
+struct BoardState
+{
+    static bool         IsTileOccupied(BoardState boarValue, unsigned int position);
+    static Piece*       GetPieceOnBoard(BoardState boarValue, unsigned int position);
+
+    void                SetTurnPlayer(Alliance alliance);
+    void                SetPiece(unsigned int position, const Piece* piece);
+
+    Alliance            m_playerTurn;
+    BoardConfig         m_boardValue;
+};
+
 typedef std::vector<const Piece*> CollectPiece;
 
 class Piece: public QFrame
@@ -52,12 +65,12 @@ public:
     virtual bool		isFirstColumnExclusion(int currentPosition, int candidateOffset) const = 0;
     virtual bool		isEightColumnExclusion(int currentPosition, int candidateOffset) const = 0;
 
-    virtual             MoveCollection calculateLegalMove(const BoardConfig board) const = 0;
+    virtual             MoveCollection calculateLegalMove(const BoardState board) const = 0;
 
     virtual             PieceValue GetPieceValue() const;
 
-    void                SetPosition(int position);
-    int                 GetPosition() const;
+    void                SetPosition(unsigned int position);
+    unsigned int        GetPosition() const;
 
     PieceType			GetPieceType() const;
     Alliance            GetAlliance() const;
@@ -70,7 +83,7 @@ public:
     bool                IsFirstMove() const;
 
 protected:
-    int                 m_piecePosition;
+    unsigned int        m_piecePosition;
     Alliance			m_pieceAlliance;
     PieceType           m_pieceType;
     PieceValue          m_pieceValue;

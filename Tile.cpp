@@ -3,6 +3,8 @@
 #include "Defines.h"
 #include "BoardGameWnd.h"
 #include "BoardController.h"
+#include "BoardUntils.h"
+#include "Move.h"
 
 #include <QPainter>
 
@@ -33,12 +35,12 @@ bool Tile::HasPieceOnTile()
     return m_piece != nullptr ? true: false;
 }
 
-void Tile::setCurrentColor(QBrush color)
+void Tile::SetCurrentColor(QBrush color)
 {
     m_currentColor = color;
 }
 
-QBrush Tile::getDefaultColor() const
+QBrush Tile::GetDefaultColor() const
 {
     return m_defaultColor;
 }
@@ -71,6 +73,61 @@ void Tile::mousePressEvent(QMouseEvent *event)
 //    // Make move Piece
 //    int coordinate = this->GetCoordinate();
 
+
+    if(BoardGameWnd::GetInstance()->IsLocked())
+        return;
+
+    // Make move Piece
+    int coordinate = this->GetCoordinate();
+    Piece* piece = BoardController::GetInstance()->GetSelecetedPiece();
+    Alliance currentMoveMaker = BoardController::GetInstance()->GetMoveMaker();
+    if (piece  && BoardUntils::IsSameAlliance(piece->GetAlliance(), currentMoveMaker))
+    {
+        for (Move* move : piece->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))
+        {
+            if (move->GetDestCoordinate() == coordinate)
+            {
+//                if(move->IsLegalMove())
+//                {
+//                    BoardController::GetInstance()->movePiece(move);
+//                }
+//                else
+//                {
+//                    delete move;
+//                }
+            }
+            else
+            {
+                delete move;
+            }
+        }
+    }
+
+    BoardController::GetInstance()->SetSelecetedPiece(this->GetPiece());
+
+    // Set colors on Board. Render posible move
+    BoardGameWnd::GetInstance()->ResetColorTiles();
+    Piece* pieceColor = BoardController::GetInstance()->GetSelecetedPiece();
+
+    if (pieceColor  && BoardUntils::IsSameAlliance(pieceColor->GetAlliance(), BoardController::GetInstance()->GetMoveMaker()))
+    {
+        this->SetCurrentColor(CHOOSE_COLOR);
+        for (Move* move : pieceColor->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))
+        {
+            Tile* tile = BoardGameWnd::GetInstance()->GetTiles().at(move->GetDestCoordinate());
+            if(move->IsLegalMove())
+            {
+                if(move->IsAttackMove())
+                {
+                    tile->SetCurrentColor(ATTACK_COLOR);
+                }
+                else {
+                    tile->SetCurrentColor(MOVE_COLOR);
+                }
+            }
+            delete move;
+        }
+    }
 }
 
 void Tile::paintEvent(QPaintEvent *)

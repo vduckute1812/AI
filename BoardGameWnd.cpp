@@ -13,6 +13,7 @@ BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = null
     , Messenger()
 {
     m_boardController = controller;
+    startTimer(50);
 }
 
 BoardGameWnd::~BoardGameWnd()
@@ -20,46 +21,32 @@ BoardGameWnd::~BoardGameWnd()
     delete m_boardController;
 }
 
-BoardConfig BoardGameWnd::CreateStandardBoard()
+BoardState BoardGameWnd::CreateStandardBoard()
 {
-    BoardConfig stardardBoard;
-    int endBoardIdx = NUM_TILES_PER_ROW * NUM_TILES_PER_COL - 1;
+    BoardState stardardBoard;
+    unsigned int endBoardIdx = NUM_TILES_PER_ROW * NUM_TILES_PER_COL - 1;
     const QList<QString> listInit = {"Rook","Knight","Bishop","King","Queen","Bishop","Knight","Rook"
                                ,"Pawn","Pawn"  ,"Pawn"  ,"Pawn","Pawn" , "Pawn" ,"Pawn"  ,"Pawn"};
 
-    for(int i = 0; i < listInit.size(); ++i)
+    for(unsigned int i = 0; i < listInit.size(); ++i)
     {
-        Piece* piece_white = PieceFactory::GeneratePiece(listInit[i], Alliance::WHITE);
-        stardardBoard.push_back(std::make_pair(i, piece_white));
+        Piece* piece_white = PieceFactory::GeneratePiece(listInit[i], Alliance::BLACK);
+        piece_white->SetPosition(i);
+        stardardBoard.m_boardValue.push_back(std::make_pair(i, piece_white));
 
-        Piece* piece_black = PieceFactory::GeneratePiece(listInit[i], Alliance::BLACK);
-        stardardBoard.push_back(std::make_pair(endBoardIdx - i, piece_black));
+        Piece* piece_black = PieceFactory::GeneratePiece(listInit[i], Alliance::WHITE);
+        piece_black->SetPosition(endBoardIdx - i);
+        stardardBoard.m_boardValue.push_back(std::make_pair(endBoardIdx - i, piece_black));
     }
 
+    stardardBoard.m_playerTurn = Alliance::WHITE;
 
     return stardardBoard;
 }
 
-bool BoardGameWnd::IsTileOccupied( BoardConfig board, unsigned int position)
+BoardTiles BoardGameWnd::GetTiles()
 {
-    BoardConfig::iterator piecePtr;
-    for (piecePtr = board.begin(); piecePtr != board.end(); ++piecePtr)
-    {
-        if(piecePtr->first == position)
-            return true;
-    }
-    return false;
-}
-
-Piece *BoardGameWnd::GetPieceOnBoard(BoardConfig board,  unsigned int position)
-{
-    BoardConfig::iterator piecePtr;
-    for (piecePtr = board.begin(); piecePtr != board.end(); ++piecePtr)
-    {
-        if(piecePtr->first == position)
-            return piecePtr->second;
-    }
-    return nullptr;
+    return m_tiles;
 }
 
 void BoardGameWnd::Init()
@@ -67,7 +54,8 @@ void BoardGameWnd::Init()
     m_isLocked = false;
 
     m_tiles = Tile::createEmptyTiles();
-    BoardConfig initBoard = BoardGameWnd::CreateStandardBoard();
+    BoardState initBoard = BoardGameWnd::CreateStandardBoard();
+
     SetBoard(initBoard);
 
     setMinimumSize(TILE_ROW_SIZE * NUM_TILES_PER_ROW,
@@ -87,19 +75,23 @@ void BoardGameWnd::Init()
 
     // Set piece on board
     BoardConfig::iterator piecePtr;
-    for (piecePtr = m_boardState.begin(); piecePtr != m_boardState.end(); ++piecePtr)
+    for (piecePtr = m_boardState.m_boardValue.begin(); piecePtr != m_boardState.m_boardValue.end(); ++piecePtr)
     {
         unsigned int location = piecePtr->first;
         Tile* tile = m_tiles.at(location);
         Piece* piece = piecePtr->second;
+
+        tile->SetPiece(piece);
         if(piece != nullptr)
+        {
             piece->setParent(tile);
+        }
     }
 
     setLayout(gridLayout);
 
-//    // Set default move maker
-//    BoardController::GetInstance()->setMoveMaker(Alliance::WHITE);
+////    // Set default move maker
+//    BoardController::GetInstance()->SetMoveMaker(Alliance::WHITE);
 }
 
 void BoardGameWnd::SetController(BoardController *controller)
@@ -107,7 +99,24 @@ void BoardGameWnd::SetController(BoardController *controller)
     m_boardController = controller;
 }
 
-void BoardGameWnd::SetBoard(BoardConfig board)
+void BoardGameWnd::SetBoard(BoardState board)
 {
     m_boardState = board;
+}
+
+void BoardGameWnd::ResetColorTiles()
+{
+    // Set parrent and move tiles to their coordinate
+    BoardTiles::iterator tilePtr;
+    for (tilePtr = m_tiles.begin(); tilePtr != m_tiles.end(); ++tilePtr)
+    {
+        Tile* tile = *tilePtr;
+        tile->SetCurrentColor(tile->GetDefaultColor());
+    }
+}
+
+void BoardGameWnd::timerEvent(QTimerEvent *e)
+{
+    Q_UNUSED(e);
+    repaint();
 }

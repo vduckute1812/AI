@@ -40,12 +40,12 @@ Alliance Piece::GetAlliance() const
     return m_pieceAlliance;
 }
 
-void Piece::SetPosition(int position)
+void Piece::SetPosition(unsigned int position)
 {
     m_piecePosition = position;
 }
 
-int Piece::GetPosition() const
+unsigned int Piece::GetPosition() const
 {
     return m_piecePosition;
 }
@@ -69,3 +69,26 @@ void Piece::SetFirstMove(bool firstMove)
 {
     m_isFirstMove = firstMove;
 }
+
+bool BoardState::IsTileOccupied(BoardState boarValue, unsigned int position)
+{
+    BoardConfig::iterator piecePtr;
+    for (piecePtr = boarValue.m_boardValue.begin(); piecePtr != boarValue.m_boardValue.end(); ++piecePtr)
+    {
+        if(piecePtr->first == position)
+            return true;
+    }
+    return false;
+}
+
+Piece *BoardState::GetPieceOnBoard(BoardState boarValue, unsigned int position)
+{
+    BoardConfig::iterator piecePtr;
+    for (piecePtr = boarValue.m_boardValue.begin(); piecePtr != boarValue.m_boardValue.end(); ++piecePtr)
+    {
+        if(piecePtr->first == position)
+            return piecePtr->second;
+    }
+    return nullptr;
+}
+

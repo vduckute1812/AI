@@ -3,7 +3,7 @@
 #include "BoardUntils.h"
 #include "BoardGameWnd.h"
 
-Move::Move( const BoardConfig board, const Piece* movePiece, const Piece* attackPiece, const int destCoord)
+Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackPiece, const int destCoord)
 {
     m_board = board;
     m_movePiece = movePiece;
@@ -11,11 +11,6 @@ Move::Move( const BoardConfig board, const Piece* movePiece, const Piece* attack
     m_destCoordinate = destCoord;
     m_movedCoordinate = movePiece->GetPosition();
     m_isFirstMove = m_movePiece->IsFirstMove();
-}
-
-char* Move::GetDescription()
-{
-    return m_description;
 }
 
 int Move::GetMoveCoordinate() const
@@ -30,7 +25,7 @@ int Move::GetDestCoordinate() const
 
 bool Move::IsAttackMove() const
 {
-    const Piece* destPiece = BoardGameWnd::GetPieceOnBoard(m_board, m_destCoordinate);
+    const Piece* destPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
     if (destPiece == nullptr)
     {
         return false;
@@ -38,13 +33,8 @@ bool Move::IsAttackMove() const
     return true;
 }
 
-const BoardConfig Move::GetTransitionBoard() const
-{
-    return m_toBoard;
-}
 
-
-BoardConfig Move::Execute()
+BoardState Move::Execute()
 {
 //    BoardBuilder* builder = new BoardBuilder();
 
@@ -73,11 +63,11 @@ BoardConfig Move::Execute()
 //    Board* board = builder->build();
 //    m_toBoard = board;
 
-    BoardConfig test;
+    BoardState test;
     return test;
 }
 
-BoardConfig Move::UndoExecute()
+BoardState Move::UndoExecute()
 {
 //    BoardBuilder* builder = new BoardBuilder();
 //    const Board* currentBoard = m_toBoard;
@@ -104,12 +94,12 @@ BoardConfig Move::UndoExecute()
 //    builder->setMoveMaker(currentBoard->getOpponentMaker());
 //    return builder->build();
 
-    BoardConfig test;
+    BoardState test;
     return test;
 }
 
 // Use for GUI
-BoardConfig Move::Undo()
+BoardState Move::Undo()
 {
 //    BoardBuilder* builder = new BoardBuilder();
 //    const Board* currentBoard = BoardUI::GetInstance()->GetCurrentBoard();
@@ -137,11 +127,11 @@ BoardConfig Move::Undo()
 //    builder->setMoveMaker(currentBoard->getOpponentMaker());
 //    return builder->build();
 
-    BoardConfig test;
+    BoardState test;
     return test;
 }
 
-BoardConfig Move::Redo()
+BoardState Move::Redo()
 {
 //    BoardBuilder* builder = new BoardBuilder();
 
@@ -168,7 +158,7 @@ BoardConfig Move::Redo()
 
 //    builder->setMoveMaker(currentBoard->getOpponentMaker());
 //    return builder->build();
-    BoardConfig test;
+    BoardState test;
     return test;
 }
 
@@ -210,5 +200,5 @@ bool Move::IsLegalMove()
 //    delete boardUndo;
 
 //    return isLegal;
-    return false;
+    return true;
 }

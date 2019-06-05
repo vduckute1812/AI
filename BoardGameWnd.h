@@ -36,10 +36,9 @@ public:
     BoardGameWnd(BoardController* controller = nullptr, QWidget* parent = nullptr);
     ~BoardGameWnd();
 
-    static BoardConfig      CreateStandardBoard();
+    static BoardState       CreateStandardBoard();
 
-    static bool             IsTileOccupied( BoardConfig board, unsigned int position);
-    static Piece*           GetPieceOnBoard(BoardConfig board, unsigned int position);
+    BoardTiles              GetTiles();
 
     struct EditModeDef
     {
@@ -52,25 +51,28 @@ public:
         };
     };
 
-    virtual void            Init();
+    virtual void            Init() override;
 
     void                    SetController(BoardController*);
-    void                    SetBoard(BoardConfig board);
-    const BoardConfig       GetCurrentBoard() {return m_boardState;}
+    void                    SetBoard(BoardState board);
+    const BoardState        GetCurrentBoard() {return m_boardState;}
+
+    void                    ResetColorTiles();
 
     BoardController*        GetEditModeController() { return m_boardController; }
 
     bool					IsLocked() const { return m_isLocked; }
     void					Lock(bool yes) { m_isLocked = yes; }
-
+    void                    timerEvent(QTimerEvent *e) override;
 
 private:
     volatile bool			m_isLocked;
 
     std::vector<Piece*>     m_pieces;
-    BoardTiles              m_tiles;
-    BoardConfig             m_boardState;
+    BoardState              m_boardState;
     BoardController*        m_boardController;
+
+    BoardTiles              m_tiles;
 };
 
 #endif // BOARDGAMEWND_H
