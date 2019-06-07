@@ -9,12 +9,12 @@ public:
     MainApplication(QWidget* parent = nullptr);
     ~MainApplication();
 
-    void BuildMenus();
-    void BuildToolMenus();
+//    void BuildMenus();
+//    void BuildToolMenus();
 
-public slots:
-    void UndoAct();
-    void RedoAct();
+//public slots:
+//    void UndoAct();
+//    void RedoAct();
 
 private:
 

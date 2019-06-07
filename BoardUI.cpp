@@ -12,6 +12,7 @@ BoardUI::~BoardUI()
 {
     BoardController::GetInstance()->freeGame();
     BoardController::GetInstance()->FreeInstance();
+    delete m_minimax;
 }
 
 void BoardUI::InitBoardGame()
@@ -52,7 +53,10 @@ void BoardUI::InitBoardGame()
 
     // Set move maker
     BoardController::GetInstance()->setMoveMaker(Alliance::WHITE);
-//    show();
+
+    m_minimax = Minimax::GetInstance();
+    m_minimax->setDepth(2);
+
     startTimer(1);
 }
 
@@ -133,10 +137,8 @@ void BoardUI::OnUpdate()
 {
     if(m_board->isAIPlayer())
     {
-        Minimax* minimax = new Minimax(2);  //depth = 5
-        Move* move = minimax->execute(m_board);
+        Move* move = m_minimax->execute(m_board);
         BoardController::GetInstance()->movePiece(move);
-        delete minimax;
     }
 }
 

@@ -28,11 +28,16 @@ public:
     Board*          Redo();
     Board*          Undo();
 
+    void            UndoMakeMove();
+
     const Board*    getTransitionBoard() const;
 
     int             getMoveCoordinate() const;
     int             getDestCoordinate() const;
     bool            isAttackMove() const;
+
+    const Piece*    getMovePiece() const;
+    const Piece*    getAttackPiece() const;
 
     bool            isLegalMove();
 

@@ -136,6 +136,27 @@ Board* Move::Undo()
     return builder->build();
 }
 
+void Move::UndoMakeMove()
+{
+    const Board* currentBoard = m_toBoard;
+
+    BoardConfig boardConfig = currentBoard->getBoardConfig();
+
+    BoardConfig::iterator piecePtr;
+
+    Piece* piece = boardConfig.at(m_destCoordinate);
+    piece->setPosition(m_movedCoordinate);
+
+    if(m_isFirstMove && piece)
+    {
+        piece->setFirstMove(true);
+    }
+    Piece* attackPiece = const_cast<Piece*>(m_attackPiece);
+    attackPiece->setPosition(m_destCoordinate); // need optimize this line
+
+
+}
+
 Board* Move::Redo()
 {
     BoardBuilder* builder = new BoardBuilder();
@@ -204,3 +225,14 @@ bool Move::isLegalMove()
 
     return isLegal;
 }
+
+const Piece* Move::getMovePiece() const
+{
+    return m_movePiece;
+}
+
+const Piece* Move::getAttackPiece() const
+{
+    return m_attackPiece;
+}
+

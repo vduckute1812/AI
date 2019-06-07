@@ -2,10 +2,11 @@
 #define STANDARDBOARDEVALUATOR_H
 #include "Piece.h"
 #include "BoardEvaluator.h"
+#include "Singleton.h"
 
 class Board;
 
-class StandardBoardEvaluator: public BoardEvaluator
+class StandardBoardEvaluator: public BoardEvaluator, public Singleton<StandardBoardEvaluator>
 {
 public:
     StandardBoardEvaluator();

@@ -2,6 +2,7 @@
 #define BOARDUNTILS_H
 
 #include "Piece.h"
+#include "Move.h"
 
 static const int FIRST_COLUMN[]   = { 0,  8, 16, 24, 32, 40, 48, 56 };
 static const int SECOND_COLUMN[]  = { 1,  9, 17, 25, 33, 41, 49, 57 };
@@ -85,6 +86,17 @@ public:
     {
         return alliance == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
     }
+
+    static int mvvlva(const Move* move)
+    {
+        const Piece* movePiece = move->getMovePiece();
+        if(move->isAttackMove()) {
+            const Piece* attackedPiece = move->getAttackPiece();
+            return (attackedPiece->getPieceValue() - movePiece->getPieceValue() +  PieceValue::KING_VALUE) * 100;
+        }
+        return PieceValue::KING_VALUE - movePiece->getPieceValue();
+    }
+
 };
 
 #endif

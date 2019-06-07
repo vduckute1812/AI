@@ -3,6 +3,7 @@
 #include "Minimax.h"
 #include "Move.h"
 #include "Board.h"
+#include "BoardUntils.h"
 #include "BoardEvaluator.h"
 #include "StandardBoardEvaluator.h"
 #include <algorithm>    // std::max
@@ -10,12 +11,13 @@
 const static double MAX_VALUE = 1e4;
 const static double MIN_VALUE = -1e4;
 
-Minimax::Minimax(int searchDepth)
+Minimax::Minimax()
 {
     m_boardEvaluated    = 0;
     m_quiescenceCount = 0;
-    m_searchDepth       = searchDepth;
-    m_boardEvaluator    = new StandardBoardEvaluator();
+    m_searchDepth       = 1;    //default value
+    m_boardEvaluator    = StandardBoardEvaluator::GetInstance();
+    m_table.clear();
 }
 
 Minimax::~Minimax()
@@ -44,13 +46,13 @@ Move* Minimax::execute(const Board* board)
     out << board->getMoveMaker() << " IS THINKING with depth " << m_searchDepth <<endl;
 
     CollectMove moves = board->getLegalMoves(board->getMoveMaker());
-
+    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
     for (Move* move: moves) {
-        if(!move->isLegalMove())
-        {
-            delete move;
-            continue;
-        }
+//        if(!move->isLegalMove())
+//        {
+//            delete move;
+//            continue;
+//        }
         Board* transitionBoard = move->Execute();
         m_quiescenceCount = 0;
         currentValue = transitionBoard->getMoveMaker() == Alliance::WHITE ?
@@ -102,15 +104,16 @@ double Minimax::min(const Board* board, int depth, double highest, double lowest
     }
 
     double currentLowest = lowest;
-    for (Move* move: board->getLegalMoves(board->getMoveMaker()))
+
+    CollectMove moves = board->getLegalMoves(board->getMoveMaker());
+    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+
+    CollectMove candidateMoves (moves.begin() , moves.begin()+4);
+
+    for (Move* move: candidateMoves)
     {
         Board* transitionBoard = move->Execute();
         currentLowest = std::min(currentLowest, max(transitionBoard, calculateQuiescenceDepth(move, depth), highest, currentLowest));
-
-//        if(currentLowest <= lowestSeenValue)
-//        {
-//            lowestSeenValue = currentLowest;
-//        }
 
         // release memory
         Board* undoBoard = move->UndoExecute();
@@ -128,6 +131,11 @@ double Minimax::min(const Board* board, int depth, double highest, double lowest
     return currentLowest;
 }
 
+void Minimax::setDepth(int depth)
+{
+    m_searchDepth = depth;
+}
+
 double Minimax::max(const Board* board, int depth, double highest, double lowest)
 {
     if(depth == 0|| isEndgame(board))
@@ -140,17 +148,21 @@ double Minimax::max(const Board* board, int depth, double highest, double lowest
     }
 
     double currentHighest  = highest;
-    for (Move* move: board->getLegalMoves(board->getMoveMaker()))
+
+    CollectMove moves = board->getLegalMoves(board->getMoveMaker());
+    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+//    if(moves.size() > 4)
+//    {
+        CollectMove candidateMoves (moves.begin(), moves.begin()+4);
+//    }
+
+    for (Move* move: candidateMoves)
     {
         Board* transitionBoard = move->Execute();
         currentHighest = std::max(currentHighest, min(transitionBoard, calculateQuiescenceDepth(move, depth), currentHighest, lowest));
-//        if(currentValue >= highestSeenValue)
-//        {
-//            highestSeenValue = currentValue;
-//        }
 
         // release memory
-        Board* undoBoard = move->UndoExecute();
+        Board* undoBoard = move->UndoExecute(); // return old board
         delete undoBoard;
 
         delete move;
@@ -160,7 +172,6 @@ double Minimax::max(const Board* board, int depth, double highest, double lowest
         {
             return lowest;
         }
-
     }
 
     return currentHighest;
@@ -190,12 +201,17 @@ int Minimax::calculateQuiescenceDepth(const Move* moveTransition, int depth)
                 activityMeasure += 1;
             }
 //        }
-        if(activityMeasure > 3)
+        if(activityMeasure >= 2)
         {
             m_quiescenceCount++;
-            return 2;
+            return 1;
         }
     }
     return depth - 1;
 }
 
+bool Minimax::sortMoveFollowValue(MoveCollection moves)
+{
+
+    return false;
+}

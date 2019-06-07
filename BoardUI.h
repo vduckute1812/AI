@@ -7,6 +7,7 @@
 
 class Board;
 class Tile;
+class Minimax;
 
 typedef std::map<int, Tile*> BoardTiles;
 
@@ -39,6 +40,7 @@ private:
 
     Board*          m_standardBoard;
 
+    Minimax*        m_minimax;
 
     volatile bool				m_isLocked;
 };
