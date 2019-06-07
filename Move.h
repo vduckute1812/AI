@@ -9,11 +9,11 @@ enum TypeMove
 {
     MAJOR_MOVE,
     ATTACK_MOVE,
-    DEFEND_MOVE, // NOT YET
-    PAWN_PROMOTION,  // NOT YET
-    KING_SIDE_CASTLE, // NOT YET
-    QUEEN_SIDE_CASTLE, // NOT YET
-    CHECK_MOVE  // NOT YET
+    DEFEND_MOVE,        // NOT YET
+    PAWN_PROMOTION,     // NOT YET
+    KING_SIDE_CASTLE,   // NOT YET
+    QUEEN_SIDE_CASTLE,  // NOT YET
+    CHECK_MOVE          // NOT YET
 };
 
 class Move

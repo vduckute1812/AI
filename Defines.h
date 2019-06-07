@@ -33,6 +33,7 @@ const static int NUM_TILES_PER_ROW = 8;
 
 const static int NUM_TILES_PER_COL = 8;
 
+const static int MAX_TEMP_BOARD = 1000;
 
 #define DEFINE_PTRS(C)							\
 typedef std::shared_ptr<C>			C##Ptr;		\

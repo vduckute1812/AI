@@ -15,15 +15,10 @@ enum CheckColumn
 struct BoardUntils
 {
 
-    static int getMaxTiles() {return NUM_TILES_PER_ROW * NUM_TILES_PER_COL;}
+    static unsigned int getMaxTiles() {return NUM_TILES_PER_ROW * NUM_TILES_PER_COL;}
 
-    static bool IsNumColumn(unsigned int numColumn ,int coordinate)
+    static bool IsNumColumn(unsigned int numColumn , unsigned int coordinate)
     {
-        if(coordinate < 0 && coordinate >= getMaxTiles())
-        {
-            throw "Not in range of board!";
-        }
-
         unsigned int firstColum = numColumn - 1;
         while(firstColum < getMaxTiles())
         {
@@ -37,7 +32,7 @@ struct BoardUntils
 
     static bool IsValidTileCandidate(int coordinate)
     {
-        if(coordinate < 0 || coordinate >= getMaxTiles())
+        if(coordinate < 0 || coordinate >= int(getMaxTiles()))
         {
             return false;
         }

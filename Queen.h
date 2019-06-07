@@ -3,19 +3,17 @@
 
 #include "Piece.h"
 
-const static int QUEEN_CANDIDATE_MOVE_COORDINATE[] = { -9, -8, -7, -1, 1, 7, 8, 9 };
-
 class Queen:public Piece
 {
 public:
-    Queen(Alliance pieceAlliance, QWidget *parent = nullptr, int piecePos = -1);
+    Queen(Alliance pieceAlliance, QWidget *parent = nullptr, unsigned int piecePos = 0);
     virtual ~Queen();
 
     virtual std::vector<Move*> calculateLegalMove(const BoardState board) const;
 
-	virtual bool isFirstColumnExclusion(int currentPosition, int candidateOffset) const;
+    virtual bool isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const;
 
-	virtual bool isEightColumnExclusion(int currentPosition, int candidateOffset) const;
+    virtual bool isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const;
 
 };
 

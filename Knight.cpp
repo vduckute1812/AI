@@ -3,36 +3,48 @@
 #include "Move.h"
 #include "BoardUntils.h"
 
-Knight::Knight(Alliance pieceAlliance, QWidget *parent, int piecePosition) :
+const int KNIGHT_CANDIDATE_MOVE_COORDINATE[] = { -2*NUM_TILES_PER_COL-1,
+                                                 -2*NUM_TILES_PER_COL+1,
+                                                 -NUM_TILES_PER_COL-2,
+                                                 -NUM_TILES_PER_COL+2,
+                                                  NUM_TILES_PER_COL-2,
+                                                  NUM_TILES_PER_COL+2,
+                                                  2*NUM_TILES_PER_COL-1,
+                                                  2*NUM_TILES_PER_COL+1 };
+
+Knight::Knight(Alliance pieceAlliance, QWidget *parent, unsigned int piecePosition) :
     Piece(pieceAlliance, PieceType::KNIGHT, PieceValue::KNIGHT_VALUE, parent, piecePosition)
 {
 }
-
 
 Knight::~Knight()
 {
 }
 
-bool Knight::isFirstColumnExclusion(int currentPosition, int candidateOffset) const
+bool Knight::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(1, currentPosition) && (candidateOffset == -17 || candidateOffset == -10
-                                                        || candidateOffset ==  6  || candidateOffset ==  15 );
+    return BoardUntils::IsNumColumn(1, currentPosition)
+            && (candidateOffset == -2*NUM_TILES_PER_COL+1 || candidateOffset == -NUM_TILES_PER_COL-2
+             || candidateOffset == NUM_TILES_PER_COL-2 || candidateOffset == 2*NUM_TILES_PER_COL-1);
 }
 
-bool Knight::isSecondColumnExclusion(int currentPosition, int candidateOffset) const
+bool Knight::isSecondColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(2, currentPosition) && (candidateOffset == -10 || candidateOffset == 6);
+    return BoardUntils::IsNumColumn(2, currentPosition)
+            && (candidateOffset == -NUM_TILES_PER_COL-2 || candidateOffset == NUM_TILES_PER_COL-2);
 }
 
-bool Knight::isSeventhColumnExclusion(int currentPosition, int candidateOffset) const
+bool Knight::isSeventhColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL - 1, currentPosition) && (candidateOffset == -6 || candidateOffset == 10);
+    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL-1, currentPosition)
+            && (candidateOffset == -NUM_TILES_PER_COL+2 || candidateOffset == NUM_TILES_PER_COL+2);
 }
 
-bool Knight::isEightColumnExclusion(int currentPosition, int candidateOffset) const
+bool Knight::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL - 2, currentPosition) && ( candidateOffset == -15 || candidateOffset == -6
-                                                        ||   candidateOffset == 10  || candidateOffset == 17 );
+    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL-2, currentPosition)
+            &&(candidateOffset == -2*NUM_TILES_PER_COL+1 || candidateOffset == -NUM_TILES_PER_COL+2
+            || candidateOffset == NUM_TILES_PER_COL+2  || candidateOffset == 2*NUM_TILES_PER_COL+1);
 }
 
 MoveCollection Knight::calculateLegalMove(const BoardState board)  const
@@ -43,7 +55,7 @@ MoveCollection Knight::calculateLegalMove(const BoardState board)  const
 
     for (int currentCandidateOffset : KNIGHT_CANDIDATE_MOVE_COORDINATE)
     {
-        candidateDestinationCoordinate = this->m_piecePosition + currentCandidateOffset;
+        candidateDestinationCoordinate = int(this->m_piecePosition) + currentCandidateOffset;
         if (BoardUntils::IsValidTileCandidate(candidateDestinationCoordinate))
         {
             if (isFirstColumnExclusion(this->m_piecePosition, currentCandidateOffset)
@@ -53,11 +65,12 @@ MoveCollection Knight::calculateLegalMove(const BoardState board)  const
             {
                 continue;
             }
-			
-            if (!BoardState::IsTileOccupied(board, candidateDestinationCoordinate) ||
-            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestinationCoordinate)->GetAlliance()))
+
+            unsigned int candidateDestCoord = static_cast<unsigned int>(candidateDestinationCoordinate);
+            if (!BoardState::IsTileOccupied(board, candidateDestCoord) ||
+            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
             {
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestinationCoordinate), candidateDestinationCoordinate));
+                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
             }
         }
     }

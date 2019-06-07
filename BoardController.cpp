@@ -14,7 +14,7 @@ BoardController::BoardController(QWidget* parent /*= nullptr*/) : QWidget(parent
 
 void BoardController::mousePressEvent(QMouseEvent *)
 {
-//    vec2i pointer2D(event->x(), event->y());
+    //    vec2i pointer2D(event->x(), event->y());
 }
 
 void BoardController::SetSelecetedPiece(Piece* piece)

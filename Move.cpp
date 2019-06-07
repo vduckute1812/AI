@@ -36,33 +36,42 @@ bool Move::IsAttackMove() const
 
 BoardState Move::Execute()
 {
-    BoardState toBoard;
-
-    BoardConfig boardConfig;
-
-    boardConfig = m_board.m_boardValue;
-
-    BoardConfig::iterator piecePtr;
-
-    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
+    if(BoardGameWnd::s_tmpStateIdx >= MAX_TEMP_BOARD )
     {
-        Piece* piece = piecePtr->second;
-        if(piece != nullptr)
+        BoardState boardState;
+        BoardConfig boardConfig = boardState.m_boardValue;
+
+        BoardConfig oldBoard = m_board.m_boardValue;
+
+        for (unsigned int idx = 0; idx < NUM_TILES_PER_COL * NUM_TILES_PER_ROW; ++idx)
         {
-            toBoard.m_boardValue.push_back(std::make_pair(piece->GetPosition(), piece));
+            boardConfig.push_back(std::make_pair(idx, oldBoard.at(idx).second));
         }
+        Piece* piece = BoardState::GetPieceOnBoard(boardState, m_movedCoordinate);
+        piece->SetFirstMove(false);
+
+        boardState.SetPiece(m_movedCoordinate, nullptr);
+        boardState.SetPiece(m_destCoordinate, piece);
+
+        Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+        boardState.m_playerTurn = nextTurnPlayer;
+
+        return boardState;
     }
+    else
+    {
+        BoardConfig boardConfig = m_board.m_boardValue;
 
-    Piece* piece = BoardState::GetPieceOnBoard(toBoard, m_movedCoordinate);
-    piece->SetFirstMove(false);
+        Piece* piece = BoardState::GetPieceOnBoard(m_board, m_movedCoordinate);
+        piece->SetFirstMove(false);
 
-    toBoard.SetPiece(m_movedCoordinate, nullptr);
-    toBoard.SetPiece(m_destCoordinate, piece);
+        m_board.SetPiece(m_movedCoordinate, nullptr);
+        m_board.SetPiece(m_destCoordinate, piece);
 
-    Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-    toBoard.m_playerTurn = nextTurnPlayer;
-
-    return toBoard;
+        Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+        m_board.m_playerTurn = nextTurnPlayer;
+    }
+    return m_board;
 }
 
 BoardState Move::UndoExecute()

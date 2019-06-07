@@ -3,7 +3,11 @@
 #include "Move.h"
 #include "BoardUntils.h"
 
-Rook::Rook(Alliance pieceAlliance, QWidget *parent, int piecePos) :
+const int ROOK_CANDIDATE_MOVE_COORDINATE[] = { -NUM_TILES_PER_COL,
+                                               -1, 1,
+                                               NUM_TILES_PER_COL };
+
+Rook::Rook(Alliance pieceAlliance, QWidget *parent, unsigned int piecePos) :
     Piece(pieceAlliance, PieceType::ROOK, PieceValue::ROOK_VALUE, parent, piecePos)
 {
 }
@@ -12,19 +16,15 @@ Rook::~Rook()
 {
 }
 
-
-
-bool Rook::isFirstColumnExclusion(int currentPosition, int candidateOffset) const
+bool Rook::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
     return BoardUntils::IsNumColumn(1, currentPosition) && (candidateOffset == -1);
 }
 
-bool Rook::isEightColumnExclusion(int currentPosition, int candidateOffset) const
+bool Rook::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
     return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition) && (candidateOffset == 1);
 }
-
-
 
 MoveCollection Rook::calculateLegalMove(const BoardState board) const
 {
@@ -34,7 +34,7 @@ MoveCollection Rook::calculateLegalMove(const BoardState board) const
 
     for (int candidateCoordinationOffset : ROOK_CANDIDATE_MOVE_COORDINATE)
     {
-        candidateDestinationCoordinate = this->m_piecePosition + candidateCoordinationOffset;
+        candidateDestinationCoordinate = int(this->m_piecePosition) + candidateCoordinationOffset;
 
         while (BoardUntils::IsValidTileCandidate(candidateDestinationCoordinate))
         {
@@ -43,25 +43,26 @@ MoveCollection Rook::calculateLegalMove(const BoardState board) const
                 break;
             }
 
-            if (!BoardState::IsTileOccupied(board, candidateDestinationCoordinate) ||
-            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestinationCoordinate)->GetAlliance()))
+            unsigned int candidateDestCoord = static_cast<unsigned int>(candidateDestinationCoordinate);
+            if (!BoardState::IsTileOccupied(board, candidateDestCoord) ||
+            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
             {
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestinationCoordinate), candidateDestinationCoordinate));
+                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
             }
             else // Stop by Enemy or Alliance
             {
                 break;
             }
 
-            if (BoardState::IsTileOccupied(board, candidateDestinationCoordinate))
+            if (BoardState::IsTileOccupied(board, candidateDestCoord))
             {
                 break;
             }
 
-            if (candidateCoordinationOffset != 8 && candidateCoordinationOffset != -8)
+            if (candidateCoordinationOffset != NUM_TILES_PER_COL && candidateCoordinationOffset != -NUM_TILES_PER_COL)
             {
-                if (BoardUntils::IsNumColumn(1, candidateDestinationCoordinate)
-                    || BoardUntils::IsNumColumn(NUM_TILES_PER_COL, candidateDestinationCoordinate))
+                if (BoardUntils::IsNumColumn(1, candidateDestCoord)
+                    || BoardUntils::IsNumColumn(NUM_TILES_PER_COL, candidateDestCoord))
                 {
                     break;
                 }

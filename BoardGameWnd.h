@@ -34,11 +34,15 @@ class BoardGameWnd : public QWidget, public Singleton<BoardGameWnd>, public Mess
 
 public:
     BoardGameWnd(BoardController* controller = nullptr, QWidget* parent = nullptr);
-    ~BoardGameWnd();
+    ~BoardGameWnd() override;
 
     static BoardState       CreateStandardBoard();
 
     BoardTiles              GetTiles();
+
+    static std::vector<Piece*>      s_pieces;
+    static unsigned int             s_tmpStateIdx;
+    static BoardState               s_tempBoards[MAX_TEMP_BOARD];
 
     struct EditModeDef
     {
@@ -55,7 +59,7 @@ public:
 
     void                    SetController(BoardController*);
     void                    SetBoard(BoardState board);
-    const BoardState        GetCurrentBoard() {return m_boardState;}
+    const BoardState        GetCurrentBoard() {return s_tempBoards[0];}
 
     void                    ResetColorTiles();
 
@@ -69,11 +73,7 @@ public:
 
 private:
     volatile bool			m_isLocked;
-
-    std::vector<Piece*>     m_pieces;
-    BoardState              m_boardState;
     BoardController*        m_boardController;
-
     BoardTiles              m_tiles;
 };
 

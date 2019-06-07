@@ -58,11 +58,11 @@ typedef std::vector<const Piece*> CollectPiece;
 class Piece: public QFrame
 {
 public:
-    explicit Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent = nullptr, int position = -1);
+    explicit Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent = nullptr, unsigned int position = 0);
     virtual ~Piece();
 
-    virtual bool		isFirstColumnExclusion(int currentPosition, int candidateOffset) const = 0;
-    virtual bool		isEightColumnExclusion(int currentPosition, int candidateOffset) const = 0;
+    virtual bool		isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const = 0;
+    virtual bool		isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const = 0;
 
     virtual             MoveCollection calculateLegalMove(const BoardState board) const = 0;
 

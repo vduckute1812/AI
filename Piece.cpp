@@ -1,7 +1,7 @@
 #include "Piece.h"
 #include "Defines.h"
 
-Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent, int position): QFrame(parent)
+Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent, unsigned int position): QFrame(parent)
 {
     m_isFirstMove = true;
 
@@ -75,21 +75,17 @@ bool BoardState::IsTileOccupied(BoardState boarValue, unsigned int position)
     BoardConfig::iterator piecePtr;
     for (piecePtr = boarValue.m_boardValue.begin(); piecePtr != boarValue.m_boardValue.end(); ++piecePtr)
     {
-        if(piecePtr->first == position)
+        if(piecePtr->first == position && piecePtr->second != nullptr)
+        {
             return true;
+        }
     }
     return false;
 }
 
 Piece *BoardState::GetPieceOnBoard(BoardState boardValue, unsigned int position)
 {
-    BoardConfig::iterator piecePtr;
-    for (piecePtr = boardValue.m_boardValue.begin(); piecePtr != boardValue.m_boardValue.end(); ++piecePtr)
-    {
-        if(piecePtr->first == position)
-            return piecePtr->second;
-    }
-    return nullptr;
+    return boardValue.m_boardValue[position].second;
 }
 
 void BoardState::SetPiece(unsigned int position, Piece *piece)

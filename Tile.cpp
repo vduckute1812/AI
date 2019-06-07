@@ -8,7 +8,7 @@
 
 #include <QPainter>
 
-Tile::Tile(const int coordinate, Piece* piece, QWidget* parrent)
+Tile::Tile(const unsigned int coordinate, Piece* piece, QWidget* parrent)
     : QWidget (parrent),
       m_tileCoordinate(coordinate),
       m_piece(piece)
@@ -22,10 +22,23 @@ Tile::Tile(const int coordinate, Piece* piece, QWidget* parrent)
 
 void Tile::SetPiece(Piece *piece)
 {
+    if(m_piece != nullptr)
+    {
+        m_piece->GetRenderImg()->hide();
+    }
+
     m_piece = piece;
+    if(piece != nullptr)
+    {
+        m_piece->GetRenderImg()->hide();
+        m_piece->SetPosition(m_tileCoordinate);
+        m_piece->setParent(this);
+        m_piece->GetRenderImg()->setParent(this);
+        m_piece->GetRenderImg()->show();
+    }
 }
 
-int Tile::GetCoordinate()
+unsigned int Tile::GetCoordinate()
 {
     return m_tileCoordinate;
 }
@@ -50,7 +63,7 @@ BoardTiles Tile::createEmptyTiles()
     BoardTiles tableTiles;
     Piece* NULL_PIECE = nullptr;
 
-    for (int i = 0; i < NUM_TILES; ++i)
+    for (unsigned int i = 0; i < NUM_TILES; ++i)
     {
         tableTiles.push_back(new Tile(i, NULL_PIECE));
     }
@@ -78,10 +91,10 @@ void Tile::mousePressEvent(QMouseEvent *event)
         return;
 
     // Make move Piece
-    int coordinate = this->GetCoordinate();
+    unsigned int coordinate = this->GetCoordinate();
     Piece* piece = BoardController::GetInstance()->GetSelecetedPiece();
     Alliance currentMoveMaker = BoardController::GetInstance()->GetMoveMaker();
-    if (piece  && BoardUntils::IsSameAlliance(piece->GetAlliance(), currentMoveMaker))
+    if (piece && BoardUntils::IsSameAlliance(piece->GetAlliance(), currentMoveMaker))
     {
         for (Move* move : piece->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))
         {

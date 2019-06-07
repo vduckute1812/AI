@@ -3,29 +3,34 @@
 #include "Move.h"
 #include "BoardUntils.h"
 
-Queen::Queen(Alliance pieceAlliance, QWidget *parent, int piecePos) :
+const static int QUEEN_CANDIDATE_MOVE_COORDINATE[] = { -NUM_TILES_PER_COL-1,
+                                                       -NUM_TILES_PER_COL,
+                                                       -NUM_TILES_PER_COL+1,
+                                                       -1, 1,
+                                                       NUM_TILES_PER_COL-1,
+                                                       NUM_TILES_PER_COL,
+                                                       NUM_TILES_PER_COL+1 };
+
+Queen::Queen(Alliance pieceAlliance, QWidget *parent, unsigned int piecePos) :
     Piece(pieceAlliance, PieceType::QUEEN, PieceValue::QUEEN_VALUE, parent, piecePos)
 {
 }
-
 
 Queen::~Queen()
 {
 }
 
-
-bool Queen::isFirstColumnExclusion(int currentPosition, int candidateOffset) const
+bool Queen::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(1, currentPosition) && (candidateOffset == -1 || candidateOffset == -9
-                                                        || candidateOffset == 7);
+    return BoardUntils::IsNumColumn(1, currentPosition)
+            && (candidateOffset == -1 || candidateOffset == -NUM_TILES_PER_COL-1 || candidateOffset == NUM_TILES_PER_COL-1);
 }
 
-bool Queen::isEightColumnExclusion(int currentPosition, int candidateOffset) const
+bool Queen::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition) && (candidateOffset == 1 || candidateOffset == -7
-                                                        || candidateOffset == 9);
+    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition)
+            && (candidateOffset == 1 || candidateOffset == -NUM_TILES_PER_COL+1 || candidateOffset == NUM_TILES_PER_COL+1);
 }
-
 
 MoveCollection Queen::calculateLegalMove(const BoardState board) const
 {
@@ -35,7 +40,7 @@ MoveCollection Queen::calculateLegalMove(const BoardState board) const
 
     for (int candidateCoordinationOffset : QUEEN_CANDIDATE_MOVE_COORDINATE)
     {
-        candidateDestinationCoordinate = this->m_piecePosition + candidateCoordinationOffset;
+        candidateDestinationCoordinate = int(this->m_piecePosition) + candidateCoordinationOffset;
 
         while (BoardUntils::IsValidTileCandidate(candidateDestinationCoordinate))
         {
@@ -44,25 +49,26 @@ MoveCollection Queen::calculateLegalMove(const BoardState board) const
                 break;
             }
 
-            if (!BoardState::IsTileOccupied(board, candidateDestinationCoordinate) ||
-            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestinationCoordinate)->GetAlliance()))
+            unsigned int candidateDestCoord = static_cast<unsigned int>(candidateDestinationCoordinate);
+            if (!BoardState::IsTileOccupied(board, candidateDestCoord) ||
+            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
             {
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestinationCoordinate), candidateDestinationCoordinate));
+                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
             }
             else // Stop by Enemy or Alliance
             {
                 break;
             }
 
-            if (BoardState::IsTileOccupied(board, candidateDestinationCoordinate))
+            if (BoardState::IsTileOccupied(board, candidateDestCoord))
             {
                 break;
             }
 
-            if (candidateCoordinationOffset != 8 && candidateCoordinationOffset != -8)
+            if (candidateCoordinationOffset != NUM_TILES_PER_COL && candidateCoordinationOffset != -NUM_TILES_PER_COL)
             {
-                if (BoardUntils::IsNumColumn(1, candidateDestinationCoordinate)
-                    || BoardUntils::IsNumColumn(NUM_TILES_PER_COL, candidateDestinationCoordinate))
+                if (BoardUntils::IsNumColumn(1, candidateDestCoord)
+                    || BoardUntils::IsNumColumn(NUM_TILES_PER_COL, candidateDestCoord))
                 {
                     break;
                 }
