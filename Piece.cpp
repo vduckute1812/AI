@@ -81,14 +81,27 @@ bool BoardState::IsTileOccupied(BoardState boarValue, unsigned int position)
     return false;
 }
 
-Piece *BoardState::GetPieceOnBoard(BoardState boarValue, unsigned int position)
+Piece *BoardState::GetPieceOnBoard(BoardState boardValue, unsigned int position)
 {
     BoardConfig::iterator piecePtr;
-    for (piecePtr = boarValue.m_boardValue.begin(); piecePtr != boarValue.m_boardValue.end(); ++piecePtr)
+    for (piecePtr = boardValue.m_boardValue.begin(); piecePtr != boardValue.m_boardValue.end(); ++piecePtr)
     {
         if(piecePtr->first == position)
             return piecePtr->second;
     }
     return nullptr;
+}
+
+void BoardState::SetPiece(unsigned int position, Piece *piece)
+{
+    BoardConfig::iterator piecePtr;
+
+    for (piecePtr = m_boardValue.begin(); piecePtr != m_boardValue.end(); ++piecePtr)
+    {
+        if(piecePtr->first == position)
+        {
+            piecePtr->second = piece;
+        }
+    }
 }
 

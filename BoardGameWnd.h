@@ -65,6 +65,8 @@ public:
     void					Lock(bool yes) { m_isLocked = yes; }
     void                    timerEvent(QTimerEvent *e) override;
 
+    void                    ResetTiles();
+
 private:
     volatile bool			m_isLocked;
 

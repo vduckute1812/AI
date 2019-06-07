@@ -87,14 +87,14 @@ void Tile::mousePressEvent(QMouseEvent *event)
         {
             if (move->GetDestCoordinate() == coordinate)
             {
-//                if(move->IsLegalMove())
-//                {
-//                    BoardController::GetInstance()->movePiece(move);
-//                }
-//                else
-//                {
-//                    delete move;
-//                }
+                if(move->IsLegalMove())
+                {
+                    BoardController::GetInstance()->MovePiece(move);
+                }
+                else
+                {
+                    delete move;
+                }
             }
             else
             {
@@ -114,7 +114,8 @@ void Tile::mousePressEvent(QMouseEvent *event)
         this->SetCurrentColor(CHOOSE_COLOR);
         for (Move* move : pieceColor->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))
         {
-            Tile* tile = BoardGameWnd::GetInstance()->GetTiles().at(move->GetDestCoordinate());
+            unsigned int destCoordinate = move->GetDestCoordinate();
+            Tile* tile = BoardGameWnd::GetInstance()->GetTiles().at(destCoordinate);
             if(move->IsLegalMove())
             {
                 if(move->IsAttackMove())

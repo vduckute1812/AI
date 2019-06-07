@@ -19,7 +19,7 @@ enum TypeMove
 class Move
 {
 public:
-    Move(const BoardState board, const Piece* movePiece, const Piece* attackPiece, const int destCoord);
+    Move(const BoardState board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord);
 
     BoardState          Execute();
     BoardState          UndoExecute();
@@ -28,8 +28,8 @@ public:
     BoardState          Redo();
     BoardState          Undo();
 
-    int                 GetMoveCoordinate() const;
-    int                 GetDestCoordinate() const;
+    unsigned int        GetMoveCoordinate() const;
+    unsigned int        GetDestCoordinate() const;
     bool                IsAttackMove() const;
 
     bool                IsLegalMove();
@@ -40,7 +40,7 @@ protected:
     const Piece*        m_attackPiece;
 
     bool                m_isFirstMove;
-    int                 m_movedCoordinate;
-    int                 m_destCoordinate;
+    unsigned int        m_movedCoordinate;
+    unsigned int        m_destCoordinate;
 };
 #endif // MOVE_H

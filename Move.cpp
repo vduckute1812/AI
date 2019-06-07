@@ -3,7 +3,7 @@
 #include "BoardUntils.h"
 #include "BoardGameWnd.h"
 
-Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackPiece, const int destCoord)
+Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord)
 {
     m_board = board;
     m_movePiece = movePiece;
@@ -13,12 +13,12 @@ Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackP
     m_isFirstMove = m_movePiece->IsFirstMove();
 }
 
-int Move::GetMoveCoordinate() const
+unsigned int Move::GetMoveCoordinate() const
 {
     return m_movedCoordinate;
 }
 
-int Move::GetDestCoordinate() const
+unsigned int Move::GetDestCoordinate() const
 {
     return m_destCoordinate;
 }
@@ -36,35 +36,33 @@ bool Move::IsAttackMove() const
 
 BoardState Move::Execute()
 {
-//    BoardBuilder* builder = new BoardBuilder();
+    BoardState toBoard;
 
-//    BoardConfig boardConfig;
+    BoardConfig boardConfig;
 
-//    boardConfig = m_board->getBoardConfig();
+    boardConfig = m_board.m_boardValue;
 
-//    BoardConfig::iterator piecePtr;
+    BoardConfig::iterator piecePtr;
 
-//    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
-//    {
-//        Piece* piece = piecePtr->second;
-//        if(piece != nullptr)
-//        {
-//            builder->setPiece(piece);
-//        }
-//    }
+    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
+    {
+        Piece* piece = piecePtr->second;
+        if(piece != nullptr)
+        {
+            toBoard.m_boardValue.push_back(std::make_pair(piece->GetPosition(), piece));
+        }
+    }
 
-//    Piece* piece = boardConfig.at(m_movedCoordinate);
-//    piece->setFirstMove(false);
+    Piece* piece = BoardState::GetPieceOnBoard(toBoard, m_movedCoordinate);
+    piece->SetFirstMove(false);
 
-//    builder->setPiece(m_movedCoordinate, nullptr);
-//    builder->setPiece(m_destCoordinate, piece);
+    toBoard.SetPiece(m_movedCoordinate, nullptr);
+    toBoard.SetPiece(m_destCoordinate, piece);
 
-//    builder->setMoveMaker(m_board->getOpponentMaker());
-//    Board* board = builder->build();
-//    m_toBoard = board;
+    Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    toBoard.m_playerTurn = nextTurnPlayer;
 
-    BoardState test;
-    return test;
+    return toBoard;
 }
 
 BoardState Move::UndoExecute()

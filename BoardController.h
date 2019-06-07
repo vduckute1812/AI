@@ -16,6 +16,8 @@ public:
     Alliance    GetMoveMaker();
     void        SetMoveMaker(Alliance maker);
 
+    void        MovePiece(Move* move);
+
 private:
     Piece*      m_piece;
     int         m_coordinate;

@@ -47,8 +47,7 @@ struct BoardState
     static bool         IsTileOccupied(BoardState boarValue, unsigned int position);
     static Piece*       GetPieceOnBoard(BoardState boarValue, unsigned int position);
 
-    void                SetTurnPlayer(Alliance alliance);
-    void                SetPiece(unsigned int position, const Piece* piece);
+    void                SetPiece(unsigned int position, Piece* piece);
 
     Alliance            m_playerTurn;
     BoardConfig         m_boardValue;

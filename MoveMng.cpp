@@ -48,32 +48,32 @@ void MoveMgr::FreeInstance()
 
 void MoveMgr::Do(Move *move)
 {
-//    if(!move || BoardGameWnd::GetInstance()->IsLocked())
-//        return;
+    if(!move || BoardGameWnd::GetInstance()->IsLocked())
+        return;
 
-//    BoardGameWnd::GetInstance()->Lock(true);
-//    BoardGameWnd::GetInstance()->blockSignals(true);
+    BoardGameWnd::GetInstance()->Lock(true);
+    BoardGameWnd::GetInstance()->blockSignals(true);
 
 
-//    // remove pre-move
-//    unsigned int currentIndex =  static_cast<unsigned int>(m_moveIdx);
-//    for (; currentIndex < m_trackMoves.size(); ++currentIndex)
-//    {
-//        delete m_trackMoves[currentIndex];
-//    }
+    // remove pre-move
+    unsigned int currentIndex =  static_cast<unsigned int>(m_moveIdx);
+    for (; currentIndex < m_trackMoves.size(); ++currentIndex)
+    {
+        delete m_trackMoves[currentIndex];
+    }
 
-//    // after delete pre-move. Set size of available track
-//    m_trackMoves.resize(static_cast<unsigned int>(m_moveIdx));
+    // after delete pre-move. Set size of available track
+    m_trackMoves.resize(static_cast<unsigned int>(m_moveIdx));
 
-//    m_moveIdx++;
+    m_moveIdx++;
 
-//    Board* board = move->Execute();
-//    m_trackMoves.push_back(move);
+    BoardState board = move->Execute();
+    m_trackMoves.push_back(move);
 
-//    BoardGameWnd::GetInstance()->SetBoardState(board);
+    BoardGameWnd::GetInstance()->SetBoard(board);
 
-//    BoardGameWnd::GetInstance()->Lock(false);
-//    BoardGameWnd::GetInstance()->blockSignals(false);
+    BoardGameWnd::GetInstance()->Lock(false);
+    BoardGameWnd::GetInstance()->blockSignals(false);
 
 }
 

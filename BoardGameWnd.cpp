@@ -101,7 +101,23 @@ void BoardGameWnd::SetController(BoardController *controller)
 
 void BoardGameWnd::SetBoard(BoardState board)
 {
+    ResetColorTiles();
+
+    if(!m_boardState.m_boardValue.empty())
+    {
+        m_boardState.m_boardValue.clear();
+    }
     m_boardState = board;
+    ResetTiles();
+    BoardConfig config = m_boardState.m_boardValue;
+    BoardConfig::iterator tileConfig;
+
+    for (tileConfig = config.begin(); tileConfig!=config.end(); ++tileConfig)
+    {
+        const unsigned int coordinate = tileConfig->first;
+        Piece* piece = tileConfig->second;
+        m_tiles.at(coordinate)->SetPiece(piece);
+    }
 }
 
 void BoardGameWnd::ResetColorTiles()
@@ -119,4 +135,14 @@ void BoardGameWnd::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
     repaint();
+}
+
+void BoardGameWnd::ResetTiles()
+{
+    BoardTiles::iterator tilePtr;
+    for (tilePtr = m_tiles.begin(); tilePtr != m_tiles.end(); ++tilePtr)
+    {
+        Tile* tile = *tilePtr;
+        tile->SetPiece(nullptr);
+    }
 }
