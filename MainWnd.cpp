@@ -2,10 +2,11 @@
 #include <QFileInfo>
 #include <QApplication>
 #include <QTreeWidget>
-
 #include "MainWnd.h"
 #include "BoardGameWnd.h"
 #include "BoardController.h"
+#include "MoveMng.h"
+#include <QKeyEvent>
 
 //Returns true if s1 is less than s2
 struct StringLT
@@ -33,6 +34,18 @@ void MainWnd::Init()
     AppendDock(m_boardDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::LeftDockWidgetArea);
 
     setCentralWidget(boardWnd);
+}
+
+void MainWnd::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key::Key_Left)
+    {
+        MoveMgr::GetInstance()->Undo();
+    }
+    else if (event->key() == Qt::Key::Key_Right)
+    {
+        MoveMgr::GetInstance()->Redo();
+    }
 }
 
 QDockWidget* MainWnd::CreateDock(const char *name, QString iconStr, QWidget *widget)

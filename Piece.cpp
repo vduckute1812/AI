@@ -1,5 +1,7 @@
 #include "Piece.h"
 #include "Defines.h"
+#include "BoardUntils.h"
+#include "BoardGameWnd.h"
 
 Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent, unsigned int position): QFrame(parent)
 {
@@ -99,5 +101,46 @@ void BoardState::SetPiece(unsigned int position, Piece *piece)
             piecePtr->second = piece;
         }
     }
+    if(piece!=nullptr)
+    {
+        piece->SetPosition(position);
+    }
 }
 
+MoveCollection BoardState::GetMoveCollection(Alliance player)
+{
+    MoveCollection moveCollection;
+    BoardConfig::iterator piecePtr = m_boardValue.begin();
+    for (; piecePtr != m_boardValue.end(); ++piecePtr)
+    {
+        Piece* piece = piecePtr->second;
+        if(piece != nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
+        {
+            for (Move* move: piece->calculateLegalMove(*this))
+            {
+                moveCollection.push_back(move);
+            }
+        }
+    }
+    return moveCollection;
+}
+
+unsigned int BoardState::GetKingPosition(Alliance player)
+{
+    CollectPiece pieces;
+    unsigned int kingPosition = BoardUntils::getMaxTiles();
+    BoardConfig::iterator piecePtr = m_boardValue.begin();
+    for (;piecePtr!=m_boardValue.end();++piecePtr)
+    {
+        Piece* piece = piecePtr->second;
+        if(piece!=nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
+        {
+            if(piece->GetPieceType() == PieceType::KING)
+            {
+                kingPosition = piece->GetPosition();
+                break;
+            }
+        }
+    }
+    return kingPosition;
+}

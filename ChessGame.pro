@@ -21,7 +21,9 @@ SOURCES += main.cpp \
     PieceFactory.cpp \
     Queen.cpp \
     Rook.cpp \
-    Tile.cpp
+    Tile.cpp \
+    Player.cpp \
+    Minimax.cpp
 
 HEADERS += \
     Bishop.h \
@@ -41,7 +43,9 @@ HEADERS += \
     Queen.h \
     Rook.h \
     Singleton.h \
-    Tile.h
+    Tile.h \
+    Player.h \
+    Minimax.h
 
 DISTFILES += \
     Resources/exit.png \

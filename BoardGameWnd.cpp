@@ -3,9 +3,8 @@
 #include "BoardGameWnd.h"
 #include "BoardController.h"
 #include "PieceFactory.h"
-
 #include "Rook.h"
-
+#include "BoardUntils.h"
 #include <QGridLayout>
 
 unsigned int BoardGameWnd::s_tmpStateIdx = 0;
@@ -45,12 +44,12 @@ BoardState BoardGameWnd::CreateStandardBoard()
     unsigned int sizeInit = static_cast<unsigned int>(listInit.size());
     for(unsigned int i = 0; i < sizeInit; ++i)
     {
-        Piece* piece_white = PieceFactory::GeneratePiece(listInit[i], Alliance::BLACK);
+        Piece* piece_white = PieceFactory::GeneratePiece(listInit[int(i)], Alliance::BLACK);
         piece_white->SetPosition(i);
         s_tempBoards[0].m_boardValue.at(i).second = piece_white;
         s_pieces.push_back(piece_white);
 
-        Piece* piece_black = PieceFactory::GeneratePiece(listInit[i], Alliance::WHITE);
+        Piece* piece_black = PieceFactory::GeneratePiece(listInit[int(i)], Alliance::WHITE);
         piece_black->SetPosition(endBoardIdx - i);
         s_tempBoards[0].m_boardValue.at(endBoardIdx - i).second = piece_black;
         s_pieces.push_back(piece_black);
@@ -61,6 +60,24 @@ BoardState BoardGameWnd::CreateStandardBoard()
     s_tmpStateIdx++;
 
     return s_tempBoards[0];
+}
+
+MoveCollection BoardGameWnd::GetLegalMoves(BoardState board, Alliance player)
+{
+    MoveCollection moveCollections;
+    BoardConfig::iterator piecePtr = board.m_boardValue.begin();
+
+    for (;piecePtr!=board.m_boardValue.end();++piecePtr)
+    {
+        if(BoardUntils::IsSameAlliance(piecePtr->second->GetAlliance(), player))
+        {
+            for(Move* move: piecePtr->second->calculateLegalMove(board))
+            {
+                moveCollections.push_back(move);
+            }
+        }
+    }
+    return moveCollections;
 }
 
 BoardTiles BoardGameWnd::GetTiles()

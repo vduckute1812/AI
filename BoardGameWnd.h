@@ -38,6 +38,8 @@ public:
 
     static BoardState       CreateStandardBoard();
 
+    static MoveCollection   GetLegalMoves(BoardState board, Alliance player);
+
     BoardTiles              GetTiles();
 
     static std::vector<Piece*>      s_pieces;
@@ -68,13 +70,14 @@ public:
     bool					IsLocked() const { return m_isLocked; }
     void					Lock(bool yes) { m_isLocked = yes; }
     void                    timerEvent(QTimerEvent *e) override;
-
     void                    ResetTiles();
 
 private:
     volatile bool			m_isLocked;
     BoardController*        m_boardController;
     BoardTiles              m_tiles;
+    EditModeDef             m_whitePlayer;
+    EditModeDef             m_blackPlayer;
 };
 
 #endif // BOARDGAMEWND_H

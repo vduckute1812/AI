@@ -11,6 +11,7 @@ Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackP
     m_destCoordinate = destCoord;
     m_movedCoordinate = movePiece->GetPosition();
     m_isFirstMove = m_movePiece->IsFirstMove();
+    m_killedPiece = nullptr;
 }
 
 unsigned int Move::GetMoveCoordinate() const
@@ -49,6 +50,7 @@ BoardState Move::Execute()
         }
         Piece* piece = BoardState::GetPieceOnBoard(boardState, m_movedCoordinate);
         piece->SetFirstMove(false);
+        m_killedPiece = BoardState::GetPieceOnBoard(boardState, m_destCoordinate);
 
         boardState.SetPiece(m_movedCoordinate, nullptr);
         boardState.SetPiece(m_destCoordinate, piece);
@@ -60,10 +62,9 @@ BoardState Move::Execute()
     }
     else
     {
-        BoardConfig boardConfig = m_board.m_boardValue;
-
         Piece* piece = BoardState::GetPieceOnBoard(m_board, m_movedCoordinate);
         piece->SetFirstMove(false);
+        m_killedPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
 
         m_board.SetPiece(m_movedCoordinate, nullptr);
         m_board.SetPiece(m_destCoordinate, piece);
@@ -76,134 +77,75 @@ BoardState Move::Execute()
 
 BoardState Move::UndoExecute()
 {
-    BoardConfig boardConfig = new BoardBuilder();
-    const Board* currentBoard = m_toBoard;
-
-    BoardConfig boardConfig = currentBoard->getBoardConfig();
-
-    BoardConfig::iterator piecePtr;
-
-    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
-    {
-        builder->setPiece(piecePtr->second);
-    }
-
-    Piece* piece = boardConfig.at(m_destCoordinate);
+    Piece* piece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+    m_board.SetPiece(m_movedCoordinate, piece);
+    m_board.SetPiece(m_destCoordinate, m_killedPiece);
+    m_killedPiece = nullptr;
 
     if(m_isFirstMove && piece)
     {
-        piece->setFirstMove(true);
+        piece->SetFirstMove(true);
     }
 
-    builder->setPiece(m_movedCoordinate, piece);
-    builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line
+    Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    m_board.m_playerTurn = nextTurnPlayer;
 
-    builder->setMoveMaker(currentBoard->getOpponentMaker());
-    return builder->build();
-
+    return m_board;
 }
 
 // Use for GUI
 BoardState Move::Undo()
 {
-//    BoardBuilder* builder = new BoardBuilder();
-//    const Board* currentBoard = BoardUI::GetInstance()->GetCurrentBoard();
-////    const Board* currentBoard = m_movedBoard;
+    Piece* piece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+    m_board.SetPiece(m_movedCoordinate, piece);
+    m_board.SetPiece(m_destCoordinate, m_killedPiece);
+    m_killedPiece = nullptr;
 
-//    BoardConfig boardConfig = currentBoard->getBoardConfig();
+    if(m_isFirstMove && piece)
+        piece->SetFirstMove(true);
 
-//    BoardConfig::iterator piecePtr;
+    Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    m_board.m_playerTurn = nextTurnPlayer;
 
-//    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
-//    {
-//        builder->setPiece(piecePtr->second);
-//    }
-
-//    Piece* piece = boardConfig.at(m_destCoordinate);
-
-//    if(m_isFirstMove && piece)
-//    {
-//        piece->setFirstMove(true);
-//    }
-
-//    builder->setPiece(m_movedCoordinate, piece);
-//    builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line
-
-//    builder->setMoveMaker(currentBoard->getOpponentMaker());
-//    return builder->build();
-
-    BoardState test;
-    return test;
+    return m_board;
 }
 
 BoardState Move::Redo()
 {
-//    BoardBuilder* builder = new BoardBuilder();
+    Piece* piece = BoardState::GetPieceOnBoard(m_board, m_movedCoordinate);
+    piece->SetFirstMove(false);
+    m_killedPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
 
-//    const Board* currentBoard = BoardUI::GetInstance()->GetCurrentBoard();
-////    const Board* currentBoard = m_board;
-//    BoardConfig boardConfig = currentBoard->getBoardConfig();
+    m_board.SetPiece(m_movedCoordinate, nullptr);
+    m_board.SetPiece(m_destCoordinate, piece);
 
-//    BoardConfig::iterator piecePtr;
+    Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    m_board.m_playerTurn = nextTurnPlayer;
 
-//    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
-//    {
-//        builder->setPiece(piecePtr->second);
-//    }
-
-//    Piece* piece = boardConfig.at(m_movedCoordinate);
-
-//    if(piece->isFirstMove())
-//    {
-//        piece->setFirstMove(false);
-//    }
-
-//    builder->setPiece(m_movedCoordinate, nullptr);
-//    builder->setPiece(m_destCoordinate, piece); // need optimize this line
-
-//    builder->setMoveMaker(currentBoard->getOpponentMaker());
-//    return builder->build();
-    BoardState test;
-    return test;
+    return m_board;
 }
 
 bool Move::IsLegalMove()
 {
-//    Board* board = this->Execute();
+    BoardState board = this->Execute();
+    bool isLegal = true;
 
-//    const Board* boardUI = board;
-//    BoardConfig boardConfig = boardUI->getBoardConfig();
+    // Get Opponent moves
+    Alliance opponentPlayer = board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
 
-//    bool isLegal = true;
-//    int kingPosition = -1;
+    unsigned int kingPosition = board.GetKingPosition(opponentPlayer);
+    MoveCollection moves = board.GetMoveCollection(board.m_playerTurn);
+    for (Move* move: moves)
+    {
+        if(move->GetDestCoordinate() == kingPosition)
+        {
+            isLegal = false;
 
-//    CollectPiece pieces = boardUI->getPieces(boardUI->getOpponentMaker());
-//    for (const Piece* piece: pieces)
-//    {
-//        if(piece->getPieceType() == PieceType::KING)
-//        {
-//            kingPosition = piece->getPosition();
-//            break;
-//        }
-//    }
-
-//    CollectMove moves = boardUI->getLegalMoves(boardUI->getMoveMaker());
-//    for (Move* move: moves)
-//    {
-//        if(move->getDestCoordinate() == kingPosition)
-//        {
-//            isLegal = false;
-//            break;
-//        }
-
-//        delete move;
-//    }
-
-//    Board* boardUndo = this->UndoExecute();
-
-//    delete board;
-//    delete boardUndo;
-
-//    return isLegal;
-    return true;
+            delete move;
+            break;
+        }
+        delete move;
+    }
+    this->Undo();
+    return isLegal;
 }

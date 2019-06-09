@@ -109,7 +109,8 @@ void Tile::mousePressEvent(QMouseEvent *event)
                 {
                     tile->SetCurrentColor(ATTACK_COLOR);
                 }
-                else {
+                else
+                {
                     tile->SetCurrentColor(MOVE_COLOR);
                 }
             }
@@ -124,5 +125,3 @@ void Tile::paintEvent(QPaintEvent *)
     painter.setBrush(m_currentColor);
     painter.drawRect(rect());
 }
-
-

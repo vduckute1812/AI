@@ -38,6 +38,7 @@ protected:
     BoardState          m_board;
     const Piece*        m_movePiece;
     const Piece*        m_attackPiece;
+    Piece*              m_killedPiece;
 
     bool                m_isFirstMove;
     unsigned int        m_movedCoordinate;

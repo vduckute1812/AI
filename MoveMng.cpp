@@ -56,14 +56,14 @@ void MoveMgr::Do(Move *move)
 
 
     // remove pre-move
-    unsigned int currentIndex =  static_cast<unsigned int>(m_moveIdx);
+    unsigned int currentIndex =  m_moveIdx;
     for (; currentIndex < m_trackMoves.size(); ++currentIndex)
     {
         delete m_trackMoves[currentIndex];
     }
 
     // after delete pre-move. Set size of available track
-    m_trackMoves.resize(static_cast<unsigned int>(m_moveIdx));
+    m_trackMoves.resize(m_moveIdx);
 
     m_moveIdx++;
 
@@ -86,51 +86,51 @@ bool MoveMgr::HasUndo()
 
 void MoveMgr::Undo()
 {
-//    if(BoardGameWnd::GetInstance()->IsLocked())
-//        return;
+    if(BoardGameWnd::GetInstance()->IsLocked())
+        return;
 
-//    BoardGameWnd::GetInstance()->Lock(true);
-//    BoardGameWnd::GetInstance()->blockSignals(true);
+    BoardGameWnd::GetInstance()->Lock(true);
+    BoardGameWnd::GetInstance()->blockSignals(true);
 
-//    if(HasUndo())
-//    {
-//        m_moveIdx--;
-//        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
-//        Board* board = m_trackMoves[currentIdx]->Undo();
-//        BoardGameWnd::GetInstance()->SetBoardState(board);
-//    }
+    if(HasUndo())
+    {
+        m_moveIdx--;
+        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
+        BoardState board = m_trackMoves[currentIdx]->Undo();
+        BoardGameWnd::GetInstance()->SetBoard(board);
+    }
 
-//    BoardGameWnd::GetInstance()->Lock(false);
-//    BoardGameWnd::GetInstance()->blockSignals(false);
+    BoardGameWnd::GetInstance()->Lock(false);
+    BoardGameWnd::GetInstance()->blockSignals(false);
 }
 
 bool MoveMgr::HasRedo()
 {
-    return m_moveIdx < static_cast<int>(m_trackMoves.size());
+    return m_moveIdx < m_trackMoves.size();
 }
 
 void MoveMgr::Redo()
 {
-//    if(BoardGameWnd::GetInstance()->IsLocked())
-//        return;
+    if(BoardGameWnd::GetInstance()->IsLocked())
+        return;
 
-//    BoardGameWnd::GetInstance()->Lock(true);
-//    BoardGameWnd::GetInstance()->blockSignals(true);
+    BoardGameWnd::GetInstance()->Lock(true);
+    BoardGameWnd::GetInstance()->blockSignals(true);
 
-//    if(HasRedo())
-//    {
-//        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
-//        Board* board = m_trackMoves[currentIdx]->Redo();
-//        BoardGameWnd::GetInstance()->SetBoardState(board);
-//        m_moveIdx++;
-//    }
+    if(HasRedo())
+    {
+        unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
+        BoardState board = m_trackMoves[currentIdx]->Redo();
+        BoardGameWnd::GetInstance()->SetBoard(board);
+        m_moveIdx++;
+    }
 
-//    BoardGameWnd::GetInstance()->Lock(false);
-//    BoardGameWnd::GetInstance()->blockSignals(false);
+    BoardGameWnd::GetInstance()->Lock(false);
+    BoardGameWnd::GetInstance()->blockSignals(false);
 }
 
 
-int MoveMgr::GetIndex() const
+unsigned int MoveMgr::GetIndex() const
 {
     return m_moveIdx;
 }

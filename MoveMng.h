@@ -23,7 +23,7 @@ public:
     bool                HasRedo();
     void                Redo();
 
-    int                 GetIndex() const;
+    unsigned int        GetIndex() const;
     static MoveMgr*     GetInstance();
     static void         FreeInstance();
 
@@ -31,7 +31,7 @@ public:
 private:
     static MoveMgr*     s_instance;
 
-    int                 m_moveIdx;
+    unsigned int        m_moveIdx;
     MoveCollection      m_trackMoves;
 };
 

@@ -12,7 +12,8 @@ class MainWnd: public Singleton<MainWnd>, public QMainWindow, public Messenger
 public:
     MainWnd(QWidget *parent = nullptr);
 
-    virtual void    Init();
+    virtual void    Init() override;
+    void            keyPressEvent(QKeyEvent *event) override;
 
     QDockWidget*    CreateDock(const char* name, QString icon, QWidget* widget);
     void            AppendDock(QDockWidget* dock, Qt::DockWidgetAreas allowedAreas, Qt::DockWidgetArea area);

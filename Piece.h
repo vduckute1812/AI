@@ -48,6 +48,8 @@ struct BoardState
     static Piece*       GetPieceOnBoard(BoardState boarValue, unsigned int position);
 
     void                SetPiece(unsigned int position, Piece* piece);
+    MoveCollection      GetMoveCollection(Alliance player);
+    unsigned int        GetKingPosition(Alliance player);
 
     Alliance            m_playerTurn;
     BoardConfig         m_boardValue;
