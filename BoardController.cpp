@@ -4,6 +4,8 @@
 #include "BoardGameWnd.h"
 #include "Piece.h"
 #include "MoveMng.h"
+#include "BoardUntils.h"
+#include "Move.h"
 
 typedef vec2<int32_t> vec2i;
 
@@ -20,6 +22,33 @@ void BoardController::mousePressEvent(QMouseEvent *)
 void BoardController::SetSelecetedPiece(Piece* piece)
 {
     m_piece = piece;
+}
+
+void BoardController::MoveSelectedPiece(unsigned int coordinate)
+{
+    Piece* piece = BoardController::GetInstance()->GetSelecetedPiece();
+    Alliance currentMoveMaker = BoardController::GetInstance()->GetMoveMaker();
+    if (piece && BoardUntils::IsSameAlliance(piece->GetAlliance(), currentMoveMaker))
+    {
+        for (Move* move : piece->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))
+        {
+            if (move->GetDestCoordinate() == coordinate)
+            {
+                if(move->IsLegalMove())
+                {
+                    BoardController::GetInstance()->MovePiece(move);
+                }
+                else
+                {
+                    delete move;
+                }
+            }
+            else
+            {
+                delete move;
+            }
+        }
+    }
 }
 
 Alliance BoardController::GetMoveMaker()

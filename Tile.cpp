@@ -83,38 +83,12 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
     BoardGameWnd::GetInstance()->GetEditModeController()->mousePressEvent(event);
 
-//    // Make move Piece
-//    int coordinate = this->GetCoordinate();
-
-
     if(BoardGameWnd::GetInstance()->IsLocked())
         return;
 
     // Make move Piece
     unsigned int coordinate = this->GetCoordinate();
-    Piece* piece = BoardController::GetInstance()->GetSelecetedPiece();
-    Alliance currentMoveMaker = BoardController::GetInstance()->GetMoveMaker();
-    if (piece && BoardUntils::IsSameAlliance(piece->GetAlliance(), currentMoveMaker))
-    {
-        for (Move* move : piece->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))
-        {
-            if (move->GetDestCoordinate() == coordinate)
-            {
-                if(move->IsLegalMove())
-                {
-                    BoardController::GetInstance()->MovePiece(move);
-                }
-                else
-                {
-                    delete move;
-                }
-            }
-            else
-            {
-                delete move;
-            }
-        }
-    }
+    BoardController::GetInstance()->MoveSelectedPiece(coordinate);
 
     BoardController::GetInstance()->SetSelecetedPiece(this->GetPiece());
 

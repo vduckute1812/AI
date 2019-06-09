@@ -76,33 +76,31 @@ BoardState Move::Execute()
 
 BoardState Move::UndoExecute()
 {
-//    BoardBuilder* builder = new BoardBuilder();
-//    const Board* currentBoard = m_toBoard;
+    BoardConfig boardConfig = new BoardBuilder();
+    const Board* currentBoard = m_toBoard;
 
-//    BoardConfig boardConfig = currentBoard->getBoardConfig();
+    BoardConfig boardConfig = currentBoard->getBoardConfig();
 
-//    BoardConfig::iterator piecePtr;
+    BoardConfig::iterator piecePtr;
 
-//    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
-//    {
-//        builder->setPiece(piecePtr->second);
-//    }
+    for (piecePtr = boardConfig.begin(); piecePtr != boardConfig.end(); ++piecePtr)
+    {
+        builder->setPiece(piecePtr->second);
+    }
 
-//    Piece* piece = boardConfig.at(m_destCoordinate);
+    Piece* piece = boardConfig.at(m_destCoordinate);
 
-//    if(m_isFirstMove && piece)
-//    {
-//        piece->setFirstMove(true);
-//    }
+    if(m_isFirstMove && piece)
+    {
+        piece->setFirstMove(true);
+    }
 
-//    builder->setPiece(m_movedCoordinate, piece);
-//    builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line
+    builder->setPiece(m_movedCoordinate, piece);
+    builder->setPiece(m_destCoordinate, const_cast<Piece*>(m_attackPiece)); // need optimize this line
 
-//    builder->setMoveMaker(currentBoard->getOpponentMaker());
-//    return builder->build();
+    builder->setMoveMaker(currentBoard->getOpponentMaker());
+    return builder->build();
 
-    BoardState test;
-    return test;
 }
 
 // Use for GUI

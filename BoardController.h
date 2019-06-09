@@ -13,6 +13,8 @@ public:
     void        SetSelecetedPiece(Piece* piece);
     Piece*      GetSelecetedPiece() const {return m_piece;}
 
+    void        MoveSelectedPiece(unsigned int coordinate);
+
     Alliance    GetMoveMaker();
     void        SetMoveMaker(Alliance maker);
 
