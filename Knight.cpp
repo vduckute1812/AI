@@ -23,26 +23,26 @@ Knight::~Knight()
 
 bool Knight::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(1, currentPosition)
+    return BoardUntils::IsNumColumn(CheckColumn::FIRST, currentPosition)
             && (candidateOffset == -2*NUM_TILES_PER_COL-1 || candidateOffset == -NUM_TILES_PER_COL-2
              || candidateOffset == NUM_TILES_PER_COL-2 || candidateOffset == 2*NUM_TILES_PER_COL-1);
 }
 
 bool Knight::isSecondColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(2, currentPosition)
+    return BoardUntils::IsNumColumn(CheckColumn::SECOND, currentPosition)
             && (candidateOffset == -NUM_TILES_PER_COL-2 || candidateOffset == NUM_TILES_PER_COL-2);
 }
 
 bool Knight::isSeventhColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL-1, currentPosition)
+    return BoardUntils::IsNumColumn(CheckColumn::NEAR_END_OF_COL, currentPosition)
             && (candidateOffset == -NUM_TILES_PER_COL+2 || candidateOffset == NUM_TILES_PER_COL+2);
 }
 
 bool Knight::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition)
+    return BoardUntils::IsNumColumn(CheckColumn::END_OF_COL, currentPosition)
             &&(candidateOffset == -2*NUM_TILES_PER_COL+1 || candidateOffset == -NUM_TILES_PER_COL+2
             || candidateOffset == NUM_TILES_PER_COL+2  || candidateOffset == 2*NUM_TILES_PER_COL+1);
 }

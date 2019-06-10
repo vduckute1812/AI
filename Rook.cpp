@@ -18,12 +18,12 @@ Rook::~Rook()
 
 bool Rook::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(1, currentPosition) && (candidateOffset == -1);
+    return BoardUntils::IsNumColumn(CheckColumn::FIRST, currentPosition) && (candidateOffset == -1);
 }
 
 bool Rook::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition) && (candidateOffset == 1);
+    return BoardUntils::IsNumColumn(CheckColumn::END_OF_COL, currentPosition) && (candidateOffset == 1);
 }
 
 MoveCollection Rook::calculateLegalMove(const BoardState board) const

@@ -19,13 +19,13 @@ Pawn::~Pawn()
 
 bool Pawn::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(1, currentPosition)
+    return BoardUntils::IsNumColumn(CheckColumn::FIRST, currentPosition)
             && (candidateOffset == -NUM_TILES_PER_COL-1 || candidateOffset == NUM_TILES_PER_COL-1);
 }
 
 bool Pawn::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition)
+    return BoardUntils::IsNumColumn(CheckColumn::END_OF_COL, currentPosition)
             && (candidateOffset == -NUM_TILES_PER_COL+1 || candidateOffset == NUM_TILES_PER_COL+1);
 }
 

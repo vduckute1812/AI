@@ -6,10 +6,10 @@
 
 enum CheckColumn
 {
-    FIRST   = 0,
-    SECOND  = 1,
-    NEAR_END_OF_COL = NUM_TILES_PER_COL - 2,
-    END_OF_COL      = NUM_TILES_PER_COL - 1
+    FIRST   = 1,
+    SECOND  = 2,
+    NEAR_END_OF_COL = NUM_TILES_PER_COL - 1,
+    END_OF_COL      = NUM_TILES_PER_COL
 };
 
 struct BoardUntils

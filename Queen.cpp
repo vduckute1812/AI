@@ -22,13 +22,13 @@ Queen::~Queen()
 
 bool Queen::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(1, currentPosition)
+    return BoardUntils::IsNumColumn(CheckColumn::FIRST, currentPosition)
             && (candidateOffset == -1 || candidateOffset == -NUM_TILES_PER_COL-1 || candidateOffset == NUM_TILES_PER_COL-1);
 }
 
 bool Queen::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition)
+    return BoardUntils::IsNumColumn(CheckColumn::END_OF_COL, currentPosition)
             && (candidateOffset == 1 || candidateOffset == -NUM_TILES_PER_COL+1 || candidateOffset == NUM_TILES_PER_COL+1);
 }
 

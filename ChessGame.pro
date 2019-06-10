@@ -10,6 +10,7 @@ SOURCES += main.cpp \
     Bishop.cpp \
     BoardController.cpp \
     BoardGameWnd.cpp \
+    HistoryWnd.cpp \
     King.cpp \
     Knight.cpp \
     MainWnd.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     BoardGameWnd.h \
     BoardUntils.h \
     Defines.h \
+    HistoryWnd.h \
     King.h \
     Knight.h \
     MainWnd.h \

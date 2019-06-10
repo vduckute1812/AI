@@ -22,13 +22,13 @@ Bishop::~Bishop()
 
 bool Bishop::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(1, currentPosition) /*is first column*/
+    return BoardUntils::IsNumColumn(CheckColumn::FIRST, currentPosition) /*is first column*/
             && (candidateOffset == -NUM_TILES_PER_COL-1 || candidateOffset == NUM_TILES_PER_COL-1);
 }
 
 bool Bishop::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
 {
-    return BoardUntils::IsNumColumn(NUM_TILES_PER_COL, currentPosition) /*is last column*/
+    return BoardUntils::IsNumColumn(CheckColumn::END_OF_COL, currentPosition) /*is last column*/
             && (candidateOffset == -NUM_TILES_PER_COL+1 || candidateOffset == NUM_TILES_PER_COL+1);
 }
 
