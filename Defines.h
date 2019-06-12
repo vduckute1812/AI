@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <QString>
 
 template<typename T>
 struct vec2
@@ -15,6 +16,15 @@ struct vec2
     vec2();
     vec2(T _x, T _y);
     T x, y;
+};
+
+//Returns true if s1 is less than s2
+struct StringLT
+{
+    bool operator()(QString s1, QString s2) const
+    {
+        return QString::compare(s1, s2);
+    }
 };
 
 template<typename T>

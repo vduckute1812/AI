@@ -8,14 +8,6 @@
 #include "MoveMng.h"
 #include <QKeyEvent>
 
-//Returns true if s1 is less than s2
-struct StringLT
-{
-    bool operator()(QString s1, QString s2) const
-    {
-        return QString::compare(s1, s2);
-    }
-};
 
 typedef std::map<QString , QIcon*, StringLT > IconNameMap;
 

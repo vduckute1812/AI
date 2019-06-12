@@ -35,17 +35,6 @@ static const u32 STRUCTURE_CHANGED			= (u32(1) << 5);
 //SELECTOR
 static const u32 SELECTION_CHANGED			= (u32(1) << 6);
 
-
-
-//Returns true if s1 is less than s2
-struct StringLT
-{
-    bool operator()(QString s1, QString s2) const
-    {
-        return QString::compare(s1, s2);
-    }
-};
-
 class Message
 {
     friend class Messenger;

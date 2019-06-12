@@ -207,3 +207,13 @@ u32 Messenger::GetSentCount()
 {
 
 }
+
+void Messenger::OnMessageReceived(const Message &msg)
+{
+
+}
+
+void Messenger::OnBroadcastReceived(const Message &msg)
+{
+
+}
