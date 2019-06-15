@@ -8,9 +8,11 @@
 class BoardGameWnd;
 class MainWnd: public Singleton<MainWnd>, public QMainWindow, public Messenger
 {
-//    Q_OBJECT
+
 public:
     MainWnd(QWidget *parent = nullptr);
+
+    static const QIcon&    LoadIcon(QString iconStr);
 
     virtual void    Init() override;
     void            keyPressEvent(QKeyEvent *event) override;
@@ -18,12 +20,12 @@ public:
     QDockWidget*    CreateDock(const char* name, QString icon, QWidget* widget);
     void            AppendDock(QDockWidget* dock, Qt::DockWidgetAreas allowedAreas, Qt::DockWidgetArea area);
 
-    const QIcon&    LoadIcon(QString iconStr);
 
     void            Show();
 
 private:
     QDockWidget*	m_boardDock;
+    QDockWidget*    m_historyDock;
 };
 
 #endif // MAINWND_H

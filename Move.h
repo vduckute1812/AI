@@ -34,6 +34,14 @@ public:
 
     bool                IsLegalMove();
 
+    void				SetDescription(const QString& desc);
+    const QString&		GetDescription() const;
+
+    QChar               GetTypePieceMove() const;
+    QChar               GetTypePieceIsAttacked() const;
+
+    QChar               GetAlliancePieceMove() const;
+
 protected:
     BoardState          m_board;
     const Piece*        m_movePiece;
@@ -43,5 +51,6 @@ protected:
     bool                m_isFirstMove;
     unsigned int        m_movedCoordinate;
     unsigned int        m_destCoordinate;
+    QString             m_description;
 };
 #endif // MOVE_H

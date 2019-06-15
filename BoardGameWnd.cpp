@@ -5,6 +5,8 @@
 #include "PieceFactory.h"
 #include "Rook.h"
 #include "BoardUntils.h"
+#include "HistoryWnd.h"
+
 #include <QGridLayout>
 
 unsigned int BoardGameWnd::s_tmpStateIdx = 0;
@@ -17,7 +19,14 @@ BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = null
     , Messenger()
 {
     m_boardController = controller;
-    startTimer(50);
+    m_timer = new QTimer(this);
+
+    // update thread
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(Update()), Qt::QueuedConnection);
+    m_timer->start(50);
+
+    // main thread
+    startTimer(20);
 }
 
 BoardGameWnd::~BoardGameWnd()
@@ -186,4 +195,9 @@ void BoardGameWnd::ResetTiles()
         Tile* tile = *tilePtr;
         tile->SetPiece(nullptr);
     }
+}
+
+void BoardGameWnd::Update()
+{
+    HistoryWnd::GetInstance()->Update();
 }

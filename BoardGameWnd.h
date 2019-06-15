@@ -1,6 +1,7 @@
 #ifndef BOARDGAMEWND_H
 #define BOARDGAMEWND_H
 #include <QWidget>
+#include <QTimer>
 #include "Piece.h"
 #include "Defines.h"
 #include "Messenger.h"
@@ -46,17 +47,6 @@ public:
     static unsigned int             s_tmpStateIdx;
     static BoardState               s_tempBoards[MAX_TEMP_BOARD];
 
-    struct EditModeDef
-    {
-        enum type
-        {
-            HUMAN_HUMAN,
-            HUMAN_AI,
-            AI_AI,
-            COUNT
-        };
-    };
-
     virtual void            Init() override;
 
     void                    SetController(BoardController*);
@@ -72,12 +62,15 @@ public:
     void                    timerEvent(QTimerEvent *e) override;
     void                    ResetTiles();
 
+public slots:
+    // This method forces update of all dependent windows (warning: not thread-safe)
+    void                    Update();
+
 private:
     volatile bool			m_isLocked;
     BoardController*        m_boardController;
     BoardTiles              m_tiles;
-    EditModeDef             m_whitePlayer;
-    EditModeDef             m_blackPlayer;
+    QTimer*                 m_timer;
 };
 
 #endif // BOARDGAMEWND_H

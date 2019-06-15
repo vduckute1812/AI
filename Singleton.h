@@ -36,7 +36,6 @@ T* Singleton<T>::GetInstance()
         if (s_instance == nullptr)
         {
                 s_instance = new T;
-                s_instance->Init();
         }
 
         return s_instance;

@@ -16,7 +16,7 @@ SOURCES += main.cpp \
     MainWnd.cpp \
     Messenger.cpp \
     Move.cpp \
-    MoveMng.cpp \
+    MoveMgr.cpp \
     Pawn.cpp \
     Piece.cpp \
     PieceFactory.cpp \
@@ -38,7 +38,7 @@ HEADERS += \
     MainWnd.h \
     Messenger.h \
     Move.h \
-    MoveMng.h \
+    MoveMgr.h \
     Pawn.h \
     Piece.h \
     PieceFactory.h \

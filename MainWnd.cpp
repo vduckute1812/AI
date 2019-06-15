@@ -2,10 +2,11 @@
 #include <QFileInfo>
 #include <QApplication>
 #include <QTreeWidget>
+#include "MoveMgr.h"
 #include "MainWnd.h"
+#include "HistoryWnd.h"
 #include "BoardGameWnd.h"
 #include "BoardController.h"
-#include "MoveMng.h"
 #include <QKeyEvent>
 
 
@@ -20,11 +21,17 @@ void MainWnd::Init()
 {
     BoardController* boardController = BoardController::GetInstance();
     BoardGameWnd* boardWnd = BoardGameWnd::GetInstance();
+    boardWnd->Init();
     boardWnd->SetController(boardController);
 
-    m_boardDock = CreateDock("Board Game", "", boardWnd);
-    AppendDock(m_boardDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::LeftDockWidgetArea);
+    HistoryWnd* historyWnd = HistoryWnd::GetInstance();
+    historyWnd->Init();
+    m_historyDock = CreateDock("History", "history", historyWnd);
+    m_historyDock->show();
+    AppendDock(m_historyDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::LeftDockWidgetArea);
 
+
+    m_boardDock = CreateDock("Board Game", "", boardWnd);
     setCentralWidget(boardWnd);
 }
 
@@ -74,22 +81,11 @@ const QIcon& MainWnd::LoadIcon(QString iconStr)
         for (int i = 0; i < static_cast<int>(extensions.size()); ++i)
         {
             QString fn(QString("Resources/") + iconStr + extensions[i]);
+
             QFileInfo info(fn);
             if (info.exists())
             {
                 icon = new QIcon(fn);
-
-                fn = (QString("Resources/") + iconStr + QString("-disabled") + extensions[i]);
-                if (QFileInfo(fn).exists())
-                    icon->addFile(fn, QSize(), QIcon::Disabled);
-
-                fn = (QString("Resources/")  + iconStr + QString("-active") + extensions[i]);
-                if (QFileInfo(fn).exists())
-                    icon->addFile(fn, QSize(), QIcon::Active);
-
-                fn = (QString("Resources/")  + iconStr + QString("-selected") + extensions[i]);
-                if (QFileInfo(iconStr).exists())
-                    icon->addFile(fn, QSize(), QIcon::Selected);
                 break;
             }
         }

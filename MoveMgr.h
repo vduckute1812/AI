@@ -1,5 +1,5 @@
-#ifndef MOVEMNG_H
-#define MOVEMNG_H
+#ifndef MOVEMGR_H
+#define MOVEMGR_H
 
 #include <vector>
 #include "Singleton.h"
@@ -27,6 +27,10 @@ public:
     static MoveMgr*     GetInstance();
     static void         FreeInstance();
 
+    int                 GetCount() const;
+
+    Move*               GetMove(int idx) const;
+
 
 private:
     static MoveMgr*     s_instance;
@@ -35,4 +39,4 @@ private:
     MoveCollection      m_trackMoves;
 };
 
-#endif // MOVEMNG_H
+#endif // MOVEMGR_H

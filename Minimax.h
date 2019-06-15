@@ -2,6 +2,7 @@
 #define MINIMAX_H
 #include "Piece.h"
 #include "Singleton.h"
+#include "Defines.h"
 
 const static int CHECK_BONUS = 50;
 const static int CHECK_MATE_BONUS = 1000;
@@ -15,10 +16,12 @@ class Minimax: public Singleton<Minimax>
 public:
     virtual void Init() override;
 
-    double  min(const Board* board, int depth, double highest, double lowest);
-    double  max(const Board* board, int depth, double highest, double lowest);
+    Move*   execute(BoardState);
 
-    bool    IsEndgame(const Board* board);
+    double  min(BoardState board, u32 depth, double highest, double lowest);
+    double  max(BoardState board, u32 depth, double highest, double lowest);
+
+    bool    IsEndgame(BoardState board);
     int     CalculateQuiescenceDepth(const Move* moveTransition, int depth);
     void    SetDepth(int depth);
     bool    SortMoveFollowValue(std::vector<Move*> moves);
@@ -31,14 +34,15 @@ private:
     int             m_quiescenceCount;
 };
 
-class BoardEvaluator: public Singleton<BoardEvaluator>
+class BoardEvaluator
 {
 public:
-    virtual void Init() override;
+    BoardEvaluator();
+    virtual ~BoardEvaluator();
     virtual int evaluate(const BoardState board, int depth = 0) = 0;
 };
 
-class StandardBoardEvaluator: public BoardEvaluator
+class StandardBoardEvaluator: public Singleton<StandardBoardEvaluator>, public BoardEvaluator
 {
 public:
     virtual void Init() override;

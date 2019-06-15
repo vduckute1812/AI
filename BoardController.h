@@ -7,6 +7,13 @@
 class BoardController: public Singleton<BoardController>, public QWidget
 {
 public:
+    enum EditModeDef
+    {
+        HUMAN_HUMAN,
+        HUMAN_AI,
+        NONE
+    };
+
     BoardController(QWidget* parent = nullptr);
     void        mousePressEvent(QMouseEvent *) override;
 
@@ -16,14 +23,17 @@ public:
     void        MoveSelectedPiece(unsigned int coordinate);
 
     Alliance    GetMoveMaker();
-    void        SetMoveMaker(Alliance maker);
 
     void        MovePiece(Move* move);
 
+    void        SetModePlayer(EditModeDef modePlayer);
+    EditModeDef GetModePlayer() const;
+
 private:
-    Piece*      m_piece;
-    int         m_coordinate;
-    Alliance    m_moveMaker;
+    Piece*          m_piece;
+    int             m_coordinate;
+    Alliance        m_moveMaker;
+    EditModeDef     m_modePlayer;       // Black player is AI default mode
 };
 
 #endif // BOARDCONTROLLER_H

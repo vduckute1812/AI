@@ -1,4 +1,4 @@
-#include "MoveMng.h"
+#include "MoveMgr.h"
 #include "Move.h"
 #include "BoardGameWnd.h"
 
@@ -39,6 +39,20 @@ void MoveMgr::FreeInstance()
 {
     delete s_instance;
     s_instance = nullptr;
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+int MoveMgr::GetCount() const
+{
+    return static_cast<int>(m_trackMoves.size());
+}
+
+Move *MoveMgr::GetMove(int idx) const
+{
+    if (idx < GetCount())
+        return m_trackMoves.at(idx);
+    return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////

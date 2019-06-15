@@ -12,6 +12,7 @@ Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackP
     m_movedCoordinate = movePiece->GetPosition();
     m_isFirstMove = m_movePiece->IsFirstMove();
     m_killedPiece = nullptr;
+    m_description = "";
 }
 
 unsigned int Move::GetMoveCoordinate() const
@@ -148,4 +149,34 @@ bool Move::IsLegalMove()
     }
     this->Undo();
     return isLegal;
+}
+
+void Move::SetDescription(const QString &desc)
+{
+    m_description = desc;
+}
+
+const QString &Move::GetDescription() const
+{
+    return m_description;
+}
+
+QChar Move::GetAlliancePieceMove() const
+{
+    return m_movePiece->GetAlliance();
+}
+
+QChar Move::GetTypePieceMove() const
+{
+    return m_movePiece->GetPieceType();
+}
+
+QChar Move::GetTypePieceIsAttacked() const
+{
+    if(IsAttackMove())
+    {
+        return m_attackPiece->GetPieceType();
+    }
+    else
+        return QChar();
 }

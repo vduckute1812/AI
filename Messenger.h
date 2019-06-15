@@ -6,8 +6,6 @@
 
 class Messenger;
 
-typedef unsigned int u32;
-
 struct Forward
 {
     static const u32 UP		= u32(1) << 30;

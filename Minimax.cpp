@@ -1,18 +1,112 @@
 #include "Minimax.h"
 #include "BoardUntils.h"
+#include <QTextStream>
+#include "Move.h"
 
+
+const static double MAX_VALUE = 1e4;
+const static double MIN_VALUE = -1e4;
 
 void Minimax::Init()
 {
-
+    m_boardEvaluated    = 0;
+    m_quiescenceCount   = 0;
+    m_searchDepth       = 1;    //default value
+    m_boardEvaluator    = StandardBoardEvaluator::GetInstance();
 }
 
-double Minimax::min(const Board *board, int depth, double highest, double lowest)
+Move *Minimax::execute(BoardState board)
 {
-    return 0;
+    double currentValue;
+//    int freqTableIndex = 0;
+
+    clock_t start, end;
+    start = clock();
+
+    Move* bestMove = nullptr;
+    double hightestSeenValue = MIN_VALUE;
+    double lowestSeenValue = MAX_VALUE;
+
+    QTextStream out(stdout);
+    out << QChar(board.m_playerTurn) << " IS THINKING with depth " << m_searchDepth <<endl;
+
+    MoveCollection moves = board.GetMoveCollection(board.m_playerTurn);
+//    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+    for (Move* move: moves) {
+
+        BoardState transitionBoard = move->Execute();
+        m_quiescenceCount = 0;
+        currentValue = transitionBoard.m_playerTurn == Alliance::WHITE ?
+                    min(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue):
+                    max(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue);
+
+//        BoardState undoBoard = move->UndoExecute();
+
+        if(board.m_playerTurn == Alliance::WHITE && currentValue > hightestSeenValue)
+        {
+            hightestSeenValue = currentValue;
+            bestMove = move;
+        }
+        else if(board.m_playerTurn == Alliance::BLACK && currentValue < lowestSeenValue)
+        {
+            lowestSeenValue = currentValue;
+
+            if(bestMove)
+                delete bestMove;
+
+            bestMove = move;
+        }
+        // release memory
+        else
+        {
+            delete move;
+        }
+    }
+
+    /* Do the work. */
+    end = clock();
+    m_executeTime = static_cast<double>((end-start)/ CLOCKS_PER_SEC);
+
+    return bestMove;
 }
 
-double Minimax::max(const Board *board, int depth, double highest, double lowest)
+double Minimax::min(BoardState board, u32 depth, double highest, double lowest)
+{
+    if(depth == 0|| IsEndgame(board))
+    {
+        if(depth == 0)
+        {
+             m_boardEvaluated++;
+        }
+        return this->m_boardEvaluator->evaluate(board, depth);
+    }
+
+    double currentLowest = lowest;
+
+    MoveCollection moves = board.GetMoveCollection(board.m_playerTurn);
+//    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+
+    MoveCollection candidateMoves (moves.begin() , moves.begin()+4);
+
+    for (Move* move: candidateMoves)
+    {
+        BoardState transitionBoard = move->Execute();
+//        currentLowest = std::min(currentLowest, max(transitionBoard, calculateQuiescenceDepth(move, depth), highest, currentLowest));
+
+        // release memory
+        BoardState undoBoard = move->UndoExecute();
+
+        delete move;
+
+        if(currentLowest <= highest)
+        {
+            return highest;
+        }
+    }
+
+return currentLowest;}
+
+double Minimax::max(BoardState board, u32 depth, double highest, double lowest)
 {
     return 0;
 }
@@ -27,7 +121,7 @@ bool Minimax::SortMoveFollowValue(std::vector<Move *> moves)
     return false;
 }
 
-bool Minimax::IsEndgame(const Board *board)
+bool Minimax::IsEndgame(BoardState board)
 {
     return false;
 }
@@ -37,7 +131,13 @@ int Minimax::CalculateQuiescenceDepth(const Move *moveTransition, int depth)
     return 0;
 }
 
-void BoardEvaluator::Init()
+
+BoardEvaluator::BoardEvaluator()
+{
+
+}
+
+BoardEvaluator::~BoardEvaluator()
 {
 
 }
@@ -100,3 +200,4 @@ int StandardBoardEvaluator::attacks(const BoardState board, const Alliance allia
 {
     return 0;
 }
+
