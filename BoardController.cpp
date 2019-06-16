@@ -8,6 +8,7 @@
 #include "Move.h"
 #include "HistoryWnd.h"
 #include "DeadPieceWnd.h"
+#include "PromoteWnd.h"
 
 typedef vec2<int32_t> vec2i;
 
@@ -29,6 +30,8 @@ void BoardController::SetSelecetedPiece(Piece* piece)
 
 void BoardController::MoveSelectedPiece(unsigned int coordinate)
 {
+    if(BoardGameWnd::GetInstance()->IsLocked())
+        return;
     Piece* piece = BoardController::GetInstance()->GetSelecetedPiece();
     Alliance currentMoveMaker = BoardController::GetInstance()->GetMoveMaker();
     if (piece && BoardUntils::IsSameAlliance(piece->GetAlliance(), currentMoveMaker))
@@ -82,6 +85,14 @@ void BoardController::MovePiece(Move *move)
     ////////////////////////////////////////////////////////////////////
 
     MoveMgr::GetInstance()->Do(move);
+
+    if(move->IsPromoteMove())
+    {
+        Alliance alliance = move->GetAlliancePieceMove() == 'b' ? Alliance::BLACK : Alliance::WHITE;
+        PromoteWnd::GetInstance()->SetPromoteAlliance(alliance);
+        PromoteWnd::GetInstance()->show();
+    }
+
 }
 
 void BoardController::SetModePlayer(BoardController::EditModeDef modePlayer)

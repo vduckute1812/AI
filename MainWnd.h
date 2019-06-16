@@ -5,7 +5,8 @@
 #include "Messenger.h"
 #include "Singleton.h"
 
-class BoardGameWnd;
+
+class PromoteWnd;
 class MainWnd: public Singleton<MainWnd>, public QMainWindow, public Messenger
 {
 
@@ -28,6 +29,8 @@ private:
     QDockWidget*	m_boardDock;
     QDockWidget*    m_historyDock;
     QDockWidget*    m_deadPieceDock;
+
+    PromoteWnd*     m_promoteWnd;
 };
 
 #endif // MAINWND_H

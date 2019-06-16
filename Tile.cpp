@@ -18,6 +18,7 @@ Tile::Tile(const unsigned int coordinate, Piece* piece, QWidget* parrent)
     resize(TILE_ROW_SIZE, TILE_COL_SIZE);
     m_defaultColor = (m_tileCoordinate + (m_tileCoordinate / NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
     m_currentColor = m_defaultColor;
+    m_canTouch = false;
 }
 
 void Tile::SetPiece(Piece *piece)
@@ -65,7 +66,9 @@ BoardTiles Tile::createEmptyTiles()
 
     for (unsigned int i = 0; i < NUM_TILES; ++i)
     {
-        tableTiles.push_back(new Tile(i, NULL_PIECE));
+        Tile* tile = new Tile(i, NULL_PIECE);
+        tile->SetCanTouch(true);
+        tableTiles.push_back(tile);
     }
 
     return tableTiles;
@@ -78,7 +81,7 @@ Piece *Tile::GetPiece()
 
 void Tile::mousePressEvent(QMouseEvent *event)
 {
-    if(BoardGameWnd::GetInstance()->IsLocked())
+    if(BoardGameWnd::GetInstance()->IsLocked() || !m_canTouch)
         return;
 
     BoardGameWnd::GetInstance()->GetEditModeController()->mousePressEvent(event);
@@ -121,4 +124,14 @@ void Tile::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.setBrush(m_currentColor);
     painter.drawRect(rect());
+}
+
+void Tile::SetCanTouch(bool yes)
+{
+    m_canTouch = yes;
+}
+
+bool Tile::CanTouch() const
+{
+    return m_canTouch;
 }

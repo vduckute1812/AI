@@ -32,12 +32,16 @@ public:
     void            mousePressEvent(QMouseEvent *) override;
     void            paintEvent(QPaintEvent *) override;
 
+    void            SetCanTouch(bool yes);
+    bool            CanTouch() const;
+
 protected:
     unsigned int        m_tileCoordinate;
     QBrush              m_currentColor;
     QBrush              m_defaultColor;
 
     Piece*              m_piece;
+    bool                m_canTouch;
 };
 
 #endif // TILE_H

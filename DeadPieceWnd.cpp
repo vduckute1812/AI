@@ -76,14 +76,13 @@ void DeadPieceWnd::Init()
 
     for (int i = 0; i < 16; ++i)    //4x4
     {
-        Piece* NULL_PIECE = nullptr;
-        Tile* blackTile = new Tile(i,NULL_PIECE);
+        Tile* blackTile = new Tile(i);
         blackTile->setFixedSize(TILE_ROW_SIZE, TILE_COL_SIZE);
         blackTile->SetCurrentColor(QBrush("white"));
         m_blackTiles.push_back(blackTile);
         m_gridBlackDeadPiece->addWidget(blackTile, i / 4, i % 4);
 
-        Tile* whiteTile = new Tile(NUM_TILES - i,NULL_PIECE);
+        Tile* whiteTile = new Tile(NUM_TILES - i);
         whiteTile->setFixedSize(TILE_ROW_SIZE, TILE_COL_SIZE);
         whiteTile->SetCurrentColor(QBrush("white"));
         m_whiteTiles.push_back(whiteTile);

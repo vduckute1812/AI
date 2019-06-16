@@ -1,17 +1,20 @@
 #ifndef PROMOTEWND_H
 #define PROMOTEWND_H
-#include <QWidget>
+#include <QMainWindow>
 #include "Singleton.h"
+#include "Piece.h"
 
 class Tile;
-class PromoteWnd: public QWidget, public Singleton<PromoteWnd>
+class PromoteWnd: public QMainWindow, public Singleton<PromoteWnd>
 {
 public:
-    PromoteWnd(QWidget* parent = nullptr);
+    PromoteWnd (QWidget* parent = nullptr);
     virtual void    Init() override;
+    void    SetPromoteAlliance(Alliance alliance);
 
 private:
-    std::vector<Tile*>       m_tiles;
+    Alliance                m_promoteAlliance;
+    std::vector<Tile*>      m_tiles;
 };
 
 #endif // PROMOTEWND_H

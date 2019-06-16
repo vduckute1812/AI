@@ -69,6 +69,7 @@ BoardState Move::Execute()
         m_board.SetPiece(m_movedCoordinate, nullptr);
         m_board.SetPiece(m_destCoordinate, piece);
 
+
         Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
         m_board.m_playerTurn = nextTurnPlayer;
     }

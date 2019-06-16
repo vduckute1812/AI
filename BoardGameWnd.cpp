@@ -211,3 +211,4 @@ void BoardGameWnd::Update()
         return;
     HistoryWnd::GetInstance()->Update();
 }
+
