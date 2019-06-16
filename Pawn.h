@@ -15,6 +15,7 @@ public:
     virtual std::vector<Move*> calculateLegalMove(const BoardState board) const;
 
 	int			getDirection() const;
+    bool        isPromote() const;
 };
 
 #endif

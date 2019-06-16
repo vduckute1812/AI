@@ -35,7 +35,6 @@ bool Move::IsAttackMove() const
     return true;
 }
 
-
 BoardState Move::Execute()
 {
     if(BoardGameWnd::s_tmpStateIdx >= MAX_TEMP_BOARD )
@@ -151,6 +150,26 @@ bool Move::IsLegalMove()
     return isLegal;
 }
 
+
+bool Move::IsPromoteMove()
+{
+    if(m_movePiece->GetPieceType() == PieceType::PAWN)
+    {
+        for ( unsigned int i = 0; i < NUM_TILES_PER_COL; ++i)
+        {
+            if(m_movePiece->GetAlliance() == Alliance::WHITE && m_destCoordinate == i)
+            {
+                return true;
+            }
+            else if(m_movePiece->GetAlliance() == Alliance::BLACK && m_destCoordinate == NUM_TILES - i)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void Move::SetDescription(const QString &desc)
 {
     m_description = desc;
@@ -165,6 +184,15 @@ QChar Move::GetAlliancePieceMove() const
 {
     return m_movePiece->GetAlliance();
 }
+
+QChar Move::GetAlliancePieceAttack() const
+{
+    if(IsAttackMove())
+    {
+        return m_attackPiece->GetAlliance();
+    }
+    else
+        return QChar();}
 
 QChar Move::GetTypePieceMove() const
 {

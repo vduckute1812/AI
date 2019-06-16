@@ -1,6 +1,7 @@
 #include "MoveMgr.h"
 #include "Move.h"
 #include "BoardGameWnd.h"
+#include "DeadPieceWnd.h"
 
 MoveMgr* MoveMgr::s_instance = nullptr;
 
@@ -112,6 +113,11 @@ void MoveMgr::Undo()
         unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
         BoardState board = m_trackMoves[currentIdx]->Undo();
         BoardGameWnd::GetInstance()->SetBoard(board);
+        Move* move = m_trackMoves.at(m_moveIdx);
+        if(move->IsAttackMove())
+        {
+            DeadPieceWnd::GetInstance()->RemoveDeadPiece(move->GetAlliancePieceAttack());
+        }
     }
 
     BoardGameWnd::GetInstance()->Lock(false);
@@ -134,6 +140,11 @@ void MoveMgr::Redo()
     if(HasRedo())
     {
         unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
+        Move* move = m_trackMoves.at(m_moveIdx);
+        if(move->IsAttackMove())
+        {
+            DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());
+        }
         BoardState board = m_trackMoves[currentIdx]->Redo();
         BoardGameWnd::GetInstance()->SetBoard(board);
         m_moveIdx++;

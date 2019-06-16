@@ -12,7 +12,8 @@ class MainWnd: public Singleton<MainWnd>, public QMainWindow, public Messenger
 public:
     MainWnd(QWidget *parent = nullptr);
 
-    static const QIcon&    LoadIcon(QString iconStr);
+    static const QIcon&     LoadIcon(QString iconStr);
+    static const QPixmap&   LoadPixmap(QString iconStr);
 
     virtual void    Init() override;
     void            keyPressEvent(QKeyEvent *event) override;
@@ -26,6 +27,7 @@ public:
 private:
     QDockWidget*	m_boardDock;
     QDockWidget*    m_historyDock;
+    QDockWidget*    m_deadPieceDock;
 };
 
 #endif // MAINWND_H

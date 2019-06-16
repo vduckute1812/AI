@@ -59,8 +59,8 @@ public:
 
     bool					IsLocked() const { return m_isLocked; }
     void					Lock(bool yes) { m_isLocked = yes; }
-    void                    timerEvent(QTimerEvent *e) override;
     void                    ResetTiles();
+    void                    timerEvent(QTimerEvent *e) override;
 
 public slots:
     // This method forces update of all dependent windows (warning: not thread-safe)

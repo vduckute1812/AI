@@ -80,4 +80,13 @@ int Pawn::getDirection() const
 	}
 	// else || Alliance::WHITE ||
     return -1;
-} 
+}
+
+bool Pawn::isPromote() const
+{
+    if (this->GetAlliance() == Alliance::BLACK)
+    {
+
+    }
+    return false;
+}

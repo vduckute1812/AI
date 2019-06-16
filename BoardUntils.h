@@ -15,11 +15,11 @@ enum CheckColumn
 struct BoardUntils
 {
 
-    static unsigned int getMaxTiles() {return NUM_TILES_PER_ROW * NUM_TILES_PER_COL;}
+    static u32 getMaxTiles() {return NUM_TILES_PER_ROW * NUM_TILES_PER_COL;}
 
-    static bool IsNumColumn(unsigned int numColumn , unsigned int coordinate)
+    static bool IsNumColumn(u32 numColumn , u32 coordinate)
     {
-        unsigned int firstColum = numColumn - 1;
+        u32 firstColum = numColumn - 1;
         while(firstColum < getMaxTiles())
         {
             if(firstColum == coordinate)

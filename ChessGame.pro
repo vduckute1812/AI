@@ -10,6 +10,7 @@ SOURCES += main.cpp \
     Bishop.cpp \
     BoardController.cpp \
     BoardGameWnd.cpp \
+    DeadPieceWnd.cpp \
     HistoryWnd.cpp \
     King.cpp \
     Knight.cpp \
@@ -20,6 +21,7 @@ SOURCES += main.cpp \
     Pawn.cpp \
     Piece.cpp \
     PieceFactory.cpp \
+    PromoteWnd.cpp \
     Queen.cpp \
     Rook.cpp \
     Tile.cpp \
@@ -31,6 +33,7 @@ HEADERS += \
     BoardController.h \
     BoardGameWnd.h \
     BoardUntils.h \
+    DeadPieceWnd.h \
     Defines.h \
     HistoryWnd.h \
     King.h \
@@ -42,6 +45,7 @@ HEADERS += \
     Pawn.h \
     Piece.h \
     PieceFactory.h \
+    PromoteWnd.h \
     Queen.h \
     Rook.h \
     Singleton.h \

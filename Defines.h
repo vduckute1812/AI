@@ -36,7 +36,6 @@ inline vec2<T>::vec2() : x(T(0)), y(T(0)) {}
 template<typename T>
 inline vec2<T>::vec2(T _x, T _y) : x(_x), y(_y) {}
 
-const static int NUM_TILES = 64;
 
 const static int TILE_ROW_SIZE = 50;
 
@@ -45,6 +44,8 @@ const static int TILE_COL_SIZE = 50;
 const static int NUM_TILES_PER_ROW = 8;
 
 const static int NUM_TILES_PER_COL = 8;
+
+const static int NUM_TILES = NUM_TILES_PER_ROW*NUM_TILES_PER_COL;
 
 const static int MAX_TEMP_BOARD = 1000;
 

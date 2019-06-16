@@ -83,9 +83,6 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
     BoardGameWnd::GetInstance()->GetEditModeController()->mousePressEvent(event);
 
-    if(BoardGameWnd::GetInstance()->IsLocked())
-        return;
-
     // Make move Piece
     unsigned int coordinate = this->GetCoordinate();
     BoardController::GetInstance()->MoveSelectedPiece(coordinate);

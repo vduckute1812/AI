@@ -9,8 +9,8 @@ enum TypeMove
 {
     MAJOR_MOVE,
     ATTACK_MOVE,
+    PAWN_PROMOTION,
     DEFEND_MOVE,        // NOT YET
-    PAWN_PROMOTION,     // NOT YET
     KING_SIDE_CASTLE,   // NOT YET
     QUEEN_SIDE_CASTLE,  // NOT YET
     CHECK_MOVE          // NOT YET
@@ -33,6 +33,7 @@ public:
     bool                IsAttackMove() const;
 
     bool                IsLegalMove();
+    bool                IsPromoteMove();
 
     void				SetDescription(const QString& desc);
     const QString&		GetDescription() const;
@@ -41,6 +42,7 @@ public:
     QChar               GetTypePieceIsAttacked() const;
 
     QChar               GetAlliancePieceMove() const;
+    QChar               GetAlliancePieceAttack() const;
 
 protected:
     BoardState          m_board;

@@ -7,6 +7,7 @@
 #include "BoardUntils.h"
 #include "Move.h"
 #include "HistoryWnd.h"
+#include "DeadPieceWnd.h"
 
 typedef vec2<int32_t> vec2i;
 
@@ -61,20 +62,24 @@ Alliance BoardController::GetMoveMaker()
 
 void BoardController::MovePiece(Move *move)
 {
-    QChar movePiece = move->GetTypePieceMove();
-    QChar type = move->GetAlliancePieceMove();
+    if(BoardGameWnd::GetInstance()->IsLocked())
+        return;
 
-    // Set here because
+    QChar type = move->GetTypePieceMove();
+    QChar alliance = move->GetAlliancePieceMove();
+
+    ////////////////////////// Set here ////////////////////////
     if(move->IsAttackMove())
     {
-       move->SetDescription( movePiece + QString(type) + QString(" attack ") + move->GetTypePieceIsAttacked() + QString(" ") +QString::number(move->GetDestCoordinate()) );
+        move->SetDescription( type + QString(alliance) + QString(" attack ") + move->GetTypePieceIsAttacked() + QString(" ") +QString::number(move->GetDestCoordinate()) );
+        DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());
     }
     else
     {
-        move->SetDescription( movePiece + QString(type) + QString(" move to ") +QString::number(move->GetDestCoordinate()) );
+        move->SetDescription( type + QString(alliance) + QString(" move to ") +QString::number(move->GetDestCoordinate()) );
     }
 
-    /////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
 
     MoveMgr::GetInstance()->Do(move);
 }

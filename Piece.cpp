@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include "BoardUntils.h"
 #include "BoardGameWnd.h"
+#include <QFileInfo>
 
 Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent, unsigned int position): QFrame(parent)
 {

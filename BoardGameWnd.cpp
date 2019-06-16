@@ -37,7 +37,7 @@ BoardGameWnd::~BoardGameWnd()
         delete *piecePtr;
     }
 
-    for (unsigned int i = 0; i < MAX_TEMP_BOARD; ++i)
+    for (u32 i = 0; i < MAX_TEMP_BOARD; ++i)
     {
         s_tempBoards[i].m_boardValue.clear();
     }
@@ -46,12 +46,12 @@ BoardGameWnd::~BoardGameWnd()
 
 BoardState BoardGameWnd::CreateStandardBoard()
 {
-    unsigned int endBoardIdx = NUM_TILES_PER_ROW * NUM_TILES_PER_COL - 1;
+    u32 endBoardIdx = NUM_TILES_PER_ROW * NUM_TILES_PER_COL - 1;
     const QList<QString> listInit = {"Rook","Knight","Bishop","King","Queen","Bishop","Knight","Rook"
                                     ,"Pawn", "Pawn" ,"Pawn"  ,"Pawn","Pawn" , "Pawn" ,"Pawn"  ,"Pawn"};
 
-    unsigned int sizeInit = static_cast<unsigned int>(listInit.size());
-    for(unsigned int i = 0; i < sizeInit; ++i)
+    u32 sizeInit = static_cast<u32>(listInit.size());
+    for(u32 i = 0; i < sizeInit; ++i)
     {
         Piece* piece_white = PieceFactory::GeneratePiece(listInit[int(i)], Alliance::BLACK);
         piece_white->SetPosition(i);
@@ -96,12 +96,13 @@ BoardTiles BoardGameWnd::GetTiles()
 
 void BoardGameWnd::Init()
 {
-    m_isLocked = false;
+    Lock(true); // lock init for avoiding crash
+    blockSignals(true);
 
     m_tiles = Tile::createEmptyTiles();
 
     Piece* NULL_PIECE = nullptr;
-    for(unsigned int i = 0; i < MAX_TEMP_BOARD; ++i)
+    for(u32 i = 0; i < MAX_TEMP_BOARD; ++i)
     {
         for (int tileIdx = 0; tileIdx < NUM_TILES_PER_ROW * NUM_TILES_PER_COL; ++tileIdx)
         {
@@ -129,7 +130,7 @@ void BoardGameWnd::Init()
     BoardConfig::iterator piecePtr;
     for (piecePtr = s_tempBoards[0].m_boardValue.begin(); piecePtr != s_tempBoards[0].m_boardValue.end(); ++piecePtr)
     {
-        unsigned int location = piecePtr->first;
+        u32 location = piecePtr->first;
         Tile* tile = m_tiles.at(location);
         Piece* piece = piecePtr->second;
 
@@ -142,6 +143,9 @@ void BoardGameWnd::Init()
 
     gridLayout->setSpacing(0);
     setLayout(gridLayout);
+
+    Lock(false);    //
+    blockSignals(false);
 }
 
 void BoardGameWnd::SetController(BoardController *controller)
@@ -151,6 +155,8 @@ void BoardGameWnd::SetController(BoardController *controller)
 
 void BoardGameWnd::SetBoard(BoardState board)
 {
+    Lock(true); // lock init for avoiding crash
+
     ResetColorTiles();
 
     if(!s_tempBoards[0].m_boardValue.empty())
@@ -164,10 +170,12 @@ void BoardGameWnd::SetBoard(BoardState board)
 
     for (tileConfig = config.begin(); tileConfig!=config.end(); ++tileConfig)
     {
-        const unsigned int coordinate = tileConfig->first;
+        const u32 coordinate = tileConfig->first;
         Piece* piece = tileConfig->second;
         m_tiles.at(coordinate)->SetPiece(piece);
     }
+
+    Lock(false);
 }
 
 void BoardGameWnd::ResetColorTiles()
@@ -199,5 +207,7 @@ void BoardGameWnd::ResetTiles()
 
 void BoardGameWnd::Update()
 {
+    if(IsLocked())
+        return;
     HistoryWnd::GetInstance()->Update();
 }
