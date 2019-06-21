@@ -86,7 +86,7 @@ bool BoardState::IsTileOccupied(BoardState boarValue, unsigned int position)
     return false;
 }
 
-Piece *BoardState::GetPieceOnBoard(BoardState boardValue, unsigned int position)
+Piece* BoardState::GetPieceOnBoard(BoardState boardValue, unsigned int position)
 {
     return boardValue.m_boardValue[position].second;
 }
@@ -128,7 +128,6 @@ MoveCollection BoardState::GetMoveCollection(Alliance player)
 
 unsigned int BoardState::GetKingPosition(Alliance player)
 {
-    CollectPiece pieces;
     unsigned int kingPosition = BoardUntils::getMaxTiles();
     BoardConfig::iterator piecePtr = m_boardValue.begin();
     for (;piecePtr!=m_boardValue.end();++piecePtr)

@@ -20,7 +20,7 @@ void PromoteWnd::Init()
         Tile* tile = new Tile(i, piece);
         piece->setParent(tile);
         tile->setFixedSize(TILE_ROW_SIZE, TILE_COL_SIZE);
-        tile->SetCurrentColor(QBrush("white"));
+        tile->SetCurrentColor(QBrush("red"));
         m_tiles.push_back(tile);
         layout->addWidget(tile);
     }

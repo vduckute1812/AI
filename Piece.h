@@ -55,8 +55,6 @@ struct BoardState
     BoardConfig         m_boardValue;
 };
 
-typedef std::vector<const Piece*> CollectPiece;
-
 class Piece: public QFrame
 {
 public:

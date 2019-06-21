@@ -26,8 +26,7 @@ Sleep(5)
 class Tile;
 class Piece;
 typedef std::vector<Tile*> BoardTiles;
-
-typedef std::vector<const Piece*> CollectPiece;
+typedef std::vector<Piece*> CollectPieces;
 
 class BoardGameWnd : public QWidget, public Singleton<BoardGameWnd>, public Messenger
 {
@@ -71,6 +70,7 @@ private:
     BoardController*        m_boardController;
     BoardTiles              m_tiles;
     QTimer*                 m_timer;
+    CollectPieces           m_pieces;
 };
 
 #endif // BOARDGAMEWND_H

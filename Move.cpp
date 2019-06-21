@@ -37,31 +37,31 @@ bool Move::IsAttackMove() const
 
 BoardState Move::Execute()
 {
-    if(BoardGameWnd::s_tmpStateIdx >= MAX_TEMP_BOARD )
-    {
-        BoardState boardState;
-        BoardConfig boardConfig = boardState.m_boardValue;
+//    if(BoardGameWnd::s_tmpStateIdx >= MAX_TEMP_BOARD )
+//    {
+//        BoardState boardState;
+//        BoardConfig boardConfig = boardState.m_boardValue;
 
-        BoardConfig oldBoard = m_board.m_boardValue;
+//        BoardConfig oldBoard = m_board.m_boardValue;
 
-        for (unsigned int idx = 0; idx < NUM_TILES_PER_COL * NUM_TILES_PER_ROW; ++idx)
-        {
-            boardConfig.push_back(std::make_pair(idx, oldBoard.at(idx).second));
-        }
-        Piece* piece = BoardState::GetPieceOnBoard(boardState, m_movedCoordinate);
-        piece->SetFirstMove(false);
-        m_killedPiece = BoardState::GetPieceOnBoard(boardState, m_destCoordinate);
+//        for (unsigned int idx = 0; idx < NUM_TILES_PER_COL * NUM_TILES_PER_ROW; ++idx)
+//        {
+//            boardConfig.push_back(std::make_pair(idx, oldBoard.at(idx).second));
+//        }
+//        Piece* piece = BoardState::GetPieceOnBoard(boardState, m_movedCoordinate);
+//        piece->SetFirstMove(false);
+//        m_killedPiece = BoardState::GetPieceOnBoard(boardState, m_destCoordinate);
 
-        boardState.SetPiece(m_movedCoordinate, nullptr);
-        boardState.SetPiece(m_destCoordinate, piece);
+//        boardState.SetPiece(m_movedCoordinate, nullptr);
+//        boardState.SetPiece(m_destCoordinate, piece);
 
-        Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-        boardState.m_playerTurn = nextTurnPlayer;
+//        Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+//        boardState.m_playerTurn = nextTurnPlayer;
 
-        return boardState;
-    }
-    else
-    {
+//        return boardState;
+//    }
+//    else
+//    {
         Piece* piece = BoardState::GetPieceOnBoard(m_board, m_movedCoordinate);
         piece->SetFirstMove(false);
         m_killedPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
@@ -72,7 +72,7 @@ BoardState Move::Execute()
 
         Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
         m_board.m_playerTurn = nextTurnPlayer;
-    }
+//    }
     return m_board;
 }
 

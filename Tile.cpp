@@ -8,12 +8,11 @@
 
 #include <QPainter>
 
-Tile::Tile(const unsigned int coordinate, Piece* piece, QWidget* parrent)
+Tile::Tile(unsigned int coordinate, Piece* piece, QWidget* parrent)
     : QWidget (parrent),
       m_tileCoordinate(coordinate),
       m_piece(piece)
 {
-    m_tileCoordinate = coordinate;
     m_piece = piece;
     resize(TILE_ROW_SIZE, TILE_COL_SIZE);
     m_defaultColor = (m_tileCoordinate + (m_tileCoordinate / NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
