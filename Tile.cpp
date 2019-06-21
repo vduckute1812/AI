@@ -5,6 +5,7 @@
 #include "BoardController.h"
 #include "BoardUntils.h"
 #include "Move.h"
+#include "PromoteWnd.h"
 
 #include <QPainter>
 
@@ -80,6 +81,11 @@ Piece *Tile::GetPiece()
 
 void Tile::mousePressEvent(QMouseEvent *event)
 {
+//    if(PromoteWnd::GetInstance()->IsPromote())
+//    {
+//        return;
+//    }
+
     if(BoardGameWnd::GetInstance()->IsLocked() || !m_canTouch)
         return;
 

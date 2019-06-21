@@ -10,9 +10,13 @@ class PromoteWnd: public QMainWindow, public Singleton<PromoteWnd>
 public:
     PromoteWnd (QWidget* parent = nullptr);
     virtual void    Init() override;
-    void    SetPromoteAlliance(Alliance alliance);
+    void            SetPromoteAlliance(Alliance alliance);
+
+    void            SetPromote(bool yes);
+    bool            IsPromote() const;
 
 private:
+    bool                    m_isPromote;
     Alliance                m_promoteAlliance;
     std::vector<Tile*>      m_tiles;
 };

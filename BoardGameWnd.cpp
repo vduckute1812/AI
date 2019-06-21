@@ -9,9 +9,9 @@
 
 #include <QGridLayout>
 
-unsigned int BoardGameWnd::s_tmpStateIdx = 0;
-std::vector<Piece*> BoardGameWnd::s_pieces;
-BoardState BoardGameWnd::s_tempBoards[MAX_TEMP_BOARD];
+//unsigned int BoardGameWnd::s_tmpStateIdx = 0;
+//std::vector<Piece*> BoardGameWnd::s_pieces;
+//BoardState BoardGameWnd::s_tempBoards[MAX_TEMP_BOARD];
 
 
 BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = nullptr*/)
@@ -32,19 +32,20 @@ BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = null
 BoardGameWnd::~BoardGameWnd()
 {
     std::vector<Piece*>::iterator piecePtr;
-    for (piecePtr = s_pieces.begin(); piecePtr != s_pieces.end(); ++piecePtr)
+    for (piecePtr = m_pieces.begin(); piecePtr != m_pieces.end(); ++piecePtr)
     {
         delete *piecePtr;
     }
 
-    for (u32 i = 0; i < MAX_TEMP_BOARD; ++i)
-    {
-        s_tempBoards[i].m_boardValue.clear();
-    }
+//    for (u32 i = 0; i < MAX_TEMP_BOARD; ++i)
+//    {
+//        s_tempBoards[i].m_boardValue.clear();
+//    }
+    m_currentBoard.m_boardValue.clear();
     delete m_boardController;
 }
 
-BoardState BoardGameWnd::CreateStandardBoard()
+BoardState& BoardGameWnd::CreateStandardBoard()
 {
     u32 endBoardIdx = NUM_TILES_PER_ROW * NUM_TILES_PER_COL - 1;
     const QList<QString> listInit = {"Rook","Knight","Bishop","King","Queen","Bishop","Knight","Rook"
@@ -55,20 +56,20 @@ BoardState BoardGameWnd::CreateStandardBoard()
     {
         Piece* piece_white = PieceFactory::GeneratePiece(listInit[int(i)], Alliance::BLACK);
         piece_white->SetPosition(i);
-        s_tempBoards[0].m_boardValue.at(i).second = piece_white;
-        s_pieces.push_back(piece_white);
+        m_currentBoard.m_boardValue.at(i).second = piece_white;
+        m_pieces.push_back(piece_white);
 
         Piece* piece_black = PieceFactory::GeneratePiece(listInit[int(i)], Alliance::WHITE);
         piece_black->SetPosition(endBoardIdx - i);
-        s_tempBoards[0].m_boardValue.at(endBoardIdx - i).second = piece_black;
-        s_pieces.push_back(piece_black);
+        m_currentBoard.m_boardValue.at(endBoardIdx - i).second = piece_black;
+        m_pieces.push_back(piece_black);
     }
 
-    s_tempBoards[0].m_playerTurn = Alliance::WHITE;
+    m_currentBoard.m_playerTurn = Alliance::WHITE;
 
-    s_tmpStateIdx++;
+//    s_tmpStateIdx++;
 
-    return s_tempBoards[0];
+    return m_currentBoard;
 }
 
 MoveCollection BoardGameWnd::GetLegalMoves(BoardState board, Alliance player)
@@ -106,7 +107,7 @@ void BoardGameWnd::Init()
     {
         for (int tileIdx = 0; tileIdx < NUM_TILES_PER_ROW * NUM_TILES_PER_COL; ++tileIdx)
         {
-            s_tempBoards[i].m_boardValue.push_back(std::make_pair(tileIdx, NULL_PIECE));
+            m_currentBoard.m_boardValue.push_back(std::make_pair(tileIdx, NULL_PIECE));
         }
     }
 
@@ -128,7 +129,7 @@ void BoardGameWnd::Init()
 
     // Set piece on board
     BoardConfig::iterator piecePtr;
-    for (piecePtr = s_tempBoards[0].m_boardValue.begin(); piecePtr != s_tempBoards[0].m_boardValue.end(); ++piecePtr)
+    for (piecePtr = m_currentBoard.m_boardValue.begin(); piecePtr != m_currentBoard.m_boardValue.end(); ++piecePtr)
     {
         u32 location = piecePtr->first;
         Tile* tile = m_tiles.at(location);
@@ -159,13 +160,13 @@ void BoardGameWnd::SetBoard(BoardState board)
 
     ResetColorTiles();
 
-    if(!s_tempBoards[0].m_boardValue.empty())
+    if(!m_currentBoard.m_boardValue.empty())
     {
-        s_tempBoards[0].m_boardValue.clear();
+        m_currentBoard.m_boardValue.clear();
     }
-    s_tempBoards[0] = board;
+    m_currentBoard = board;
     ResetTiles();
-    BoardConfig config = s_tempBoards[0].m_boardValue;
+    BoardConfig config = m_currentBoard.m_boardValue;
     BoardConfig::iterator tileConfig;
 
     for (tileConfig = config.begin(); tileConfig!=config.end(); ++tileConfig)

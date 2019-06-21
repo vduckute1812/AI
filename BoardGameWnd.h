@@ -36,21 +36,21 @@ public:
     BoardGameWnd(BoardController* controller = nullptr, QWidget* parent = nullptr);
     ~BoardGameWnd() override;
 
-    static BoardState       CreateStandardBoard();
+    BoardState&              CreateStandardBoard();
 
     static MoveCollection   GetLegalMoves(BoardState board, Alliance player);
 
     BoardTiles              GetTiles();
 
-    static std::vector<Piece*>      s_pieces;
-    static unsigned int             s_tmpStateIdx;
-    static BoardState               s_tempBoards[MAX_TEMP_BOARD];
+//    static std::vector<Piece*>      s_pieces;
+//    static unsigned int             s_tmpStateIdx;
+//    static BoardState               s_tempBoards[MAX_TEMP_BOARD];
 
     virtual void            Init() override;
 
     void                    SetController(BoardController*);
     void                    SetBoard(BoardState board);
-    const BoardState        GetCurrentBoard() {return s_tempBoards[0];}
+    const BoardState        GetCurrentBoard() {return m_currentBoard;}
 
     void                    ResetColorTiles();
 

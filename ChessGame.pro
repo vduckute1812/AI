@@ -8,6 +8,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     Bishop.cpp \
+    BoardBuilder.cpp \
     BoardController.cpp \
     BoardGameWnd.cpp \
     DeadPieceWnd.cpp \
@@ -30,6 +31,7 @@ SOURCES += main.cpp \
 
 HEADERS += \
     Bishop.h \
+    BoardBuilder.h \
     BoardController.h \
     BoardGameWnd.h \
     BoardUntils.h \

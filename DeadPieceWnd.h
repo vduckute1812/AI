@@ -22,16 +22,16 @@ public:
     void                Update();
 
 private:
-    QVBoxLayout*        m_parentLayout;
-    QGridLayout*        m_gridWhiteDeadPiece;
-    QGridLayout*        m_gridBlackDeadPiece;
-    unsigned int        m_whiteIdx;
-    unsigned int        m_blackIdx;
+    QVBoxLayout*            m_parentLayout;
+    QGridLayout*            m_gridWhiteDeadPiece;
+    QGridLayout*            m_gridBlackDeadPiece;
+    unsigned int            m_whiteIdx;
+    unsigned int            m_blackIdx;
 
-    std::vector<Tile*>       m_whiteTiles;
-    std::vector<Tile*>       m_blackTiles;
-    std::vector<QLabel*>        m_deadWhitePiece;
-    std::vector<QLabel*>        m_deadBlackPiece;
+    std::vector<Tile*>      m_whiteTiles;
+    std::vector<Tile*>      m_blackTiles;
+    std::vector<QLabel*>    m_deadWhitePiece;
+    std::vector<QLabel*>    m_deadBlackPiece;
 
 };
 

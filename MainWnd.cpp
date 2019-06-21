@@ -39,10 +39,10 @@ void MainWnd::Init()
     m_deadPieceDock->show();
     AppendDock(m_deadPieceDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::RightDockWidgetArea);
 
-//    m_promoteWnd = new PromoteWnd(this);
-//    m_promoteWnd->Init();
-//    m_promoteWnd->resize(600,300);
-//    m_promoteWnd->hide();
+    m_promoteWnd = new PromoteWnd(this);
+    m_promoteWnd->Init();
+    m_promoteWnd->resize(600,300);
+    m_promoteWnd->hide();
 
     m_boardDock = CreateDock("Board Game", "", boardWnd);
     setCentralWidget(boardWnd);

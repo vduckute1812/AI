@@ -77,6 +77,10 @@ void BoardController::MovePiece(Move *move)
         move->SetDescription( type + QString(alliance) + QString(" attack ") + move->GetTypePieceIsAttacked() + QString(" ") +QString::number(move->GetDestCoordinate()) );
         DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());
     }
+//    else if(move->IsPromoteMove())
+//    {
+//        move->SetDescription( type + QString(alliance) + QString(" promote ") +QString::number(move->GetDestCoordinate()) );
+//    }
     else
     {
         move->SetDescription( type + QString(alliance) + QString(" move to ") +QString::number(move->GetDestCoordinate()) );
