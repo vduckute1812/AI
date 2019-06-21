@@ -71,6 +71,7 @@ private:
     BoardTiles              m_tiles;
     QTimer*                 m_timer;
     CollectPieces           m_pieces;
+    BoardState              m_currentBoard;
 };
 
 #endif // BOARDGAMEWND_H
