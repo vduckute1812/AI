@@ -3,6 +3,7 @@
 #include "BoardUntils.h"
 #include "BoardGameWnd.h"
 #include <QFileInfo>
+#include "Tile.h"
 
 Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent, unsigned int position): QFrame(parent)
 {
@@ -58,9 +59,13 @@ char Piece::GetKeyCharacter() const
     return m_pieceType;
 }
 
-QLabel* Piece::GetRenderImg() const
+void Piece::SetVisible(bool isVisible, Tile* tile)
 {
-    return m_pieceImg;
+    if(tile)
+    {
+        m_pieceImg->setParent(tile);
+    }
+    isVisible ? m_pieceImg->show(): m_pieceImg->hide();
 }
 
 bool Piece::IsFirstMove() const

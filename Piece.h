@@ -35,6 +35,7 @@ class Move;
 class Board;
 class Move;
 class Piece;
+class Tile;
 
 typedef std::vector<Move*> MoveCollection;
 
@@ -76,7 +77,7 @@ public:
 
     char                GetKeyCharacter() const;
 
-    QLabel*             GetRenderImg() const;
+    void                SetVisible(bool isVisible, Tile* tile = nullptr);
 
     void                SetFirstMove(bool firstMove);
     bool                IsFirstMove() const;

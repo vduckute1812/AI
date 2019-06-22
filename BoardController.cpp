@@ -91,6 +91,7 @@ void BoardController::MovePiece(Move *move)
         Alliance alliance = move->GetAlliancePieceMove() == 'b' ? Alliance::BLACK : Alliance::WHITE;
         PromoteWnd::GetInstance()->SetPromoteAlliance(alliance);
         PromoteWnd::GetInstance()->show();
+        PromoteWnd::GetInstance()->SetPromote(false);
     }
 
 }

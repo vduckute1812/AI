@@ -27,8 +27,6 @@ public:
     void            SetCurrentColor(QBrush color);
     QBrush          GetDefaultColor() const;
 
-    static          BoardTiles createEmptyTiles();
-
     void            mousePressEvent(QMouseEvent *) override;
     void            paintEvent(QPaintEvent *) override;
 

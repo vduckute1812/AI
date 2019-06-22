@@ -9,15 +9,13 @@
 
 #include <QGridLayout>
 
-unsigned int BoardGameWnd::s_tmpStateIdx = 0;
-std::vector<Piece*> BoardGameWnd::s_pieces;
-BoardState BoardGameWnd::s_tempBoards[MAX_TEMP_BOARD];
-
 
 BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = nullptr*/)
     : QWidget(parent)
     , Messenger()
 {
+    s_tmpStateIdx = 0;
+
     m_boardController = controller;
     m_timer = new QTimer(this);
 
@@ -44,7 +42,7 @@ BoardGameWnd::~BoardGameWnd()
     delete m_boardController;
 }
 
-BoardState BoardGameWnd::CreateStandardBoard()
+void BoardGameWnd::CreateStandardBoard()
 {
     u32 endBoardIdx = NUM_TILES_PER_ROW * NUM_TILES_PER_COL - 1;
     const QList<QString> listInit = {"Rook","Knight","Bishop","King","Queen","Bishop","Knight","Rook"
@@ -67,8 +65,6 @@ BoardState BoardGameWnd::CreateStandardBoard()
     s_tempBoards[0].m_playerTurn = Alliance::WHITE;
 
     s_tmpStateIdx++;
-
-    return s_tempBoards[0];
 }
 
 MoveCollection BoardGameWnd::GetLegalMoves(BoardState board, Alliance player)
@@ -99,9 +95,15 @@ void BoardGameWnd::Init()
     Lock(true); // lock init for avoiding crash
     blockSignals(true);
 
-    m_tiles = Tile::createEmptyTiles();
-
     Piece* NULL_PIECE = nullptr;
+
+    for (unsigned int i = 0; i < NUM_TILES; ++i)
+    {
+        Tile* tile = new Tile(i, NULL_PIECE);
+        tile->SetCanTouch(true);
+        m_tiles.push_back(tile);
+    }
+
     for(u32 i = 0; i < MAX_TEMP_BOARD; ++i)
     {
         for (int tileIdx = 0; tileIdx < NUM_TILES_PER_ROW * NUM_TILES_PER_COL; ++tileIdx)
@@ -110,7 +112,7 @@ void BoardGameWnd::Init()
         }
     }
 
-    BoardGameWnd::CreateStandardBoard();
+    CreateStandardBoard();
 
     setMinimumSize(TILE_ROW_SIZE * NUM_TILES_PER_ROW,
                  TILE_COL_SIZE * NUM_TILES_PER_ROW);

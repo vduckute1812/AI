@@ -24,17 +24,16 @@ void Tile::SetPiece(Piece *piece)
 {
     if(m_piece != nullptr)
     {
-        m_piece->GetRenderImg()->hide();
+        m_piece->SetVisible(false);
     }
 
     m_piece = piece;
     if(piece != nullptr)
     {
-        m_piece->GetRenderImg()->hide();
+//        m_piece->SetVisible(false);
         m_piece->SetPosition(m_tileCoordinate);
         m_piece->setParent(this);
-        m_piece->GetRenderImg()->setParent(this);
-        m_piece->GetRenderImg()->show();
+        m_piece->SetVisible(true, this);
     }
 }
 
@@ -56,21 +55,6 @@ void Tile::SetCurrentColor(QBrush color)
 QBrush Tile::GetDefaultColor() const
 {
     return m_defaultColor;
-}
-
-BoardTiles Tile::createEmptyTiles()
-{
-    BoardTiles tableTiles;
-    Piece* NULL_PIECE = nullptr;
-
-    for (unsigned int i = 0; i < NUM_TILES; ++i)
-    {
-        Tile* tile = new Tile(i, NULL_PIECE);
-        tile->SetCanTouch(true);
-        tableTiles.push_back(tile);
-    }
-
-    return tableTiles;
 }
 
 Piece *Tile::GetPiece()

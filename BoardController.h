@@ -32,7 +32,6 @@ public:
 private:
     Piece*          m_piece;
     int             m_coordinate;
-    Alliance        m_moveMaker;
     EditModeDef     m_modePlayer;       // Black player is AI default mode
 };
 
