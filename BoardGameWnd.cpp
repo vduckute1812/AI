@@ -191,6 +191,21 @@ void BoardGameWnd::ResetColorTiles()
     }
 }
 
+void BoardGameWnd::LockTiles(bool yes)
+{
+    BoardTiles::iterator tilePtr;
+    for (tilePtr = m_tiles.begin(); tilePtr != m_tiles.end(); ++tilePtr)
+    {
+        Tile* tile = *tilePtr;
+        tile->SetCanTouch(yes);
+    }
+}
+
+void BoardGameWnd::AddPieceOnBoard(Piece *piece)
+{
+    m_pieces.push_back(piece);
+}
+
 void BoardGameWnd::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);

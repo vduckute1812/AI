@@ -73,6 +73,8 @@ BoardState Move::Execute()
         Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
         m_board.m_playerTurn = nextTurnPlayer;
 //    }
+
+
     return m_board;
 }
 

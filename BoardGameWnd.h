@@ -55,6 +55,10 @@ public:
 
     bool					IsLocked() const { return m_isLocked; }
     void					Lock(bool yes) { m_isLocked = yes; }
+    void                    LockTiles(bool yes);
+
+    void                    AddPieceOnBoard(Piece* piece);
+
     void                    ResetTiles();
     void                    timerEvent(QTimerEvent *e) override;
 

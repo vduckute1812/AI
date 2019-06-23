@@ -9,8 +9,9 @@
 
 class Tile;
 class Piece;
-class DeadPieceWnd: public Singleton<DeadPieceWnd>, public QWidget
+class DeadPieceWnd: public QWidget, public Singleton<DeadPieceWnd>
 {
+    Q_OBJECT
 public:
     virtual void            Init() override;
     DeadPieceWnd(QWidget* parent = nullptr);

@@ -4,6 +4,7 @@
 #include "BoardGameWnd.h"
 #include "BoardController.h"
 #include "BoardUntils.h"
+#include "PromoteWnd.h"
 #include "Move.h"
 
 #include <QPainter>
@@ -66,6 +67,11 @@ void Tile::mousePressEvent(QMouseEvent *event)
 {
     if(BoardGameWnd::GetInstance()->IsLocked() || !m_canTouch)
         return;
+
+    if(PromoteWnd::GetInstance()->IsPromote())
+    {
+        Piece* piece = this->GetPiece();
+    }
 
     BoardGameWnd::GetInstance()->GetEditModeController()->mousePressEvent(event);
 

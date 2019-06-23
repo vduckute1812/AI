@@ -10,6 +10,7 @@ SOURCES += main.cpp \
     Bishop.cpp \
     BoardController.cpp \
     BoardGameWnd.cpp \
+    Client.cpp \
     DeadPieceWnd.cpp \
     HistoryWnd.cpp \
     King.cpp \
@@ -18,12 +19,14 @@ SOURCES += main.cpp \
     Messenger.cpp \
     Move.cpp \
     MoveMgr.cpp \
+    NetWorkEntity.cpp \
     Pawn.cpp \
     Piece.cpp \
     PieceFactory.cpp \
     PromoteWnd.cpp \
     Queen.cpp \
     Rook.cpp \
+    Server.cpp \
     Tile.cpp \
     Player.cpp \
     Minimax.cpp
@@ -33,6 +36,7 @@ HEADERS += \
     BoardController.h \
     BoardGameWnd.h \
     BoardUntils.h \
+    Client.h \
     DeadPieceWnd.h \
     Defines.h \
     HistoryWnd.h \
@@ -42,12 +46,14 @@ HEADERS += \
     Messenger.h \
     Move.h \
     MoveMgr.h \
+    NetWorkEntity.h \
     Pawn.h \
     Piece.h \
     PieceFactory.h \
     PromoteWnd.h \
     Queen.h \
     Rook.h \
+    Server.h \
     Singleton.h \
     Tile.h \
     Player.h \

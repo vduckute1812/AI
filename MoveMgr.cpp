@@ -82,6 +82,12 @@ void MoveMgr::Do(Move *move)
 
     m_moveIdx++;
 
+
+    if(move->IsAttackMove())
+    {
+        DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());
+    }
+
     BoardState board = move->Execute();
     m_trackMoves.push_back(move);
 

@@ -4,8 +4,9 @@
 #include "Singleton.h"
 #include "Piece.h"
 
-class BoardController: public Singleton<BoardController>, public QWidget
+class BoardController: public QWidget, public Singleton<BoardController>
 {
+    Q_OBJECT
 public:
     enum EditModeDef
     {
@@ -28,6 +29,9 @@ public:
 
     void        SetModePlayer(EditModeDef modePlayer);
     EditModeDef GetModePlayer() const;
+
+signals:
+    void        PromotePiece(PieceType, Alliance);
 
 private:
     Piece*          m_piece;

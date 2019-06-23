@@ -82,6 +82,7 @@ public:
     void                SetFirstMove(bool firstMove);
     bool                IsFirstMove() const;
 
+
 protected:
     unsigned int        m_piecePosition;
     Alliance			m_pieceAlliance;

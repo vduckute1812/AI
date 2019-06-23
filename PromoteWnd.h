@@ -7,6 +7,7 @@
 class Tile;
 class PromoteWnd: public QMainWindow, public Singleton<PromoteWnd>
 {
+    Q_OBJECT
 public:
     PromoteWnd (QWidget* parent = nullptr);
     virtual void    Init() override;

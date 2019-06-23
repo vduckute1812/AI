@@ -42,6 +42,20 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
             {
                 if(move->IsLegalMove())
                 {
+
+                    ////////////////////////////////////////////////////////////////////
+                    if(move->IsPromoteMove())
+                    {
+
+                        Alliance alliance = move->GetAlliancePieceMove() == 'b' ? Alliance::BLACK : Alliance::WHITE;
+                        PromoteWnd::GetInstance()->SetPromoteAlliance(alliance);
+                        PromoteWnd::GetInstance()->show();
+                        PromoteWnd::GetInstance()->SetPromote(false);
+                        BoardGameWnd::GetInstance()->LockTiles(true);
+                    }
+
+                    /////////////////////////////////////////////////////////////////////
+
                     MovePiece(move);
                 }
                 else
@@ -55,6 +69,8 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
             }
         }
     }
+
+
 }
 
 Alliance BoardController::GetMoveMaker()
@@ -75,25 +91,17 @@ void BoardController::MovePiece(Move *move)
     if(move->IsAttackMove())
     {
         move->SetDescription( type + QString(alliance) + QString(" attack ") + move->GetTypePieceIsAttacked() + QString(" ") +QString::number(move->GetDestCoordinate()) );
-        DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());
+    }
+    else if (move->IsPromoteMove())
+    {
+        move->SetDescription(type + QString(alliance) + QString(" is promoted at ") + QString::number(move->GetDestCoordinate()) );
     }
     else
     {
         move->SetDescription( type + QString(alliance) + QString(" move to ") +QString::number(move->GetDestCoordinate()) );
     }
 
-    ////////////////////////////////////////////////////////////////////
-
     MoveMgr::GetInstance()->Do(move);
-
-    if(move->IsPromoteMove())
-    {
-        Alliance alliance = move->GetAlliancePieceMove() == 'b' ? Alliance::BLACK : Alliance::WHITE;
-        PromoteWnd::GetInstance()->SetPromoteAlliance(alliance);
-        PromoteWnd::GetInstance()->show();
-        PromoteWnd::GetInstance()->SetPromote(false);
-    }
-
 }
 
 void BoardController::SetModePlayer(BoardController::EditModeDef modePlayer)
