@@ -7,7 +7,8 @@
 class PieceFactory
 {
 public:
-        static Piece* GeneratePiece(QString pieceStr, Alliance pieceType);
+    static Piece* GeneratePiece(QString pieceStr, Alliance alliance);
+    static Piece* GeneratePiece(PieceType pieceType, Alliance alliance);
 };
 
 #endif // PIECEFACTORY_H

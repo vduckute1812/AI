@@ -23,6 +23,13 @@ QApplication::setOverrideCursor(Qt::BlankCursor)
 while (MainWnd::GetInstance()->IsLocked()) \
 Sleep(5)
 
+enum PlayerMode
+{
+    k_HumanVsHuman,
+    k_AiVsAi,
+    k_HumanVsAi
+};
+
 class Tile;
 class Piece;
 typedef std::vector<Tile*> BoardTiles;

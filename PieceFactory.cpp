@@ -6,14 +6,42 @@
 #include "King.h"
 #include "Pawn.h"
 
-Piece *PieceFactory::GeneratePiece(QString pieceStr, Alliance pieceType)
+Piece *PieceFactory::GeneratePiece(QString pieceStr, Alliance alliance)
 {
-         if(pieceStr == "Rook")         return new Rook(pieceType);
-    else if(pieceStr == "Knight")       return new Knight(pieceType);
-    else if(pieceStr == "Bishop")       return new Bishop(pieceType);
-    else if(pieceStr == "Queen")        return new Queen(pieceType);
-    else if(pieceStr == "King")         return new King(pieceType);
-    else if(pieceStr == "Pawn")         return new Pawn(pieceType);
+    Piece* piece = nullptr;
+        if(pieceStr == "Rook")         piece = new Rook(alliance);
+    else if(pieceStr == "Knight")      piece = new Knight(alliance);
+    else if(pieceStr == "Bishop")      piece = new Bishop(alliance);
+    else if(pieceStr == "Queen")       piece = new Queen(alliance);
+    else if(pieceStr == "King")        piece = new King(alliance);
+    else if(pieceStr == "Pawn")        piece = new Pawn(alliance);
 
-    else                                return nullptr;
+    return piece;
+}
+
+Piece *PieceFactory::GeneratePiece(PieceType pieceType, Alliance alliance)
+{
+    Piece* piece = nullptr;
+    switch (pieceType) {
+    case PieceType::KING:
+        piece = new King(alliance);
+        break;
+    case PieceType::ROOK:
+        piece = new Rook(alliance);
+        break;
+    case PieceType::BISHOP:
+        piece = new Bishop(alliance);
+        break;
+    case PieceType::QUEEN:
+        piece = new Queen(alliance);
+        break;
+    case PieceType::PAWN:
+        piece = new Pawn(alliance);
+        break;
+    case PieceType::KNIGHT:
+        piece = new Knight(alliance);
+        break;
+    }
+
+    return piece;
 }

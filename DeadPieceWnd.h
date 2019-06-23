@@ -29,8 +29,8 @@ private:
     unsigned int        m_whiteIdx;
     unsigned int        m_blackIdx;
 
-    std::vector<Tile*>       m_whiteTiles;
-    std::vector<Tile*>       m_blackTiles;
+    std::vector<Tile*>          m_whiteTiles;
+    std::vector<Tile*>          m_blackTiles;
     std::vector<QLabel*>        m_deadWhitePiece;
     std::vector<QLabel*>        m_deadBlackPiece;
 

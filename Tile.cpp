@@ -19,6 +19,8 @@ Tile::Tile(unsigned int coordinate, Piece* piece, QWidget* parrent)
     m_defaultColor = (m_tileCoordinate + (m_tileCoordinate / NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
     m_currentColor = m_defaultColor;
     m_canTouch = false;
+
+//    connect(this, &Tile::promotePiece, PromoteWnd::GetInstance(), &PromoteWnd);
 }
 
 void Tile::SetPiece(Piece *piece)
@@ -68,10 +70,17 @@ void Tile::mousePressEvent(QMouseEvent *event)
     if(BoardGameWnd::GetInstance()->IsLocked() || !m_canTouch)
         return;
 
-    if(PromoteWnd::GetInstance()->IsPromote())
-    {
-        Piece* piece = this->GetPiece();
-    }
+//    if(PromoteWnd::GetInstance()->IsPromote())
+//    {
+//        Piece* piece = this->GetPiece();
+////        emit(promotePiece(piece));
+//        PromoteWnd::GetInstance()->AddPromotePiece(piece);
+//        PromoteWnd::GetInstance()->SetPromote(false);
+
+//        BoardGameWnd::GetInstance()->LockTiles(true);
+//        PromoteWnd::GetInstance()->SetVisible(false);
+//        return;
+//    }
 
     BoardGameWnd::GetInstance()->GetEditModeController()->mousePressEvent(event);
 

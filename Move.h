@@ -38,6 +38,8 @@ public:
     void				SetDescription(const QString& desc);
     const QString&		GetDescription() const;
 
+    void                SetHasPromote(bool yes);
+
     QChar               GetTypePieceMove() const;
     QChar               GetTypePieceIsAttacked() const;
 
@@ -48,8 +50,10 @@ protected:
     BoardState          m_board;
     const Piece*        m_movePiece;
     const Piece*        m_attackPiece;
+    Piece*              m_promotePiece;
     Piece*              m_killedPiece;
 
+    bool                m_isPromotePiece;
     bool                m_isFirstMove;
     unsigned int        m_movedCoordinate;
     unsigned int        m_destCoordinate;

@@ -15,6 +15,7 @@ static const QBrush CHOOSE_COLOR("yellow");
 
 class Tile : public QWidget
 {
+    Q_OBJECT
 public:
     explicit Tile(unsigned int coordinate, Piece* piece = nullptr, QWidget* parrent = nullptr);
 
@@ -32,6 +33,9 @@ public:
 
     void            SetCanTouch(bool yes);
     bool            CanTouch() const;
+
+signals:
+    void            promotePiece(Piece*);
 
 private:
     const unsigned int  m_tileCoordinate;

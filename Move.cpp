@@ -2,6 +2,7 @@
 #include "Piece.h"
 #include "BoardUntils.h"
 #include "BoardGameWnd.h"
+#include "PromoteWnd.h"
 
 Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord)
 {
@@ -12,6 +13,8 @@ Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackP
     m_movedCoordinate = movePiece->GetPosition();
     m_isFirstMove = m_movePiece->IsFirstMove();
     m_killedPiece = nullptr;
+    m_promotePiece = nullptr;
+    m_isPromotePiece = false;
     m_description = "";
 }
 
@@ -66,6 +69,12 @@ BoardState Move::Execute()
         piece->SetFirstMove(false);
         m_killedPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
 
+        if(m_isPromotePiece)
+        {
+            m_promotePiece = piece;
+            piece = PromoteWnd::GetInstance()->GetPromotePiece();
+        }
+
         m_board.SetPiece(m_movedCoordinate, nullptr);
         m_board.SetPiece(m_destCoordinate, piece);
 
@@ -81,6 +90,13 @@ BoardState Move::Execute()
 BoardState Move::UndoExecute()
 {
     Piece* piece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+
+    if(m_isPromotePiece)
+    {
+        piece = m_promotePiece;
+//        PromoteWnd::GetInstance()->DeletePromotePiece();
+    }
+
     m_board.SetPiece(m_movedCoordinate, piece);
     m_board.SetPiece(m_destCoordinate, m_killedPiece);
     m_killedPiece = nullptr;
@@ -100,6 +116,13 @@ BoardState Move::UndoExecute()
 BoardState Move::Undo()
 {
     Piece* piece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+
+    if(m_isPromotePiece)
+    {
+        piece = m_promotePiece;
+//        PromoteWnd::GetInstance()->DeletePromotePiece();
+    }
+
     m_board.SetPiece(m_movedCoordinate, piece);
     m_board.SetPiece(m_destCoordinate, m_killedPiece);
     m_killedPiece = nullptr;
@@ -118,6 +141,13 @@ BoardState Move::Redo()
     Piece* piece = BoardState::GetPieceOnBoard(m_board, m_movedCoordinate);
     piece->SetFirstMove(false);
     m_killedPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+
+    if(m_isPromotePiece)
+    {
+        PromoteWnd::GetInstance()->SetPromoteAlliance(m_movePiece->GetAlliance());
+        PromoteWnd::GetInstance()->AddDefaultPromotePiece();
+        piece = PromoteWnd::GetInstance()->GetPromotePiece();
+    }
 
     m_board.SetPiece(m_movedCoordinate, nullptr);
     m_board.SetPiece(m_destCoordinate, piece);
@@ -181,6 +211,11 @@ void Move::SetDescription(const QString &desc)
 const QString &Move::GetDescription() const
 {
     return m_description;
+}
+
+void Move::SetHasPromote(bool yes)
+{
+    m_isPromotePiece = yes;
 }
 
 QChar Move::GetAlliancePieceMove() const

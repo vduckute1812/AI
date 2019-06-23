@@ -16,12 +16,22 @@ public:
     void            SetPromote(bool yes);
     bool            IsPromote() const;
 
+    void            AddPromotePiece(Piece*);
+    void            AddDefaultPromotePiece();
+
+    void            DeletePromotePiece();
+    Piece*          GetPromotePiece() const;
+
+    void            SetVisible(bool yes);
+
 private:
     bool                    m_isPromote;
     Alliance                m_promoteAlliance;
     std::vector<Tile*>      m_tiles;
-    std::vector<Piece*>     m_pieceWhite;
-    std::vector<Piece*>     m_pieceBlack;
+    std::vector<Piece*>     m_whitePieces;
+    std::vector<Piece*>     m_blackPieces;
+
+    std::vector<Piece*>     m_promotePieces;
 
 };
 
