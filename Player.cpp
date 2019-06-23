@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "BoardGameWnd.h"
 
 Player::Player()
 {
@@ -15,7 +16,7 @@ BlackPlayer::~BlackPlayer()
 
 }
 
-MoveCollection BlackPlayer::GetMoveCollection(BoardState state)
+MoveCollection BlackPlayer::GetMoveCollection(BoardConfig state)
 {
     MoveCollection collection;
 
@@ -27,7 +28,7 @@ WhitePlayer::~WhitePlayer()
 
 }
 
-MoveCollection WhitePlayer::GetMoveCollection(BoardState state)
+MoveCollection WhitePlayer::GetMoveCollection(BoardConfig state)
 {
     MoveCollection collection;
     return collection;

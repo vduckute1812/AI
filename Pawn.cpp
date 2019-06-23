@@ -2,6 +2,8 @@
 #include "Tile.h"
 #include "Move.h"
 #include "BoardUntils.h"
+#include "BoardGameWnd.h"
+#include "BoardController.h"
 
 const int PAWN_CANDIDATE_MOVE_COORDINATE[] = { NUM_TILES_PER_COL-1,
                                                NUM_TILES_PER_COL,
@@ -29,7 +31,7 @@ bool Pawn::isEightColumnExclusion(unsigned int currentPosition, int candidateOff
             && (candidateOffset == -NUM_TILES_PER_COL+1 || candidateOffset == NUM_TILES_PER_COL+1);
 }
 
-MoveCollection Pawn::calculateLegalMove(const BoardState board) const
+MoveCollection Pawn::calculateLegalMove(const BoardConfig board) const
 {
     MoveCollection legalMoves;
     int candidateDestinationCoordinate;
@@ -37,26 +39,27 @@ MoveCollection Pawn::calculateLegalMove(const BoardState board) const
     {
         candidateDestinationCoordinate = int(this->m_piecePosition) + currentCandidateOffset * getDirection();
 
+        BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
         if (BoardUntils::IsValidTileCandidate(candidateDestinationCoordinate))
         {
             if (currentCandidateOffset == 2*NUM_TILES_PER_COL && this->IsFirstMove())
             {
                 unsigned int candidateCoordinate = this->m_piecePosition
                         + static_cast<unsigned int>(NUM_TILES_PER_COL * getDirection());
-                if (BoardState::IsTileOccupied(board, candidateCoordinate))
+                if (boardController->IsTileOccupied(board, candidateCoordinate))
                     continue;
             }
 
             unsigned int candidateDestCoord = static_cast<unsigned int>(candidateDestinationCoordinate);
-            if ( !BoardState::IsTileOccupied(board, candidateDestCoord)
+            if ( !boardController->IsTileOccupied(board, candidateDestCoord)
                  && ( currentCandidateOffset  == NUM_TILES_PER_COL                              // MOVE
                  ||   (currentCandidateOffset == 2*NUM_TILES_PER_COL && this->IsFirstMove())) )	// JUMP
             {
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
+                legalMoves.push_back(new Move(board, this, boardController->GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
             }
-            else if (BoardState::IsTileOccupied(board, candidateDestCoord)
+            else if (boardController->IsTileOccupied(board, candidateDestCoord)
                  && (currentCandidateOffset == NUM_TILES_PER_COL-1 || currentCandidateOffset == NUM_TILES_PER_COL+1)
-                 && !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
+                 && !BoardUntils::IsSameAlliance(this->GetAlliance(), boardController->GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
             {
                 if (   isFirstColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection())
                     || isEightColumnExclusion(this->m_piecePosition, currentCandidateOffset * getDirection()))
@@ -64,7 +67,7 @@ MoveCollection Pawn::calculateLegalMove(const BoardState board) const
                     continue;
                 }
                 // Attack move
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board,candidateDestCoord), candidateDestCoord));
+                legalMoves.push_back(new Move(board, this, boardController->GetPieceOnBoard(board,candidateDestCoord), candidateDestCoord));
             }
         }
     }

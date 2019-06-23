@@ -30,6 +30,16 @@ enum PlayerMode
     k_HumanVsAi
 };
 
+
+typedef std::vector<Piece*> PiecePositions;
+
+struct BoardConfig
+{
+    PiecePositions  pieceData;
+    Alliance        playerTurn;
+};
+
+
 class Tile;
 class Piece;
 typedef std::vector<Tile*> BoardTiles;
@@ -45,7 +55,7 @@ public:
 
     void                    CreateStandardBoard();
 
-    MoveCollection          GetLegalMoves(BoardState board, Alliance player);
+    MoveCollection          GetLegalMoves(BoardConfig board, Alliance player);
 
     BoardTiles              GetTiles();
 
@@ -53,8 +63,8 @@ public:
     virtual void            Init() override;
 
     void                    SetController(BoardController*);
-    void                    SetBoard(BoardState board);
-    const BoardState        GetCurrentBoard() {return s_tempBoards[0];}
+    void                    SetBoard(BoardConfig board);
+    const BoardConfig       GetCurrentBoard() {return m_tempBoards/*[0]*/;}
 
     void                    ResetColorTiles();
 
@@ -80,9 +90,8 @@ private:
     QTimer*                 m_timer;
     CollectPieces           m_pieces;
 
-    std::vector<Piece*>      s_pieces;
-    unsigned int             s_tmpStateIdx;
-    BoardState               s_tempBoards[MAX_TEMP_BOARD];
+//    u32                     m_tmpStateIdx;
+    BoardConfig             m_tempBoards/*[MAX_TEMP_BOARD]*/;
 
 };
 

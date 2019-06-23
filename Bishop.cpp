@@ -3,6 +3,7 @@
 #include "Move.h"
 #include "Bishop.h"
 #include "BoardUntils.h"
+#include "BoardController.h"
 
 const int BISHOP_CANDIDATE_MOVE_COORDINATE[] = { -NUM_TILES_PER_COL-1,
                                                  -NUM_TILES_PER_COL+1,
@@ -20,19 +21,19 @@ Bishop::~Bishop()
 
 }
 
-bool Bishop::isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const
+bool Bishop::isFirstColumnExclusion(u32 currentPosition, int candidateOffset) const
 {
     return BoardUntils::IsNumColumn(CheckColumn::FIRST, currentPosition) /*is first column*/
             && (candidateOffset == -NUM_TILES_PER_COL-1 || candidateOffset == NUM_TILES_PER_COL-1);
 }
 
-bool Bishop::isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const
+bool Bishop::isEightColumnExclusion(u32 currentPosition, int candidateOffset) const
 {
     return BoardUntils::IsNumColumn(CheckColumn::END_OF_COL, currentPosition) /*is last column*/
             && (candidateOffset == -NUM_TILES_PER_COL+1 || candidateOffset == NUM_TILES_PER_COL+1);
 }
 
-MoveCollection Bishop::calculateLegalMove(const BoardState board) const
+MoveCollection Bishop::calculateLegalMove(const BoardConfig board) const
 {
     MoveCollection legalMoves;
 
@@ -50,11 +51,11 @@ MoveCollection Bishop::calculateLegalMove(const BoardState board) const
             }
 
             unsigned int candidateDestCoord = static_cast<unsigned int>(candidateDestinationCoordinate);
-
-            if (!BoardState::IsTileOccupied(board, candidateDestCoord) ||
-            !BoardUntils::IsSameAlliance( this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()) )
+            BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+            if (!boardController->IsTileOccupied(board, candidateDestCoord) ||
+            !BoardUntils::IsSameAlliance( this->GetAlliance(), boardController->GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()) )
             {
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
+                legalMoves.push_back(new Move(board, this, boardController->GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
             }
             else // Stop by Enemy or Alliance
             {
@@ -67,7 +68,7 @@ MoveCollection Bishop::calculateLegalMove(const BoardState board) const
                 break;
             }
 
-            if (BoardState::IsTileOccupied(board, candidateDestCoord))
+            if (boardController->IsTileOccupied(board, candidateDestCoord))
             {
                 break;
             }

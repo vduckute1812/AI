@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QLabel>
+//#include "BoardGameWnd.h"
 
 
 enum Alliance
@@ -38,24 +39,26 @@ class Piece;
 class Tile;
 
 typedef std::vector<Move*> MoveCollection;
+typedef unsigned int u32;
 
-typedef std::pair<unsigned int, Piece*> PieceInf;
+//typedef std::pair<unsigned int, Piece*> PieceInf;
 
-typedef std::vector<PieceInf> BoardConfig;
+//typedef std::vector<PieceInf> BoardConfig;
 
-struct BoardState
-{
-    static bool         IsTileOccupied(BoardState boarValue, unsigned int position);
-    static Piece*       GetPieceOnBoard(BoardState boarValue, unsigned int position);
+//struct BoardState
+//{
+//    static bool         IsTileOccupied(BoardState boarValue, unsigned int position);
+//    static Piece*       GetPieceOnBoard(BoardState boarValue, unsigned int position);
 
-    void                SetPiece(unsigned int position, Piece* piece);
-    MoveCollection      GetMoveCollection(Alliance player);
-    unsigned int        GetKingPosition(Alliance player);
+//    void                SetPiece(unsigned int position, Piece* piece);
+//    MoveCollection      GetMoveCollection(Alliance player);
+//    unsigned int        GetKingPosition(Alliance player);
 
-    Alliance            m_playerTurn;
-    BoardConfig         m_boardValue;
-};
+//    Alliance            m_playerTurn;
+//    BoardConfig         m_boardValue;
+//};
 
+struct BoardConfig;
 class Piece: public QFrame
 {
 public:
@@ -65,7 +68,7 @@ public:
     virtual bool		isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const = 0;
     virtual bool		isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const = 0;
 
-    virtual             MoveCollection calculateLegalMove(const BoardState board) const = 0;
+    virtual             MoveCollection calculateLegalMove(const BoardConfig board) const = 0;
 
     virtual             PieceValue GetPieceValue() const;
 

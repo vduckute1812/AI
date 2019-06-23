@@ -8,10 +8,10 @@ public:
     Bishop(Alliance pieceAlliance, QWidget *parent = nullptr, unsigned int position = 0);
     virtual ~Bishop();
 
-    virtual bool		isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const;
-    virtual bool		isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const;
+    virtual bool		isFirstColumnExclusion(u32 currentPosition, int candidateOffset) const;
+    virtual bool		isEightColumnExclusion(u32 currentPosition, int candidateOffset) const;
 
-    virtual             MoveCollection calculateLegalMove(const BoardState board) const;
+    virtual             MoveCollection calculateLegalMove(const BoardConfig board) const;
 
 };
 

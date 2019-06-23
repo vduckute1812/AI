@@ -30,6 +30,13 @@ public:
     void        SetModePlayer(EditModeDef modePlayer);
     EditModeDef GetModePlayer() const;
 
+    bool        IsTileOccupied(const BoardConfig& board, u32 tilePosition);
+    void        SetPieceOnBoard(BoardConfig& board, u32 piecePosition, Piece* piece);
+    Piece*      GetPieceOnBoard(const BoardConfig& board, u32 piecePosition) const;
+
+    u32                     GetKingPosition( BoardConfig board, Alliance player) const;
+    MoveCollection          GetMoveCollections(BoardConfig board, Alliance player);
+
 signals:
     void        PromotePiece(PieceType, Alliance);
 

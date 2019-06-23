@@ -88,7 +88,7 @@ void MoveMgr::Do(Move *move)
         DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());
     }
 
-    BoardState board = move->Execute();
+    BoardConfig board = move->Execute();
     m_trackMoves.push_back(move);
 
     BoardGameWnd::GetInstance()->SetBoard(board);
@@ -117,7 +117,7 @@ void MoveMgr::Undo()
     {
         m_moveIdx--;
         unsigned int currentIdx = static_cast<unsigned int>(m_moveIdx);
-        BoardState board = m_trackMoves[currentIdx]->Undo();
+        BoardConfig board = m_trackMoves[currentIdx]->Undo();
         BoardGameWnd::GetInstance()->SetBoard(board);
         Move* move = m_trackMoves.at(m_moveIdx);
         if(move->IsAttackMove())
@@ -151,7 +151,7 @@ void MoveMgr::Redo()
         {
             DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());
         }
-        BoardState board = m_trackMoves[currentIdx]->Redo();
+        BoardConfig board = m_trackMoves[currentIdx]->Redo();
         BoardGameWnd::GetInstance()->SetBoard(board);
         m_moveIdx++;
     }

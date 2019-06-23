@@ -78,74 +78,74 @@ void Piece::SetFirstMove(bool firstMove)
     m_isFirstMove = firstMove;
 }
 
-bool BoardState::IsTileOccupied(BoardState boarValue, unsigned int position)
-{
-    BoardConfig::iterator piecePtr;
-    for (piecePtr = boarValue.m_boardValue.begin(); piecePtr != boarValue.m_boardValue.end(); ++piecePtr)
-    {
-        if(piecePtr->first == position && piecePtr->second != nullptr)
-        {
-            return true;
-        }
-    }
-    return false;
-}
+//bool BoardState::IsTileOccupied(BoardState boarValue, unsigned int position)
+//{
+//    BoardConfig::iterator piecePtr;
+//    for (piecePtr = boarValue.m_boardValue.begin(); piecePtr != boarValue.m_boardValue.end(); ++piecePtr)
+//    {
+//        if(piecePtr->first == position && piecePtr->second != nullptr)
+//        {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
 
-Piece* BoardState::GetPieceOnBoard(BoardState boardValue, unsigned int position)
-{
-    return boardValue.m_boardValue[position].second;
-}
+//Piece* BoardState::GetPieceOnBoard(BoardState boardValue, unsigned int position)
+//{
+//    return boardValue.m_boardValue[position].second;
+//}
 
-void BoardState::SetPiece(unsigned int position, Piece *piece)
-{
-    BoardConfig::iterator piecePtr;
+//void BoardState::SetPiece(unsigned int position, Piece *piece)
+//{
+//    BoardConfig::iterator piecePtr;
 
-    for (piecePtr = m_boardValue.begin(); piecePtr != m_boardValue.end(); ++piecePtr)
-    {
-        if(piecePtr->first == position)
-        {
-            piecePtr->second = piece;
-        }
-    }
-    if(piece!=nullptr)
-    {
-        piece->SetPosition(position);
-    }
-}
+//    for (piecePtr = m_boardValue.begin(); piecePtr != m_boardValue.end(); ++piecePtr)
+//    {
+//        if(piecePtr->first == position)
+//        {
+//            piecePtr->second = piece;
+//        }
+//    }
+//    if(piece!=nullptr)
+//    {
+//        piece->SetPosition(position);
+//    }
+//}
 
-MoveCollection BoardState::GetMoveCollection(Alliance player)
-{
-    MoveCollection moveCollection;
-    BoardConfig::iterator piecePtr = m_boardValue.begin();
-    for (; piecePtr != m_boardValue.end(); ++piecePtr)
-    {
-        Piece* piece = piecePtr->second;
-        if(piece != nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
-        {
-            for (Move* move: piece->calculateLegalMove(*this))
-            {
-                moveCollection.push_back(move);
-            }
-        }
-    }
-    return moveCollection;
-}
+//MoveCollection BoardState::GetMoveCollection(Alliance player)
+//{
+//    MoveCollection moveCollection;
+//    BoardConfig::iterator piecePtr = m_boardValue.begin();
+//    for (; piecePtr != m_boardValue.end(); ++piecePtr)
+//    {
+//        Piece* piece = piecePtr->second;
+//        if(piece != nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
+//        {
+//            for (Move* move: piece->calculateLegalMove(*this))
+//            {
+//                moveCollection.push_back(move);
+//            }
+//        }
+//    }
+//    return moveCollection;
+//}
 
-unsigned int BoardState::GetKingPosition(Alliance player)
-{
-    unsigned int kingPosition = BoardUntils::getMaxTiles();
-    BoardConfig::iterator piecePtr = m_boardValue.begin();
-    for (;piecePtr!=m_boardValue.end();++piecePtr)
-    {
-        Piece* piece = piecePtr->second;
-        if(piece!=nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
-        {
-            if(piece->GetPieceType() == PieceType::KING)
-            {
-                kingPosition = piece->GetPosition();
-                break;
-            }
-        }
-    }
-    return kingPosition;
-}
+//unsigned int BoardState::GetKingPosition(Alliance player)
+//{
+//    unsigned int kingPosition = BoardUntils::getMaxTiles();
+//    BoardConfig::iterator piecePtr = m_boardValue.begin();
+//    for (;piecePtr!=m_boardValue.end();++piecePtr)
+//    {
+//        Piece* piece = piecePtr->second;
+//        if(piece!=nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
+//        {
+//            if(piece->GetPieceType() == PieceType::KING)
+//            {
+//                kingPosition = piece->GetPosition();
+//                break;
+//            }
+//        }
+//    }
+//    return kingPosition;
+//}

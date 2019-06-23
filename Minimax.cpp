@@ -2,6 +2,8 @@
 #include "BoardUntils.h"
 #include <QTextStream>
 #include "Move.h"
+#include "BoardGameWnd.h"
+#include "BoardController.h"
 
 
 const static double MAX_VALUE = 1e4;
@@ -15,7 +17,7 @@ void Minimax::Init()
     m_boardEvaluator    = StandardBoardEvaluator::GetInstance();
 }
 
-Move *Minimax::execute(BoardState board)
+Move *Minimax::execute(BoardConfig board)
 {
     double currentValue;
 //    int freqTableIndex = 0;
@@ -28,26 +30,27 @@ Move *Minimax::execute(BoardState board)
     double lowestSeenValue = MAX_VALUE;
 
     QTextStream out(stdout);
-    out << QChar(board.m_playerTurn) << " IS THINKING with depth " << m_searchDepth <<endl;
+    out << QChar(board.playerTurn) << " IS THINKING with depth " << m_searchDepth <<endl;
 
-    MoveCollection moves = board.GetMoveCollection(board.m_playerTurn);
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
 //    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
     for (Move* move: moves) {
 
-        BoardState transitionBoard = move->Execute();
+        BoardConfig transitionBoard = move->Execute();
         m_quiescenceCount = 0;
-        currentValue = transitionBoard.m_playerTurn == Alliance::WHITE ?
+        currentValue = transitionBoard.playerTurn == Alliance::WHITE ?
                     min(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue):
                     max(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue);
 
 //        BoardState undoBoard = move->UndoExecute();
 
-        if(board.m_playerTurn == Alliance::WHITE && currentValue > hightestSeenValue)
+        if(board.playerTurn == Alliance::WHITE && currentValue > hightestSeenValue)
         {
             hightestSeenValue = currentValue;
             bestMove = move;
         }
-        else if(board.m_playerTurn == Alliance::BLACK && currentValue < lowestSeenValue)
+        else if(board.playerTurn == Alliance::BLACK && currentValue < lowestSeenValue)
         {
             lowestSeenValue = currentValue;
 
@@ -70,7 +73,7 @@ Move *Minimax::execute(BoardState board)
     return bestMove;
 }
 
-double Minimax::min(BoardState board, u32 depth, double highest, double lowest)
+double Minimax::min(BoardConfig board, u32 depth, double highest, double lowest)
 {
     if(depth == 0|| IsEndgame(board))
     {
@@ -83,18 +86,19 @@ double Minimax::min(BoardState board, u32 depth, double highest, double lowest)
 
     double currentLowest = lowest;
 
-    MoveCollection moves = board.GetMoveCollection(board.m_playerTurn);
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
 //    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
 
     MoveCollection candidateMoves (moves.begin() , moves.begin()+4);
 
     for (Move* move: candidateMoves)
     {
-        BoardState transitionBoard = move->Execute();
+        BoardConfig transitionBoard = move->Execute();
 //        currentLowest = std::min(currentLowest, max(transitionBoard, calculateQuiescenceDepth(move, depth), highest, currentLowest));
 
         // release memory
-        BoardState undoBoard = move->UndoExecute();
+        BoardConfig undoBoard = move->UndoExecute();
 
         delete move;
 
@@ -106,7 +110,7 @@ double Minimax::min(BoardState board, u32 depth, double highest, double lowest)
 
 return currentLowest;}
 
-double Minimax::max(BoardState board, u32 depth, double highest, double lowest)
+double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
 {
     return 0;
 }
@@ -121,7 +125,7 @@ bool Minimax::SortMoveFollowValue(std::vector<Move *> moves)
     return false;
 }
 
-bool Minimax::IsEndgame(BoardState board)
+bool Minimax::IsEndgame(BoardConfig board)
 {
     return false;
 }
@@ -147,32 +151,32 @@ void StandardBoardEvaluator::Init()
 
 }
 
-int StandardBoardEvaluator::evaluate(const BoardState board, int depth)
+int StandardBoardEvaluator::evaluate(const BoardConfig board, int depth)
 {
     return 0;
 }
 
-int StandardBoardEvaluator::scorePlayer(const BoardState board, const Alliance alliance, int depth)
+int StandardBoardEvaluator::scorePlayer(const BoardConfig board, const Alliance alliance, int depth)
 {
     return 0;
 }
 
-int StandardBoardEvaluator::mobility(const BoardState board, const Alliance alliance)
+int StandardBoardEvaluator::mobility(const BoardConfig board, const Alliance alliance)
 {
     return 0;
 }
 
-int StandardBoardEvaluator::mobilityRatio(const BoardState board, const Alliance alliance)
+int StandardBoardEvaluator::mobilityRatio(const BoardConfig board, const Alliance alliance)
 {
     return 0;
 }
 
-int StandardBoardEvaluator::check(const BoardState board, const Alliance alliance)
+int StandardBoardEvaluator::check(const BoardConfig board, const Alliance alliance)
 {
     return 0;
 }
 
-int StandardBoardEvaluator::kingThreats(const BoardState board, const Alliance alliance, int depth)
+int StandardBoardEvaluator::kingThreats(const BoardConfig board, const Alliance alliance, int depth)
 {
     return 0;
 }
@@ -182,21 +186,21 @@ int StandardBoardEvaluator::depthBonus(int depth)
     return depth == 0 ? 1 : DEPTH_BONUS * depth;
 }
 
-int StandardBoardEvaluator::pieceValue(const BoardState board, const Alliance alliance)
+int StandardBoardEvaluator::pieceValue(const BoardConfig board, const Alliance alliance)
 {
     int pieceValueScore = 0;
-    BoardConfig boardConfig = board.m_boardValue;
+    PiecePositions boardConfig = board.pieceData;
     for (unsigned int pieceIdx = 0; pieceIdx < boardConfig.size(); ++pieceIdx)
     {
-        if(BoardUntils::IsSameAlliance(boardConfig.at(pieceIdx).second->GetAlliance(), alliance))
+        if(BoardUntils::IsSameAlliance(boardConfig.at(pieceIdx)->GetAlliance(), alliance))
         {
-            pieceValueScore += boardConfig.at(pieceIdx).second->GetPieceValue();
+            pieceValueScore += boardConfig.at(pieceIdx)->GetPieceValue();
         }
     }
     return pieceValueScore;
 }
 
-int StandardBoardEvaluator::attacks(const BoardState board, const Alliance alliance)
+int StandardBoardEvaluator::attacks(const BoardConfig board, const Alliance alliance)
 {
     return 0;
 }

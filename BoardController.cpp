@@ -79,7 +79,7 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
 
 Alliance BoardController::GetMoveMaker()
 {
-    return BoardGameWnd::GetInstance()->GetCurrentBoard().m_playerTurn;
+    return BoardGameWnd::GetInstance()->GetCurrentBoard().playerTurn;
 }
 
 
@@ -117,4 +117,62 @@ void BoardController::SetModePlayer(BoardController::EditModeDef modePlayer)
 BoardController::EditModeDef BoardController::GetModePlayer() const
 {
     return m_modePlayer;
+}
+
+bool BoardController::IsTileOccupied(const BoardConfig &board, u32 tilePosition)
+{
+    return board.pieceData.at(tilePosition) != nullptr;
+}
+
+void BoardController::SetPieceOnBoard(BoardConfig &board, u32 piecePosition, Piece *piece)
+{
+    if(piece)
+    {
+        piece->SetPosition(piecePosition);
+    }
+    board.pieceData.at(piecePosition) = piece;
+}
+
+Piece* BoardController::GetPieceOnBoard(const BoardConfig &board, u32 piecePosition) const
+{
+    return board.pieceData.at(piecePosition);
+
+}
+
+u32 BoardController::GetKingPosition(BoardConfig board, Alliance player) const
+{
+    u32 kingPosition = BoardUntils::getMaxTiles();
+    PiecePositions::iterator piecePtr = board.pieceData.begin();
+    for (;piecePtr!=board.pieceData.end();++piecePtr)
+    {
+        Piece* piece = *piecePtr;
+        if(piece!=nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
+        {
+            if(piece->GetPieceType() == PieceType::KING)
+            {
+                kingPosition = piece->GetPosition();
+                break;
+            }
+        }
+    }
+
+    return kingPosition;
+}
+
+MoveCollection BoardController::GetMoveCollections(BoardConfig board, Alliance player)
+{
+    MoveCollection moveCollection;
+    PiecePositions::iterator piecePtr = board.pieceData.begin();
+    for (; piecePtr != board.pieceData.end(); ++piecePtr)
+    {
+        Piece* piece = *piecePtr;
+        if(piece != nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
+        {
+            for (Move* move: piece->calculateLegalMove(board))
+            {
+                moveCollection.push_back(move);
+            }
+        }
+    }
+    return moveCollection;
 }

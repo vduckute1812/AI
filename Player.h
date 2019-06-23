@@ -7,7 +7,7 @@ class Player
 public:
     Player();
     virtual ~Player();
-    virtual MoveCollection GetMoveCollection(BoardState state) = 0;
+    virtual MoveCollection GetMoveCollection(BoardConfig state) = 0;
 protected:
     Alliance m_player;
 };
@@ -15,13 +15,13 @@ protected:
 class BlackPlayer: public Player
 {
     virtual ~BlackPlayer();
-    MoveCollection GetMoveCollection(BoardState state);
+    MoveCollection GetMoveCollection(BoardConfig state);
 };
 
 class WhitePlayer: public Player
 {
     virtual ~WhitePlayer();
-    MoveCollection GetMoveCollection(BoardState state);
+    MoveCollection GetMoveCollection(BoardConfig state);
 };
 
 #endif // PLAYER_H

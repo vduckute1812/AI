@@ -2,9 +2,9 @@
 #define MOVE_H
 
 #include "Piece.h"
+#include "BoardGameWnd.h"
 
 class Board;
-
 enum TypeMove
 {
     MAJOR_MOVE,
@@ -19,14 +19,14 @@ enum TypeMove
 class Move
 {
 public:
-    Move(const BoardState board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord);
+    Move(const BoardConfig board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord);
 
-    BoardState          Execute();
-    BoardState          UndoExecute();
+    BoardConfig          Execute();
+    BoardConfig          UndoExecute();
 
     // Use on Board
-    BoardState          Redo();
-    BoardState          Undo();
+    BoardConfig          Redo();
+    BoardConfig          Undo();
 
     unsigned int        GetMoveCoordinate() const;
     unsigned int        GetDestCoordinate() const;
@@ -47,7 +47,7 @@ public:
     QChar               GetAlliancePieceAttack() const;
 
 protected:
-    BoardState          m_board;
+    BoardConfig         m_board;
     const Piece*        m_movePiece;
     const Piece*        m_attackPiece;
     Piece*              m_promotePiece;

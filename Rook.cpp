@@ -2,6 +2,8 @@
 #include "Tile.h"
 #include "Move.h"
 #include "BoardUntils.h"
+#include "BoardGameWnd.h"
+#include "BoardController.h"
 
 const int ROOK_CANDIDATE_MOVE_COORDINATE[] = { -NUM_TILES_PER_COL,
                                                -1, 1,
@@ -26,7 +28,7 @@ bool Rook::isEightColumnExclusion(unsigned int currentPosition, int candidateOff
     return BoardUntils::IsNumColumn(CheckColumn::END_OF_COL, currentPosition) && (candidateOffset == 1);
 }
 
-MoveCollection Rook::calculateLegalMove(const BoardState board) const
+MoveCollection Rook::calculateLegalMove(const BoardConfig board) const
 {
     MoveCollection legalMoves;
 
@@ -43,18 +45,20 @@ MoveCollection Rook::calculateLegalMove(const BoardState board) const
                 break;
             }
 
+            BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+
             unsigned int candidateDestCoord = static_cast<unsigned int>(candidateDestinationCoordinate);
-            if (!BoardState::IsTileOccupied(board, candidateDestCoord) ||
-            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
+            if (!boardController->IsTileOccupied(board, candidateDestCoord) ||
+            !BoardUntils::IsSameAlliance(this->GetAlliance(), boardController->GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
             {
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
+                legalMoves.push_back(new Move(board, this, boardController->GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
             }
             else // Stop by Enemy or Alliance
             {
                 break;
             }
 
-            if (BoardState::IsTileOccupied(board, candidateDestCoord))
+            if (boardController->IsTileOccupied(board, candidateDestCoord))
             {
                 break;
             }

@@ -11,8 +11,6 @@
 #include <QString>
 
 
-typedef unsigned int u32;
-
 template<typename T>
 struct vec2
 {

@@ -14,8 +14,6 @@ BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = null
     : QWidget(parent)
     , Messenger()
 {
-    s_tmpStateIdx = 0;
-
     m_boardController = controller;
     m_timer = new QTimer(this);
 
@@ -30,14 +28,14 @@ BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = null
 BoardGameWnd::~BoardGameWnd()
 {
     std::vector<Piece*>::iterator piecePtr;
-    for (piecePtr = s_pieces.begin(); piecePtr != s_pieces.end(); ++piecePtr)
+    for (piecePtr = m_pieces.begin(); piecePtr != m_pieces.end(); ++piecePtr)
     {
         delete *piecePtr;
     }
 
     for (u32 i = 0; i < MAX_TEMP_BOARD; ++i)
     {
-        s_tempBoards[i].m_boardValue.clear();
+        m_tempBoards.pieceData.clear();
     }
     delete m_boardController;
 }
@@ -53,30 +51,29 @@ void BoardGameWnd::CreateStandardBoard()
     {
         Piece* piece_white = PieceFactory::GeneratePiece(listInit[int(i)], Alliance::BLACK);
         piece_white->SetPosition(i);
-        s_tempBoards[0].m_boardValue.at(i).second = piece_white;
-        s_pieces.push_back(piece_white);
+        m_tempBoards.pieceData.at(i) = piece_white;
+        m_pieces.push_back(piece_white);
 
         Piece* piece_black = PieceFactory::GeneratePiece(listInit[int(i)], Alliance::WHITE);
         piece_black->SetPosition(endBoardIdx - i);
-        s_tempBoards[0].m_boardValue.at(endBoardIdx - i).second = piece_black;
-        s_pieces.push_back(piece_black);
+        m_tempBoards.pieceData.at(endBoardIdx - i) = piece_black;
+        m_pieces.push_back(piece_black);
     }
 
-    s_tempBoards[0].m_playerTurn = Alliance::WHITE;
-
-    s_tmpStateIdx++;
+    m_tempBoards.playerTurn = Alliance::WHITE;
 }
 
-MoveCollection BoardGameWnd::GetLegalMoves(BoardState board, Alliance player)
+MoveCollection BoardGameWnd::GetLegalMoves(BoardConfig board, Alliance player)
 {
     MoveCollection moveCollections;
-    BoardConfig::iterator piecePtr = board.m_boardValue.begin();
+    PiecePositions::iterator piecePtr = board.pieceData.begin();
 
-    for (;piecePtr!=board.m_boardValue.end();++piecePtr)
+    for (;piecePtr!=board.pieceData.end();++piecePtr)
     {
-        if(BoardUntils::IsSameAlliance(piecePtr->second->GetAlliance(), player))
+        Piece* piece = *piecePtr;
+        if(BoardUntils::IsSameAlliance(piece->GetAlliance(), player))
         {
-            for(Move* move: piecePtr->second->calculateLegalMove(board))
+            for(Move* move: piece->calculateLegalMove(board))
             {
                 moveCollections.push_back(move);
             }
@@ -102,15 +99,16 @@ void BoardGameWnd::Init()
         Tile* tile = new Tile(i, NULL_PIECE);
         tile->SetCanTouch(true);
         m_tiles.push_back(tile);
+        m_tempBoards.pieceData.push_back( NULL_PIECE);
     }
 
-    for(u32 i = 0; i < MAX_TEMP_BOARD; ++i)
-    {
-        for (int tileIdx = 0; tileIdx < NUM_TILES_PER_ROW * NUM_TILES_PER_COL; ++tileIdx)
-        {
-            s_tempBoards[i].m_boardValue.push_back(std::make_pair(tileIdx, NULL_PIECE));
-        }
-    }
+//    for(u32 i = 0; i < MAX_TEMP_BOARD; ++i)
+//    {
+//        for (int tileIdx = 0; tileIdx < NUM_TILES; ++tileIdx)
+//        {
+//            m_tempBoards.pieceData.push_back( NULL_PIECE);
+//        }
+//    }
 
     CreateStandardBoard();
 
@@ -129,16 +127,16 @@ void BoardGameWnd::Init()
     }
 
     // Set piece on board
-    BoardConfig::iterator piecePtr;
-    for (piecePtr = s_tempBoards[0].m_boardValue.begin(); piecePtr != s_tempBoards[0].m_boardValue.end(); ++piecePtr)
+    PiecePositions::iterator piecePtr;
+    for (piecePtr = m_tempBoards.pieceData.begin(); piecePtr != m_tempBoards.pieceData.end(); ++piecePtr)
     {
-        u32 location = piecePtr->first;
-        Tile* tile = m_tiles.at(location);
-        Piece* piece = piecePtr->second;
-
-        tile->SetPiece(piece);
+        Piece* piece = *piecePtr;
         if(piece != nullptr)
         {
+            u32 location = piece->GetPosition();
+            Tile* tile = m_tiles.at(location);
+
+            tile->SetPiece(piece);
             piece->setParent(tile);
         }
     }
@@ -155,26 +153,29 @@ void BoardGameWnd::SetController(BoardController *controller)
     m_boardController = controller;
 }
 
-void BoardGameWnd::SetBoard(BoardState board)
+void BoardGameWnd::SetBoard(BoardConfig board)
 {
     Lock(true); // lock init for avoiding crash
 
     ResetColorTiles();
 
-    if(!s_tempBoards[0].m_boardValue.empty())
-    {
-        s_tempBoards[0].m_boardValue.clear();
-    }
-    s_tempBoards[0] = board;
+//    if(!m_tempBoards.pieceData.empty())
+//    {
+//        m_tempBoards.pieceData.clear();
+//    }
+    m_tempBoards = board;
     ResetTiles();
-    BoardConfig config = s_tempBoards[0].m_boardValue;
-    BoardConfig::iterator tileConfig;
 
-    for (tileConfig = config.begin(); tileConfig!=config.end(); ++tileConfig)
+    PiecePositions::iterator pieceConfig = m_tempBoards.pieceData.begin();
+
+    for (; pieceConfig!=m_tempBoards.pieceData.end(); ++pieceConfig)
     {
-        const u32 coordinate = tileConfig->first;
-        Piece* piece = tileConfig->second;
-        m_tiles.at(coordinate)->SetPiece(piece);
+        Piece* piece = *pieceConfig;
+        if(piece)
+        {
+            const u32 coordinate = piece->GetPosition();
+            m_tiles.at(coordinate)->SetPiece(piece);
+        }
     }
 
     Lock(false);

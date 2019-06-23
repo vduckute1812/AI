@@ -3,8 +3,9 @@
 #include "BoardUntils.h"
 #include "BoardGameWnd.h"
 #include "PromoteWnd.h"
+#include "BoardController.h"
 
-Move::Move( const BoardState board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord)
+Move::Move( const BoardConfig board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord)
 {
     m_board = board;
     m_movePiece = movePiece;
@@ -30,7 +31,8 @@ unsigned int Move::GetDestCoordinate() const
 
 bool Move::IsAttackMove() const
 {
-    const Piece* destPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    const Piece* destPiece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
     if (destPiece == nullptr)
     {
         return false;
@@ -38,7 +40,7 @@ bool Move::IsAttackMove() const
     return true;
 }
 
-BoardState Move::Execute()
+BoardConfig Move::Execute()
 {
 //    if(BoardGameWnd::s_tmpStateIdx >= MAX_TEMP_BOARD )
 //    {
@@ -65,9 +67,10 @@ BoardState Move::Execute()
 //    }
 //    else
 //    {
-        Piece* piece = BoardState::GetPieceOnBoard(m_board, m_movedCoordinate);
+        BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+        Piece* piece = boardController->GetPieceOnBoard(m_board, m_movedCoordinate);
         piece->SetFirstMove(false);
-        m_killedPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+        m_killedPiece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
 
         if(m_isPromotePiece)
         {
@@ -78,34 +81,34 @@ BoardState Move::Execute()
             piece = PromoteWnd::GetInstance()->GetPromotePiece();
         }
 
-        m_board.SetPiece(m_movedCoordinate, nullptr);
-        m_board.SetPiece(m_destCoordinate, piece);
+        boardController->SetPieceOnBoard(m_board, m_movedCoordinate, nullptr);
+        boardController->SetPieceOnBoard(m_board, m_destCoordinate, piece);
 
-
-        Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-        m_board.m_playerTurn = nextTurnPlayer;
+        Alliance nextTurnPlayer = m_board.playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+        m_board.playerTurn = nextTurnPlayer;
 //    }
 
 
     return m_board;
 }
 
-BoardState Move::UndoExecute()
+BoardConfig Move::UndoExecute()
 {
-    Piece* piece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    Piece* piece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
 
     if(m_isPromotePiece)
     {
         piece = m_promotePiece;
-        m_board.SetPiece(m_movedCoordinate, m_promotePiece);
+        boardController->SetPieceOnBoard(m_board, m_movedCoordinate, m_promotePiece);
 //        PromoteWnd::GetInstance()->DeletePromotePiece();
     }
     else
     {
-        m_board.SetPiece(m_movedCoordinate, piece);
+        boardController->SetPieceOnBoard(m_board, m_movedCoordinate, piece);
     }
 
-    m_board.SetPiece(m_destCoordinate, m_killedPiece);
+    boardController->SetPieceOnBoard(m_board,m_destCoordinate, m_killedPiece);
     m_killedPiece = nullptr;
 
     if(m_isFirstMove && piece)
@@ -113,45 +116,49 @@ BoardState Move::UndoExecute()
         piece->SetFirstMove(true);
     }
 
-    Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-    m_board.m_playerTurn = nextTurnPlayer;
+    Alliance nextTurnPlayer = m_board.playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    m_board.playerTurn = nextTurnPlayer;
 
     return m_board;
 }
 
 // Use for GUI
-BoardState Move::Undo()
+BoardConfig Move::Undo()
 {
-    Piece* piece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+
+    Piece* piece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
 
     if(m_isPromotePiece)
     {
         piece = m_promotePiece;
-        m_board.SetPiece(m_movedCoordinate, m_promotePiece);
+        boardController->SetPieceOnBoard(m_board,m_movedCoordinate, m_promotePiece);
 //        PromoteWnd::GetInstance()->DeletePromotePiece();
     }
     else
     {
-        m_board.SetPiece(m_movedCoordinate, piece);
+        boardController->SetPieceOnBoard(m_board,m_movedCoordinate, piece);
     }
 
-    m_board.SetPiece(m_destCoordinate, m_killedPiece);
+    boardController->SetPieceOnBoard(m_board,m_destCoordinate, m_killedPiece);
     m_killedPiece = nullptr;
 
     if(m_isFirstMove && piece)
         piece->SetFirstMove(true);
 
-    Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-    m_board.m_playerTurn = nextTurnPlayer;
+    Alliance nextTurnPlayer = m_board.playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    m_board.playerTurn = nextTurnPlayer;
 
     return m_board;
 }
 
-BoardState Move::Redo()
+BoardConfig Move::Redo()
 {
-    Piece* piece = BoardState::GetPieceOnBoard(m_board, m_movedCoordinate);
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+
+    Piece* piece = boardController->GetPieceOnBoard(m_board, m_movedCoordinate);
     piece->SetFirstMove(false);
-    m_killedPiece = BoardState::GetPieceOnBoard(m_board, m_destCoordinate);
+    m_killedPiece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
 
     if(m_isPromotePiece)
     {
@@ -160,25 +167,27 @@ BoardState Move::Redo()
         piece = PromoteWnd::GetInstance()->GetPromotePiece();
     }
 
-    m_board.SetPiece(m_movedCoordinate, nullptr);
-    m_board.SetPiece(m_destCoordinate, piece);
+    boardController->SetPieceOnBoard(m_board,m_movedCoordinate, nullptr);
+    boardController->SetPieceOnBoard(m_board,m_destCoordinate, piece);
 
-    Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-    m_board.m_playerTurn = nextTurnPlayer;
+    Alliance nextTurnPlayer = m_board.playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    m_board.playerTurn = nextTurnPlayer;
 
     return m_board;
 }
 
 bool Move::IsLegalMove()
 {
-    BoardState board = this->Execute();
+    BoardConfig board = this->Execute();
     bool isLegal = true;
 
     // Get Opponent moves
-    Alliance opponentPlayer = board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    Alliance opponentPlayer = board.playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
 
-    unsigned int kingPosition = board.GetKingPosition(opponentPlayer);
-    MoveCollection moves = board.GetMoveCollection(board.m_playerTurn);
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+
+    unsigned int kingPosition = boardController->GetKingPosition(board,opponentPlayer);
+    MoveCollection moves = boardController->GetMoveCollections(board, board.playerTurn);
     for (Move* move: moves)
     {
         if(move->GetDestCoordinate() == kingPosition)

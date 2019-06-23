@@ -16,12 +16,12 @@ class Minimax: public Singleton<Minimax>
 public:
     virtual void Init() override;
 
-    Move*   execute(BoardState);
+    Move*   execute(BoardConfig);
 
-    double  min(BoardState board, u32 depth, double highest, double lowest);
-    double  max(BoardState board, u32 depth, double highest, double lowest);
+    double  min(BoardConfig board, u32 depth, double highest, double lowest);
+    double  max(BoardConfig board, u32 depth, double highest, double lowest);
 
-    bool    IsEndgame(BoardState board);
+    bool    IsEndgame(BoardConfig board);
     int     CalculateQuiescenceDepth(const Move* moveTransition, int depth);
     void    SetDepth(int depth);
     bool    SortMoveFollowValue(std::vector<Move*> moves);
@@ -39,23 +39,23 @@ class BoardEvaluator
 public:
     BoardEvaluator();
     virtual ~BoardEvaluator();
-    virtual int evaluate(const BoardState board, int depth = 0) = 0;
+    virtual int evaluate(const BoardConfig board, int depth = 0) = 0;
 };
 
 class StandardBoardEvaluator: public Singleton<StandardBoardEvaluator>, public BoardEvaluator
 {
 public:
     virtual void Init() override;
-    virtual int evaluate(const BoardState board, int depth = 0) override;
+    virtual int evaluate(const BoardConfig board, int depth = 0) override;
 private:
-    int scorePlayer(const BoardState board, const Alliance alliance, int depth);
-    int mobility(const BoardState board, const Alliance alliance);
-    int mobilityRatio(const BoardState board, const Alliance alliance);
-    int check(const BoardState board, const Alliance alliance);
-    int kingThreats(const BoardState board, const Alliance alliance, int depth);
+    int scorePlayer(const BoardConfig board, const Alliance alliance, int depth);
+    int mobility(const BoardConfig board, const Alliance alliance);
+    int mobilityRatio(const BoardConfig board, const Alliance alliance);
+    int check(const BoardConfig board, const Alliance alliance);
+    int kingThreats(const BoardConfig board, const Alliance alliance, int depth);
     int depthBonus(int depth);
-    int pieceValue(const BoardState board, const Alliance alliance);
-    int attacks(const BoardState board, const Alliance alliance);
+    int pieceValue(const BoardConfig board, const Alliance alliance);
+    int attacks(const BoardConfig board, const Alliance alliance);
 };
 
 #endif // MINIMAX_H

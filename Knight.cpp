@@ -2,6 +2,8 @@
 #include "Tile.h"
 #include "Move.h"
 #include "BoardUntils.h"
+#include "BoardGameWnd.h"
+#include "BoardController.h"
 
 const int KNIGHT_CANDIDATE_MOVE_COORDINATE[] = { -2*NUM_TILES_PER_COL-1,
                                                  -2*NUM_TILES_PER_COL+1,
@@ -47,7 +49,7 @@ bool Knight::isEightColumnExclusion(unsigned int currentPosition, int candidateO
             || candidateOffset == NUM_TILES_PER_COL+2  || candidateOffset == 2*NUM_TILES_PER_COL+1);
 }
 
-MoveCollection Knight::calculateLegalMove(const BoardState board)  const
+MoveCollection Knight::calculateLegalMove(const BoardConfig board)  const
 {
     MoveCollection legalMoves;
 
@@ -65,12 +67,12 @@ MoveCollection Knight::calculateLegalMove(const BoardState board)  const
             {
                 continue;
             }
-
+            BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
             unsigned int candidateDestCoord = static_cast<unsigned int>(candidateDestinationCoordinate);
-            if (!BoardState::IsTileOccupied(board, candidateDestCoord) ||
-            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
+            if (!boardController->IsTileOccupied(board, candidateDestCoord) ||
+            !BoardUntils::IsSameAlliance(this->GetAlliance(), boardController->GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
             {
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
+                legalMoves.push_back(new Move(board, this, boardController->GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
             }
         }
     }

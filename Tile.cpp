@@ -86,9 +86,10 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
     // Make move Piece
     unsigned int coordinate = this->GetCoordinate();
-    BoardController::GetInstance()->MoveSelectedPiece(coordinate);
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
 
-    BoardController::GetInstance()->SetSelecetedPiece(this->GetPiece());
+    boardController->MoveSelectedPiece(coordinate);
+    boardController->SetSelecetedPiece(this->GetPiece());
 
     // Set colors on Board. Render posible move
     BoardGameWnd::GetInstance()->ResetColorTiles();

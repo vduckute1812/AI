@@ -2,6 +2,8 @@
 #include "Tile.h"
 #include "Move.h"
 #include "BoardUntils.h"
+#include "BoardGameWnd.h"
+#include "BoardController.h"
 
 const static int QUEEN_CANDIDATE_MOVE_COORDINATE[] = { -NUM_TILES_PER_COL-1,
                                                        -NUM_TILES_PER_COL,
@@ -32,7 +34,7 @@ bool Queen::isEightColumnExclusion(unsigned int currentPosition, int candidateOf
             && (candidateOffset == 1 || candidateOffset == -NUM_TILES_PER_COL+1 || candidateOffset == NUM_TILES_PER_COL+1);
 }
 
-MoveCollection Queen::calculateLegalMove(const BoardState board) const
+MoveCollection Queen::calculateLegalMove(const BoardConfig board) const
 {
     MoveCollection legalMoves;
 
@@ -49,18 +51,20 @@ MoveCollection Queen::calculateLegalMove(const BoardState board) const
                 break;
             }
 
+            BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+
             unsigned int candidateDestCoord = static_cast<unsigned int>(candidateDestinationCoordinate);
-            if (!BoardState::IsTileOccupied(board, candidateDestCoord) ||
-            !BoardUntils::IsSameAlliance(this->GetAlliance(), BoardState::GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
+            if (!boardController->IsTileOccupied(board, candidateDestCoord) ||
+            !BoardUntils::IsSameAlliance(this->GetAlliance(), boardController->GetPieceOnBoard(board, candidateDestCoord)->GetAlliance()))
             {
-                legalMoves.push_back(new Move(board, this, BoardState::GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
+                legalMoves.push_back(new Move(board, this, boardController->GetPieceOnBoard(board, candidateDestCoord), candidateDestCoord));
             }
             else // Stop by Enemy or Alliance
             {
                 break;
             }
 
-            if (BoardState::IsTileOccupied(board, candidateDestCoord))
+            if (boardController->IsTileOccupied(board, candidateDestCoord))
             {
                 break;
             }

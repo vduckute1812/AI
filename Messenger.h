@@ -4,6 +4,8 @@
 #include <map>
 #include <Defines.h>
 
+typedef unsigned int u32;
+
 class Messenger;
 
 struct Forward
