@@ -41,7 +41,25 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
             if (move->GetDestCoordinate() == coordinate)
             {
                 if(move->IsLegalMove())
+
                 {
+                    ////////////////////////////////////////////////////////////////////
+                    if(move->IsPromoteMove())
+                    {
+                        move->SetHasPromote(true);
+
+                        PromoteWnd::GetInstance()->SetPromote(true);
+                        BoardGameWnd::GetInstance()->LockTiles(false);
+//                        Alliance alliance = move->GetAlliancePieceMove() == 'b' ? Alliance::BLACK : Alliance::WHITE;
+//                        PromoteWnd::GetInstance()->SetPromoteAlliance(alliance);
+//                        PromoteWnd::GetInstance()->AddDefaultPromotePiece();
+                        PromoteWnd::GetInstance()->SetVisible(true);
+                        PromoteWnd::GetInstance()->SetPromote(false);
+                        BoardGameWnd::GetInstance()->LockTiles(true);
+                    }
+
+                    /////////////////////////////////////////////////////////////////////
+
                     MovePiece(move);
                 }
                 else
@@ -86,23 +104,6 @@ void BoardController::MovePiece(Move *move)
     {
         move->SetDescription( type + QString(alliance) + QString(" move to ") +QString::number(move->GetDestCoordinate()) );
     }
-
-    ////////////////////////////////////////////////////////////////////
-    if(move->IsPromoteMove())
-    {
-        move->SetHasPromote(true);
-
-        PromoteWnd::GetInstance()->SetPromote(true);
-        BoardGameWnd::GetInstance()->LockTiles(false);
-        Alliance alliance = move->GetAlliancePieceMove() == 'b' ? Alliance::BLACK : Alliance::WHITE;
-        PromoteWnd::GetInstance()->SetPromoteAlliance(alliance);
-        PromoteWnd::GetInstance()->AddDefaultPromotePiece();
-        PromoteWnd::GetInstance()->SetVisible(true);
-        PromoteWnd::GetInstance()->SetPromote(false);
-        BoardGameWnd::GetInstance()->LockTiles(true);
-    }
-
-    /////////////////////////////////////////////////////////////////////
 
 
     MoveMgr::GetInstance()->Do(move);

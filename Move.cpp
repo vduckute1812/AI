@@ -71,6 +71,9 @@ BoardState Move::Execute()
 
         if(m_isPromotePiece)
         {
+            PromoteWnd::GetInstance()->SetPromoteAlliance(m_movePiece->GetAlliance());
+            PromoteWnd::GetInstance()->AddDefaultPromotePiece();
+
             m_promotePiece = piece;
             piece = PromoteWnd::GetInstance()->GetPromotePiece();
         }
@@ -94,10 +97,14 @@ BoardState Move::UndoExecute()
     if(m_isPromotePiece)
     {
         piece = m_promotePiece;
+        m_board.SetPiece(m_movedCoordinate, m_promotePiece);
 //        PromoteWnd::GetInstance()->DeletePromotePiece();
     }
+    else
+    {
+        m_board.SetPiece(m_movedCoordinate, piece);
+    }
 
-    m_board.SetPiece(m_movedCoordinate, piece);
     m_board.SetPiece(m_destCoordinate, m_killedPiece);
     m_killedPiece = nullptr;
 
@@ -120,10 +127,14 @@ BoardState Move::Undo()
     if(m_isPromotePiece)
     {
         piece = m_promotePiece;
+        m_board.SetPiece(m_movedCoordinate, m_promotePiece);
 //        PromoteWnd::GetInstance()->DeletePromotePiece();
     }
+    else
+    {
+        m_board.SetPiece(m_movedCoordinate, piece);
+    }
 
-    m_board.SetPiece(m_movedCoordinate, piece);
     m_board.SetPiece(m_destCoordinate, m_killedPiece);
     m_killedPiece = nullptr;
 
