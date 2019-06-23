@@ -93,9 +93,9 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
     // Set colors on Board. Render posible move
     BoardGameWnd::GetInstance()->ResetColorTiles();
-    Piece* pieceColor = BoardController::GetInstance()->GetSelecetedPiece();
+    Piece* pieceColor = boardController->GetSelecetedPiece();
 
-    if (pieceColor  && BoardUntils::IsSameAlliance(pieceColor->GetAlliance(), BoardController::GetInstance()->GetMoveMaker()))
+    if (pieceColor  && BoardUntils::IsSameAlliance(pieceColor->GetAlliance(), boardController->GetMoveMaker()))
     {
         this->SetCurrentColor(CHOOSE_COLOR);
         for (Move* move : pieceColor->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))

@@ -32,8 +32,10 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
 {
     if(BoardGameWnd::GetInstance()->IsLocked())
         return;
-    Piece* piece = BoardController::GetInstance()->GetSelecetedPiece();
-    Alliance currentMoveMaker = BoardController::GetInstance()->GetMoveMaker();
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+
+    Piece* piece = boardController->GetSelecetedPiece();
+    Alliance currentMoveMaker = boardController->GetMoveMaker();
     if (piece && BoardUntils::IsSameAlliance(piece->GetAlliance(), currentMoveMaker))
     {
         for (Move* move : piece->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))

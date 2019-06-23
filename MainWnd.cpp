@@ -22,10 +22,10 @@ MainWnd::MainWnd(QWidget *parent/* = nullptr*/) : QMainWindow (parent)
 
 void MainWnd::Init()
 {
-    BoardController* boardController = BoardController::GetInstance();
+    BoardController* boardController = new BoardController();
     BoardGameWnd* boardWnd = BoardGameWnd::GetInstance();
     boardWnd->Init();
-    boardWnd->SetController(boardController);
+    boardWnd->SetController( boardController);
 
     HistoryWnd* historyWnd = HistoryWnd::GetInstance();
     historyWnd->Init();

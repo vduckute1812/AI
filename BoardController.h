@@ -1,10 +1,9 @@
 #ifndef BOARDCONTROLLER_H
 #define BOARDCONTROLLER_H
 #include <QWidget>
-#include "Singleton.h"
 #include "Piece.h"
 
-class BoardController: public QWidget, public Singleton<BoardController>
+class BoardController: public QWidget
 {
     Q_OBJECT
 public:
