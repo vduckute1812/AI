@@ -41,7 +41,6 @@ signals:
 
 private:
     Piece*          m_piece;
-    int             m_coordinate;
     EditModeDef     m_modePlayer;       // Black player is AI default mode
 };
 

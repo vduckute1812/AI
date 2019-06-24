@@ -15,6 +15,7 @@ typedef vec2<int32_t> vec2i;
 BoardController::BoardController(QWidget* parent /*= nullptr*/) : QWidget(parent)
 {
     m_modePlayer = EditModeDef::HUMAN_HUMAN;
+    m_piece = nullptr;
 }
 
 void BoardController::mousePressEvent(QMouseEvent */*event*/)
