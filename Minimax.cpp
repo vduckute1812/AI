@@ -112,12 +112,46 @@ return currentLowest;}
 
 double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
 {
-    return 0;
+    if(depth == 0|| IsEndgame(board))
+     {
+         if(depth == 0)
+         {
+             m_boardEvaluated++;
+         }
+         return this->m_boardEvaluator->evaluate(board, depth);
+     }
+
+     double currentHighest  = highest;
+
+     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+     MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
+//     std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+
+     MoveCollection candidateMoves (moves.begin(), moves.begin()+4);
+
+     for (Move* move: candidateMoves)
+     {
+         BoardConfig transitionBoard = move->Execute();
+//         currentHighest = std::max(currentHighest, min(transitionBoard, calculateQuiescenceDepth(move, depth), currentHighest, lowest));
+
+         // release memory
+         BoardConfig undoBoard = move->UndoExecute(); // return old board
+
+         delete move;
+
+         if(currentHighest >= lowest)
+         {
+             return lowest;
+         }
+     }
+
+    return currentHighest;
 }
 
-void Minimax::SetDepth(int depth)
-{
 
+void Minimax::SetDepth(u32 depth)
+{
+    m_searchDepth = depth;
 }
 
 bool Minimax::SortMoveFollowValue(std::vector<Move *> moves)
@@ -132,7 +166,7 @@ bool Minimax::IsEndgame(BoardConfig board)
 
 int Minimax::CalculateQuiescenceDepth(const Move *moveTransition, int depth)
 {
-    return 0;
+    return depth - 1;
 }
 
 
@@ -153,32 +187,68 @@ void StandardBoardEvaluator::Init()
 
 int StandardBoardEvaluator::evaluate(const BoardConfig board, int depth)
 {
-    return 0;
+    return scorePlayer(board, Alliance::WHITE, depth) - scorePlayer(board, Alliance::BLACK, depth);
 }
 
 int StandardBoardEvaluator::scorePlayer(const BoardConfig board, const Alliance alliance, int depth)
 {
-    return 0;
+    return pieceValue(board, alliance) + mobilityRatio(board, alliance)
+        + check(board, alliance) + kingThreats(board, alliance, depth) + attacks(board, alliance);
 }
 
 int StandardBoardEvaluator::mobility(const BoardConfig board, const Alliance alliance)
 {
-    return 0;
+    return MOBILITY_MULTIPLIER * mobilityRatio(board, alliance);
 }
 
 int StandardBoardEvaluator::mobilityRatio(const BoardConfig board, const Alliance alliance)
 {
-    return 0;
+    Alliance opponentAlliance = alliance == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    return static_cast<int>(boardController->GetMoveCollections(board, alliance).size() * 100 / boardController->GetMoveCollections(board, opponentAlliance).size());
 }
 
 int StandardBoardEvaluator::check(const BoardConfig board, const Alliance alliance)
 {
-    return 0;
+    bool isChecked = false;
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    Alliance opponentAlliance = alliance == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+
+    u32 kingPosition = boardController->GetKingPosition(board, opponentAlliance);
+    MoveCollection moves = boardController->GetMoveCollections(board, alliance);
+
+    for (Move* move: moves)
+    {
+        if(move->GetDestCoordinate() == kingPosition)
+        {
+            isChecked = true;
+            break;
+        }
+    }
+
+    return isChecked ? CHECK_BONUS : 0;
 }
 
 int StandardBoardEvaluator::kingThreats(const BoardConfig board, const Alliance alliance, int depth)
 {
-    return 0;
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    CollectPieces pieces = boardController->GetPiecesOnBoard(board, alliance);
+
+    MoveCollection moves = boardController->GetMoveCollections(board, alliance);
+
+    bool hasEscapeMove = false;
+
+    for (Move* move: moves)
+    {
+         if(move->IsLegalMove())
+         {
+             hasEscapeMove = true;
+             break;
+         }
+    }
+
+    return hasEscapeMove;
 }
 
 int StandardBoardEvaluator::depthBonus(int depth)
@@ -202,6 +272,25 @@ int StandardBoardEvaluator::pieceValue(const BoardConfig board, const Alliance a
 
 int StandardBoardEvaluator::attacks(const BoardConfig board, const Alliance alliance)
 {
-    return 0;
+    int attackScore = 0;
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    MoveCollection moves = boardController->GetMoveCollections(board, alliance);
+
+    for(Move* move : moves)
+    {
+        if(move->IsAttackMove())
+        {
+            u32 movePieceCoord =  move->GetMoveCoordinate();
+            const Piece* movedPiece = boardController->GetPieceOnBoard(board, movePieceCoord);
+            u32 attackPieceCoord = move->GetDestCoordinate();
+            const Piece* attackPiece = boardController->GetPieceOnBoard(board, attackPieceCoord);
+
+            if(movedPiece->GetPieceValue() < attackPiece->GetPieceValue())
+            {
+                attackScore ++;
+            }
+        }
+    }
+    return attackScore * ATTACK_MULTIPLIER;
 }
 

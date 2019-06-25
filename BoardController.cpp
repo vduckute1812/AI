@@ -9,6 +9,8 @@
 #include "HistoryWnd.h"
 #include "DeadPieceWnd.h"
 #include "PromoteWnd.h"
+#include "MainWnd.h"
+#include "Messenger.h"
 
 typedef vec2<int32_t> vec2i;
 
@@ -140,6 +142,21 @@ Piece* BoardController::GetPieceOnBoard(const BoardConfig &board, u32 piecePosit
 {
     return board.pieceData.at(piecePosition);
 
+}
+
+CollectPieces BoardController::GetPiecesOnBoard(BoardConfig board, Alliance alliance) const
+{
+    CollectPieces pieces;
+    PiecePositions::iterator piecePtr = board.pieceData.begin();
+    for (;piecePtr!=board.pieceData.end();++piecePtr)
+    {
+        Piece* piece = *piecePtr;
+        if(piece!=nullptr && BoardUntils::IsSameAlliance(piece->GetAlliance(), alliance))
+        {
+            pieces.push_back(piece);
+        }
+    }
+    return pieces;
 }
 
 u32 BoardController::GetKingPosition(BoardConfig board, Alliance player) const

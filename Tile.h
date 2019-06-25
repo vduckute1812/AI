@@ -1,6 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 #include <QWidget>
+#include "Messenger.h"
 
 class Tile;
 class Piece;
@@ -13,10 +14,14 @@ static const QBrush ATTACK_COLOR(QColor(255, 100, 0 , 200));    // orangle
 static const QBrush CHOOSE_COLOR("yellow");
 
 
-class Tile : public QWidget
+class Tile : public QWidget, public Messenger
 {
     Q_OBJECT
 public:
+    enum TypeMessage
+    {
+        k_msgType		= 1 << 5
+    };
     explicit Tile(unsigned int coordinate, Piece* piece = nullptr, QWidget* parrent = nullptr);
 
     void            SetPiece(Piece*);

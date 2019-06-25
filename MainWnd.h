@@ -5,8 +5,8 @@
 #include "Messenger.h"
 #include "Singleton.h"
 
-
 class PromoteWnd;
+class Player;
 class MainWnd: public QMainWindow, public Singleton<MainWnd>, public Messenger
 {
     Q_OBJECT
@@ -34,17 +34,18 @@ public:
 public slots:
     // This method forces update of all dependent windows (warning: not thread-safe)
     void            Update();
-    void            Render();
 
 private:
     QTimer*         m_updateTimer;
-    QTimer*         m_renderTimer;
 
     QDockWidget*	m_boardDock;
     QDockWidget*    m_historyDock;
     QDockWidget*    m_deadPieceDock;
 
     PromoteWnd*     m_promoteWnd;
+
+    Player*         m_blackPlayer;
+    Player*         m_whitePlayer;
 };
 
 #endif // MAINWND_H

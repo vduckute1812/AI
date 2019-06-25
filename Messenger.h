@@ -24,20 +24,28 @@ namespace msg
     static const u32 ATTACK                 = (u32(1) << 1);
     static const u32 DEFEND					= (u32(1) << 2);
     static const u32 ESCAPE                 = (u32(1) << 3);
-    static const u32 PROMOTE                = (u32(1) << 4);
 
+    static const u32 BOARD_CHANGED          = (u32(1) << 4);
+
+    // PROMOTE ACTION
+    static const u32 PROMOTE                = (u32(1) << 5);
+    static const u32 UN_PROMOTE             = (u32(1) << 6);
+
+    // KILL AND SUMMON PIECE
+    static const u32 KILL                   = (u32(1) << 7);
+    static const u32 REVIVAL                = (u32(1) << 8);
 
     //HISTORY BOARD
-    static const u32 LOAD_GAME              = (u32(1) << 5);
-    static const u32 SAVE_GAME              = (u32(1) << 6);
+    static const u32 LOAD_GAME              = (u32(1) << 9);
+    static const u32 SAVE_GAME              = (u32(1) << 10);
 
     //OPEN GAME || CLOSE GAME
-    static const u32 NEW_GAME               = (u32(1) << 6);
-    static const u32 CLOSE_GAME             = (u32(1) << 7);
+    static const u32 NEW_GAME               = (u32(1) << 11);
+    static const u32 CLOSE_GAME             = (u32(1) << 12);
 
-    //PAINT EVENTS
-    static const u32 SHOW_THREAT_KING       = (u32(1) << 8);
-    static const u32 SHOW_POSIBLE_MOVES     = (u32(1) << 9);
+//    //PAINT EVENTS
+//    static const u32 SHOW_THREAT_KING       = (u32(1) << 13);
+//    static const u32 SHOW_POSIBLE_MOVES     = (u32(1) << 14);
 }
 
 class Message
@@ -47,7 +55,6 @@ class Message
 public:
     Message(u32 type, u32 msg);
 
-    //the message type will be taken from the messenger sending it
     Message(u32 msg);
 
     Message(const Message& other);
@@ -64,46 +71,33 @@ public:
     template<class T>
     bool			IsFrom() const;
 
-    u32             GetId() const;
-    Message&		SetId(u32 id);
-
-    Message&		Set(const QString& name);
-    Message&		Set(const QString& name, unsigned int val);
-    bool			Has(const QString& name) const;
-    u32             Get(const QString& name) const;
-
     Messenger*		GetSender() const;
     void			SetSender(Messenger* messenger);
-    Messenger*		GetForwarder() const;
-    void			SetForwarder(Messenger* messenger);
-
     void			SetMessageType(u32 msgType);
     bool			HasMessageType() const;
 
 private:
     u32				m_message;
-    u32				m_id; //specialized param, to avoid Set("id", id)
     u32				m_type;
 
-
-
-    typedef	std::map<QString, u32, StringLT > ArgumentsMap;
-
-    SharedPtr<ArgumentsMap>	m_arguments; //copy on write
-    Messenger*		m_sender;
-    Messenger*		m_forwarder;
-    bool			m_ownsArguments;
+    Messenger*              m_sender;
 };
+
+
+template<class T>
+bool Message::IsFrom() const
+{
+    return GetType() == T::k_msgType;
+}
+
 
 struct MessengerData
 {
-    //sbool operator==(const MessengerData& other) const { return messenger == other.messenger; }
-    //Messenger* messenger;
     u32		typeMask;
     u32		messageMask;
 };
 
-typedef std::map<Messenger*, MessengerData>	 ClaraMessengerMap;
+typedef std::map<Messenger*, MessengerData> MessengerMap;
 
 class Messenger
 {
@@ -119,6 +113,7 @@ public:
 
     //sends the message to all listeners of this messenger
     virtual void	Send(Message& msg);
+    virtual void    Forward(Messenger* to, const Message& msg);
 
     static u32		GetSentCount();
     static u32		GetReceivedCount();
@@ -126,10 +121,7 @@ public:
     static u32		GetFilteredCount();
 
 protected:
-    void			Forward(const Message& msg);
-    void			Forward(Messenger* to, const Message& msg);
-
-    void			ListenTo(const Messenger* other, u32 typeMask = ~0U, u32 messageMask = ~0U);
+    void			ListenTo(const Messenger* other, u32 typeMask = ~0U, u32 messageMask = ~0U);        //~0u  0xFFFF
     void			DisconnectFrom(const Messenger* other);
     void			DisconnectFromAll();
 
@@ -142,11 +134,11 @@ private:
     void			AddListener(Messenger* listener, const MessengerData& listenerData) const;
     void			RemoveListener(Messenger* listener) const;
 
-    static ClaraMessengerMap*		s_registeredMessengers;
-    ClaraMessengerMap::iterator		m_registeredMessengersPos;
+    static MessengerMap*		s_registeredMessengers;
+    MessengerMap::iterator		m_registeredMessengersPos;
 
-    AutoPtr<ClaraMessengerMap>          m_listeningTo;
-    mutable AutoPtr<ClaraMessengerMap>	m_listeners;
+    AutoPtr<MessengerMap>           m_listeningTo;
+    mutable AutoPtr<MessengerMap>	m_listeners;
 
     int				m_blockMessages;
     static int		s_blockMessages;
@@ -155,9 +147,6 @@ private:
     static u32		s_receivedCount;
     static u32		s_blockedCount;
     static u32		s_filteredCount;
-
-    // this variable controls whether we have to check listener when processing listeners list
-    mutable bool m_searchForRemovedListeners;
 };
 
 #endif // MESSENGER_H

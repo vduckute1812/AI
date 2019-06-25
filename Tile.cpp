@@ -38,6 +38,7 @@ void Tile::SetPiece(Piece *piece)
         m_piece->setParent(this);
         m_piece->SetVisible(true, this);
     }
+    ListenTo(BoardGameWnd::GetInstance());
 }
 
 unsigned int Tile::GetCoordinate()
@@ -116,6 +117,8 @@ void Tile::mousePressEvent(QMouseEvent *event)
             delete move;
         }
     }
+    Message msg(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
+    Send(msg);
 }
 
 void Tile::paintEvent(QPaintEvent *)

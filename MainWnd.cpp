@@ -9,6 +9,7 @@
 #include "DeadPieceWnd.h"
 #include "PromoteWnd.h"
 #include "BoardController.h"
+#include "MainWnd.h"
 
 #include <QKeyEvent>
 
@@ -21,12 +22,6 @@ MainWnd::MainWnd(QWidget *parent/* = nullptr*/) : QMainWindow (parent)
     // update thread
     connect(m_updateTimer, SIGNAL(timeout()), this, SLOT(Update()), Qt::QueuedConnection);
     m_updateTimer->start(50);
-
-    m_renderTimer = new QTimer(this);
-    // render thread
-    connect(m_renderTimer, SIGNAL(timeout()), this, SLOT(Render()), Qt::QueuedConnection);
-    m_renderTimer->start(50);
-
 }
 
 void MainWnd::Init()
@@ -155,9 +150,4 @@ void MainWnd::Update()
         return;
     HistoryWnd::GetInstance()->Update();
     BoardGameWnd::GetInstance()->Update();
-}
-
-void MainWnd::Render()
-{
-    repaint();
 }

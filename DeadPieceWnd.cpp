@@ -7,6 +7,8 @@
 
 DeadPieceWnd::DeadPieceWnd(QWidget* parent /*= nullptr*/): QWidget(parent)
 {
+    u32 messageMask = msg::KILL | msg::REVIVAL;
+    ListenTo(MainWnd::GetInstance(), k_msgType, messageMask);
 }
 
 DeadPieceWnd::~DeadPieceWnd()

@@ -16,10 +16,10 @@ class HistoryWnd: public QListWidget, public Singleton<HistoryWnd>, public Messe
         void                    Update();
 
     protected:
-        QIcon				m_entryIcon;
+        QIcon           m_entryIcon;
 
-        int        m_cmdCount;
-        int        m_cmdIdx;
+        int             m_cmdCount;
+        int             m_cmdIdx;
 };
 
 #endif // HISTORYWND_H

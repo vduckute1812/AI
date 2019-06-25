@@ -3,6 +3,7 @@
 #include <QWidget>
 #include "Piece.h"
 
+typedef std::vector<Piece*> CollectPieces;
 class BoardController: public QWidget
 {
     Q_OBJECT
@@ -29,12 +30,13 @@ public:
     void        SetModePlayer(EditModeDef modePlayer);
     EditModeDef GetModePlayer() const;
 
-    bool        IsTileOccupied(const BoardConfig& board, u32 tilePosition);
-    void        SetPieceOnBoard(BoardConfig& board, u32 piecePosition, Piece* piece);
-    Piece*      GetPieceOnBoard(const BoardConfig& board, u32 piecePosition) const;
+    bool                IsTileOccupied(const BoardConfig& board, u32 tilePosition);
+    void                SetPieceOnBoard(BoardConfig& board, u32 piecePosition, Piece* piece);
+    Piece*              GetPieceOnBoard(const BoardConfig& board, u32 piecePosition) const;
+    CollectPieces       GetPiecesOnBoard(BoardConfig board, Alliance alliance) const;
 
-    u32                     GetKingPosition( BoardConfig board, Alliance player) const;
-    MoveCollection          GetMoveCollections(BoardConfig board, Alliance player);
+    u32                 GetKingPosition( BoardConfig board, Alliance player) const;
+    MoveCollection      GetMoveCollections(BoardConfig board, Alliance player);
 
 signals:
     void        PromotePiece(PieceType, Alliance);

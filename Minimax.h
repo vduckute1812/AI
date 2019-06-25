@@ -23,7 +23,7 @@ public:
 
     bool    IsEndgame(BoardConfig board);
     int     CalculateQuiescenceDepth(const Move* moveTransition, int depth);
-    void    SetDepth(int depth);
+    void    SetDepth(u32 depth);
     bool    SortMoveFollowValue(std::vector<Move*> moves);
 
 private:

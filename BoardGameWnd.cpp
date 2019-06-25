@@ -6,6 +6,7 @@
 #include "Rook.h"
 #include "BoardUntils.h"
 #include "HistoryWnd.h"
+#include "MainWnd.h"
 
 #include <QGridLayout>
 
@@ -16,8 +17,8 @@ BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = null
 {
     m_boardController = controller;
 
-//    // repaint board game
-//    startTimer(20);
+//    u32 messageMask = msg::MOVE | msg::ATTACK | msg::DEFEND | msg::ESCAPE | msg::BOARD_CHANGED;
+//    ListenTo(MainWnd::GetInstance(), k_msgType, messageMask);
 }
 
 BoardGameWnd::~BoardGameWnd()
@@ -92,6 +93,7 @@ void BoardGameWnd::Init()
     for (unsigned int i = 0; i < NUM_TILES; ++i)
     {
         Tile* tile = new Tile(i, NULL_PIECE);
+        ListenTo(tile, k_msgType, msg::BOARD_CHANGED);
         tile->SetCanTouch(true);
         m_tiles.push_back(tile);
         m_tempBoards.pieceData.push_back( NULL_PIECE);
@@ -192,16 +194,36 @@ void BoardGameWnd::AddPieceOnBoard(Piece *piece)
 
 void BoardGameWnd::OnMessageReceived(const Message &msg)
 {
-//    bool isFlags = msg.Is(msg::SHOW_POSIBLE_MOVES) || msg.Is(msg::SHOW_THREAT_KING);
-//    if(isFlags)
+//    if(msg.IsFrom<MainWnd>())   // receive message from MainWnd
 //    {
-//        repaint();
+        if(msg.Is(msg::MOVE))
+        {
+            // will do more in here
+        }
+        else if(msg.Is(msg::ATTACK))
+        {
+            // will do more in here
+        }
+        else if(msg.Is(msg::DEFEND))
+        {
+            // will do more in here
+        }
+        else if(msg.Is(msg::DEFEND))
+        {
+            // will do more in here
+        }
+
+        if(msg.Is(msg::BOARD_CHANGED))
+        {
+            repaint();
+        }
 //    }
+
 }
 
 void BoardGameWnd::Update()
 {
-//    repaint();      // stupid code here
+
 }
 
 
