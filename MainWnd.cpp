@@ -17,6 +17,15 @@ typedef std::map<QString , QIcon*, StringLT > IconNameMap;
 
 MainWnd::MainWnd(QWidget *parent/* = nullptr*/) : QMainWindow (parent)
 {
+    m_updateTimer = new QTimer(this);
+    // update thread
+    connect(m_updateTimer, SIGNAL(timeout()), this, SLOT(Update()), Qt::QueuedConnection);
+    m_updateTimer->start(50);
+
+    m_renderTimer = new QTimer(this);
+    // render thread
+    connect(m_renderTimer, SIGNAL(timeout()), this, SLOT(Render()), Qt::QueuedConnection);
+    m_renderTimer->start(50);
 
 }
 
@@ -32,6 +41,7 @@ void MainWnd::Init()
     m_historyDock = CreateDock("History", "history", historyWnd);
     m_historyDock->show();
     AppendDock(m_historyDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::RightDockWidgetArea);
+
 
     DeadPieceWnd* deadPieceWnd = DeadPieceWnd::GetInstance();
     deadPieceWnd->Init();
@@ -137,3 +147,17 @@ void MainWnd::Show()
     QApplication::processEvents(); // Make sure it is all processed before state restoration.
 }
 
+
+
+void MainWnd::Update()
+{
+    if(BoardGameWnd::GetInstance()->IsLocked())
+        return;
+    HistoryWnd::GetInstance()->Update();
+    BoardGameWnd::GetInstance()->Update();
+}
+
+void MainWnd::Render()
+{
+    repaint();
+}

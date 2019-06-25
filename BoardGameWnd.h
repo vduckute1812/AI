@@ -47,9 +47,14 @@ typedef std::vector<Piece*> CollectPieces;
 
 class BoardGameWnd : public QWidget, public Singleton<BoardGameWnd>, public Messenger
 {
-    Q_OBJECT
 
 public:
+
+    enum TypeMessage
+    {
+        k_msgType		= 1 << 0
+    };
+
     BoardGameWnd(BoardController* controller = nullptr, QWidget* parent = nullptr);
     ~BoardGameWnd() override;
 
@@ -77,17 +82,16 @@ public:
     void                    AddPieceOnBoard(Piece* piece);
 
     void                    ResetTiles();
-    void                    timerEvent(QTimerEvent *e) override;
+//    void                    timerEvent(QTimerEvent *e) override;
 
-public slots:
-    // This method forces update of all dependent windows (warning: not thread-safe)
+    virtual void            OnMessageReceived(const Message& msg) override;
+
     void                    Update();
 
 private:
     volatile bool			m_isLocked;
     BoardController*        m_boardController;
     BoardTiles              m_tiles;
-    QTimer*                 m_timer;
     CollectPieces           m_pieces;
 
 //    u32                     m_tmpStateIdx;

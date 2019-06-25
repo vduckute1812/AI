@@ -15,14 +15,9 @@ BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = null
     , Messenger()
 {
     m_boardController = controller;
-    m_timer = new QTimer(this);
 
-    // update thread
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(Update()), Qt::QueuedConnection);
-    m_timer->start(50);
-
-    // main thread
-    startTimer(20);
+//    // repaint board game
+//    startTimer(20);
 }
 
 BoardGameWnd::~BoardGameWnd()
@@ -102,14 +97,6 @@ void BoardGameWnd::Init()
         m_tempBoards.pieceData.push_back( NULL_PIECE);
     }
 
-//    for(u32 i = 0; i < MAX_TEMP_BOARD; ++i)
-//    {
-//        for (int tileIdx = 0; tileIdx < NUM_TILES; ++tileIdx)
-//        {
-//            m_tempBoards.pieceData.push_back( NULL_PIECE);
-//        }
-//    }
-
     CreateStandardBoard();
 
     setMinimumSize(TILE_ROW_SIZE * NUM_TILES_PER_ROW,
@@ -159,10 +146,6 @@ void BoardGameWnd::SetBoard(BoardConfig board)
 
     ResetColorTiles();
 
-//    if(!m_tempBoards.pieceData.empty())
-//    {
-//        m_tempBoards.pieceData.clear();
-//    }
     m_tempBoards = board;
     ResetTiles();
 
@@ -207,11 +190,20 @@ void BoardGameWnd::AddPieceOnBoard(Piece *piece)
     m_pieces.push_back(piece);
 }
 
-void BoardGameWnd::timerEvent(QTimerEvent *e)
+void BoardGameWnd::OnMessageReceived(const Message &msg)
 {
-    Q_UNUSED(e);
-    repaint();
+//    bool isFlags = msg.Is(msg::SHOW_POSIBLE_MOVES) || msg.Is(msg::SHOW_THREAT_KING);
+//    if(isFlags)
+//    {
+//        repaint();
+//    }
 }
+
+void BoardGameWnd::Update()
+{
+//    repaint();      // stupid code here
+}
+
 
 void BoardGameWnd::ResetTiles()
 {
@@ -221,12 +213,5 @@ void BoardGameWnd::ResetTiles()
         Tile* tile = *tilePtr;
         tile->SetPiece(nullptr);
     }
-}
-
-void BoardGameWnd::Update()
-{
-    if(IsLocked())
-        return;
-    HistoryWnd::GetInstance()->Update();
 }
 

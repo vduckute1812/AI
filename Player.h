@@ -10,6 +10,7 @@ public:
     virtual MoveCollection GetMoveCollection(BoardConfig state) = 0;
 protected:
     Alliance m_player;
+
 };
 
 class BlackPlayer: public Player

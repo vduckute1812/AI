@@ -52,13 +52,13 @@ Message &Message::operator=(const Message &other)
 
 bool Message::Is(u32 msg) const
 {
-    u32 mask = Forward::MASK;
+    u32 mask = msg::Forward::MASK;
     return ((m_message & msg) & mask) == (msg & mask);
 }
 
 bool Message::IsFlag(u32 msg) const
 {
-    u32 mask = ~Forward::MASK;
+    u32 mask = ~msg::Forward::MASK;
     return ((m_message & msg) & mask) == (msg & mask);
 }
 
@@ -141,6 +141,15 @@ bool Message::Has(const QString &name) const
 }
 
 
+////////////////////////////////////////////////////////////////
+
+ClaraMessengerMap* Messenger::s_registeredMessengers = nullptr;
+u32 Messenger::s_blockedCount = 0;
+u32 Messenger::s_sentCount = 0;
+u32 Messenger::s_receivedCount = 0;
+u32 Messenger::s_filteredCount = 0;
+int Messenger::s_blockMessages = 0;
+
 Messenger *Message::GetSender() const
 {
     return m_sender;
@@ -169,7 +178,6 @@ bool Message::IsFrom() const
 
 Messenger::Messenger()
 {
-    m_isReceivingBroadcasts = false;
     m_searchForRemovedListeners = false;
 }
 
@@ -180,40 +188,149 @@ Messenger::~Messenger()
 
 void Messenger::BlockAllMessages(bool yes)
 {
-
+    s_blockMessages += yes ? 1 : -1;
 }
 
 void Messenger::BlockMessages(bool yes)
 {
-
+    m_blockMessages += yes ? 1 : -1;
 }
 
 void Messenger::Send(Message &msg)
 {
 
+    if (AreMessagesBlocked())
+    {
+        s_blockedCount++;
+        return;
+    }
+
+    if (!m_listeners.get() && !s_registeredMessengers)
+        return;
+
+    Message m(msg);
+    m.SetSender(this);
+
+    s_sentCount++;
+
+    m_searchForRemovedListeners = false;
+
+    //send to listeners
+    if (m_listeners.get())
+    {
+        // a message could modify the listeners list breaking the iterators, use a cloned list to iterate
+        ClaraMessengerMap tmp = *m_listeners;
+        ClaraMessengerMap::iterator it = tmp.begin();
+        while (it != tmp.end())
+        {
+            ClaraMessengerMap::iterator next = it;
+            next++;
+
+            Messenger* msgr = it->first;
+            const MessengerData& listenerData = it->second;
+            // check if listener is still valid
+            if (!m_searchForRemovedListeners || m_listeners->find(msgr) != m_listeners->end())
+            {
+                if (msg.GetSender() != msgr)
+                {
+                    if ((msg.GetType() & listenerData.typeMask) && (msg.GetMessage() & listenerData.messageMask))
+                    {
+                        s_receivedCount++;
+                        msgr->OnMessageReceived(m);
+                    }
+                    else
+                    {
+                        s_filteredCount++;
+                    }
+                }
+            }
+            else
+            {
+                // listener has been erased
+                //...
+            }
+            it = next;
+        }
+    }
 }
 
-void Messenger::SetReceivesBroadcasts(bool yes, u32 typeMask, u32 meIssageMask)
+inline u32 Messenger::GetSentCount()
+{
+    return s_sentCount;
+}
+
+void Messenger::ListenTo(const Messenger *other, u32 typeMask, u32 messageMask)
+{
+    if (!other)
+        return;
+
+    if (!m_listeningTo.get())
+    {
+        m_listeningTo.reset(new ClaraMessengerMap);
+    }
+
+    MessengerData data;
+    //data.messenger = (Messenger*)other;
+    data.typeMask = typeMask;
+    data.messageMask = (messageMask & msg::Forward::MASK); //exclude the forward mask
+
+    //ClaraMessengerList::const_iterator it = std::find(m_listeningTo->begin(), m_listeningTo->end(), data);
+    ClaraMessengerMap::const_iterator it = m_listeningTo->find((Messenger*)other);
+    //already listening ?
+    if (it != m_listeningTo->end())
+        return;
+
+    //m_listeningTo->push_back(data);
+    m_listeningTo->insert(std::make_pair((Messenger*)other, data));
+
+    //data.messenger = this;
+    other->AddListener(this, data);
+
+}
+
+void Messenger::DisconnectFrom(const Messenger *other)
 {
 
 }
 
-bool Messenger::IsReceivingBroadcasts() const
+void Messenger::DisconnectFromAll()
 {
 
 }
 
-u32 Messenger::GetSentCount()
+inline void Messenger::OnMessageReceived(const Message&)
 {
-
 }
 
-void Messenger::OnMessageReceived(const Message &msg)
-{
 
+//////////////////////////////////////////////////////////////////////////
+
+inline bool Messenger::AreMessagesBlocked() const
+{
+    return (s_blockMessages + m_blockMessages) != 0;
 }
 
-void Messenger::OnBroadcastReceived(const Message &msg)
+void Messenger::AddListener(Messenger *listener, const MessengerData &listenerData) const
 {
+    if (!m_listeners.get())
+    {
+        m_listeners.reset(new ClaraMessengerMap);
+    }
 
+
+    m_listeners->insert(std::make_pair(listener, listenerData));
 }
+
+void Messenger::RemoveListener(Messenger *listener) const
+{
+    if (m_listeners.get())
+    {
+        ClaraMessengerMap::const_iterator it = m_listeners->find(listener);
+        if (it != m_listeners->end())
+        {
+            m_listeners->erase(it);
+            m_searchForRemovedListeners = true;
+        }
+    }
+}
+

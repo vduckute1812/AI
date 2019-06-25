@@ -8,32 +8,37 @@ typedef unsigned int u32;
 
 class Messenger;
 
-struct Forward
+
+namespace msg
 {
-    static const u32 UP		= u32(1) << 30;
-    static const u32 DOWN	= u32(1) << 31;
-    static const u32 ALL	= UP | DOWN;
-    static const u32 MASK	= UP - 1;  //mask used to filter out the forward flags and remain with the message only
-};
+    struct Forward
+    {
+        static const u32 WHITE		= u32(1) << 30;         // WHITE PLAYER
+        static const u32 BLACK      = u32(1) << 31;         // BLACK PLAYER
+        static const u32 BOTH       = WHITE | BLACK;     // BOTH
+        static const u32 MASK       = WHITE - 1;         // remove alliance flags and keep message flags only
+    };
 
-//CLARANODE
-static const u32 DESTROYED					= (1 << 0);// | Forward::UP;
-static const u32 NAME_CHANGED				= (1 << 1) | Forward::DOWN;
-static const u32 DELETED					= (1 << 4) | Forward::ALL;
-static const u32 UNDELETED					= (1 << 5) | Forward::ALL;
-static const u32 ERRORS_CHANGED				= (1 << 8) | Forward::UP;
+    //PIECE ACTIONS
+    static const u32 MOVE					= (u32(1) << 0);
+    static const u32 ATTACK                 = (u32(1) << 1);
+    static const u32 DEFEND					= (u32(1) << 2);
+    static const u32 ESCAPE                 = (u32(1) << 3);
+    static const u32 PROMOTE                = (u32(1) << 4);
 
-//PROJECT
-static const u32 PROJECT_WILL_BE_OPENED		= (u32(1) << 0);
-static const u32 PROJECT_OPENED				= (u32(1) << 1);
-static const u32 PROJECT_CLOSED				= (u32(1) << 2);
-static const u32 PROJECT_SAVED				= (u32(1) << 3);
 
-static const u32 DATABASE_OPENED			= (u32(1) << 4);
-static const u32 STRUCTURE_CHANGED			= (u32(1) << 5);
+    //HISTORY BOARD
+    static const u32 LOAD_GAME              = (u32(1) << 5);
+    static const u32 SAVE_GAME              = (u32(1) << 6);
 
-//SELECTOR
-static const u32 SELECTION_CHANGED			= (u32(1) << 6);
+    //OPEN GAME || CLOSE GAME
+    static const u32 NEW_GAME               = (u32(1) << 6);
+    static const u32 CLOSE_GAME             = (u32(1) << 7);
+
+    //PAINT EVENTS
+    static const u32 SHOW_THREAT_KING       = (u32(1) << 8);
+    static const u32 SHOW_POSIBLE_MOVES     = (u32(1) << 9);
+}
 
 class Message
 {
@@ -81,11 +86,9 @@ private:
     u32				m_type;
 
 
-#if defined _MSC_VER >= 1700
-    typedef	std::map<QString, u32, StringLT> ArgumentsMap;
-#else
+
     typedef	std::map<QString, u32, StringLT > ArgumentsMap;
-#endif
+
     SharedPtr<ArgumentsMap>	m_arguments; //copy on write
     Messenger*		m_sender;
     Messenger*		m_forwarder;
@@ -117,10 +120,6 @@ public:
     //sends the message to all listeners of this messenger
     virtual void	Send(Message& msg);
 
-
-    void			SetReceivesBroadcasts(bool yes, u32 typeMask = ~0U, u32 meIssageMask = ~0U);
-    bool			IsReceivingBroadcasts() const;
-
     static u32		GetSentCount();
     static u32		GetReceivedCount();
     static u32		GetBlockedCount();
@@ -135,22 +134,19 @@ protected:
     void			DisconnectFromAll();
 
     virtual void	OnMessageReceived(const Message& msg);
-    virtual void	OnBroadcastReceived(const Message& msg);
 
     bool			AreMessagesBlocked() const;
 
 private:
-    Messenger(const Messenger& other) {}
+    Messenger(const Messenger&) {}
     void			AddListener(Messenger* listener, const MessengerData& listenerData) const;
     void			RemoveListener(Messenger* listener) const;
 
     static ClaraMessengerMap*		s_registeredMessengers;
     ClaraMessengerMap::iterator		m_registeredMessengersPos;
 
-    AutoPtr<ClaraMessengerMap>	m_listeningTo;
+    AutoPtr<ClaraMessengerMap>          m_listeningTo;
     mutable AutoPtr<ClaraMessengerMap>	m_listeners;
-
-    bool			m_isReceivingBroadcasts;
 
     int				m_blockMessages;
     static int		s_blockMessages;

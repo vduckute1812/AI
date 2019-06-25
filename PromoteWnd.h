@@ -3,12 +3,17 @@
 #include <QMainWindow>
 #include "Singleton.h"
 #include "Piece.h"
+#include "Messenger.h"
 
 class Tile;
-class PromoteWnd: public QMainWindow, public Singleton<PromoteWnd>
+class PromoteWnd: public QMainWindow, public Singleton<PromoteWnd>, public Messenger
 {
-    Q_OBJECT
+
 public:
+    enum TypeMessage
+    {
+        k_msgType		= 1 << 3
+    };
     PromoteWnd (QWidget* parent = nullptr);
     virtual void    Init() override;
     void            SetPromoteAlliance(Alliance alliance);

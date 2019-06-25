@@ -6,13 +6,20 @@
 #include <QVBoxLayout>
 #include "Singleton.h"
 #include "Piece.h"
+#include "Messenger.h"
+
 
 class Tile;
 class Piece;
-class DeadPieceWnd: public QWidget, public Singleton<DeadPieceWnd>
+class DeadPieceWnd: public QWidget, public Singleton<DeadPieceWnd>, public Messenger
 {
-    Q_OBJECT
+
 public:
+    enum TypeMessage
+    {
+        k_msgType		= 1 << 1
+    };
+
     virtual void            Init() override;
     DeadPieceWnd(QWidget* parent = nullptr);
     virtual ~DeadPieceWnd() override;
@@ -21,6 +28,8 @@ public:
     void                RemoveDeadPiece(QChar);
 
     void                Update();
+
+    virtual void        OnMessageReceived(const Message& msg) override;
 
 private:
     QVBoxLayout*        m_parentLayout;

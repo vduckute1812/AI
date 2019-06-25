@@ -65,6 +65,11 @@ void DeadPieceWnd::Update()
 
 }
 
+void DeadPieceWnd::OnMessageReceived(const Message &msg)
+{
+//    if(msg.)
+}
+
 void DeadPieceWnd::Init()
 {
     m_blackIdx = 0;
