@@ -4,6 +4,7 @@
 #include "BoardGameWnd.h"
 #include <QFileInfo>
 #include "Tile.h"
+#include "BonusSystem.h"
 
 Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent, unsigned int position): QFrame(parent)
 {
@@ -27,6 +28,34 @@ Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue,
 Piece::~Piece()
 {
     delete m_pieceImg;
+    m_pieceImg = nullptr;
+}
+
+int Piece::locationBonus() const
+{
+    int score = 0;
+    switch (m_pieceType)
+    {
+    case PAWN:
+        score = BonusSystem::pawnBonus(m_piecePosition, m_pieceAlliance);
+        break;
+    case ROOK:
+        score = BonusSystem::rookBonus(m_piecePosition, m_pieceAlliance);
+        break;
+    case KNIGHT:
+        score = BonusSystem::knightBonus(m_piecePosition, m_pieceAlliance);
+        break;
+    case BISHOP:
+        score = BonusSystem::knightBonus(m_piecePosition, m_pieceAlliance);
+        break;
+    case QUEEN:
+        score = BonusSystem::queenBonus(m_piecePosition, m_pieceAlliance);
+        break;
+    case KING:
+        score = BonusSystem::kingBonus(m_piecePosition, m_pieceAlliance);
+        break;
+    }
+    return score;
 }
 
 PieceType Piece::GetPieceType() const
@@ -65,7 +94,11 @@ void Piece::SetVisible(bool isVisible, Tile* tile)
     {
         m_pieceImg->setParent(tile);
     }
-    isVisible ? m_pieceImg->show(): m_pieceImg->hide();
+
+    if(m_pieceImg)     // this piece hasn't been detroyed
+    {
+        isVisible ? m_pieceImg->show(): m_pieceImg->hide();
+    }
 }
 
 bool Piece::IsFirstMove() const

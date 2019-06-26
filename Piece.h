@@ -32,6 +32,7 @@ enum PieceValue
     KING_VALUE =    1000
 };
 
+
 class Move;
 class Board;
 class Move;
@@ -40,23 +41,6 @@ class Tile;
 
 typedef std::vector<Move*> MoveCollection;
 typedef unsigned int u32;
-
-//typedef std::pair<unsigned int, Piece*> PieceInf;
-
-//typedef std::vector<PieceInf> BoardConfig;
-
-//struct BoardState
-//{
-//    static bool         IsTileOccupied(BoardState boarValue, unsigned int position);
-//    static Piece*       GetPieceOnBoard(BoardState boarValue, unsigned int position);
-
-//    void                SetPiece(unsigned int position, Piece* piece);
-//    MoveCollection      GetMoveCollection(Alliance player);
-//    unsigned int        GetKingPosition(Alliance player);
-
-//    Alliance            m_playerTurn;
-//    BoardConfig         m_boardValue;
-//};
 
 struct BoardConfig;
 class Piece: public QFrame
@@ -67,6 +51,8 @@ public:
 
     virtual bool		isFirstColumnExclusion(unsigned int currentPosition, int candidateOffset) const = 0;
     virtual bool		isEightColumnExclusion(unsigned int currentPosition, int candidateOffset) const = 0;
+
+    virtual int         locationBonus() const;
 
     virtual             MoveCollection calculateLegalMove(const BoardConfig board) const = 0;
 

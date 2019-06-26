@@ -9,6 +9,7 @@
 
 class Board;
 class BoardController;
+class Player;
 
 #define WAIT_CURSOR \
 QApplication::setOverrideCursor(Qt::WaitCursor)
@@ -97,6 +98,7 @@ private:
 //    u32                     m_tmpStateIdx;
     BoardConfig             m_tempBoards/*[MAX_TEMP_BOARD]*/;
 
+    Player*                 m_currentPlayer;
 };
 
 #endif // BOARDGAMEWND_H

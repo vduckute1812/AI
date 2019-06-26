@@ -43,9 +43,12 @@ namespace msg
     static const u32 NEW_GAME               = (u32(1) << 11);
     static const u32 CLOSE_GAME             = (u32(1) << 12);
 
+    // CHANGE TURN
+    static const u32 CHANGE_TURN            = (u32(1) << 13);
+
 //    //PAINT EVENTS
-//    static const u32 SHOW_THREAT_KING       = (u32(1) << 13);
-//    static const u32 SHOW_POSIBLE_MOVES     = (u32(1) << 14);
+//    static const u32 SHOW_THREAT_KING       = (u32(1) << 14);
+//    static const u32 SHOW_POSIBLE_MOVES     = (u32(1) << 15);
 }
 
 class Message

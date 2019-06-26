@@ -5,6 +5,10 @@
 #include "BoardGameWnd.h"
 #include "BoardController.h"
 
+static const int UP_DIRECTION = -1;
+
+static const int DOWN_DIRECTION = 1;
+
 const int PAWN_CANDIDATE_MOVE_COORDINATE[] = { NUM_TILES_PER_COL-1,
                                                NUM_TILES_PER_COL,
                                                NUM_TILES_PER_COL+1,
@@ -79,10 +83,10 @@ int Pawn::getDirection() const
 {
     if (this->GetAlliance() == Alliance::BLACK)
 	{
-        return 1;
+        return DOWN_DIRECTION;
 	}
 	// else || Alliance::WHITE ||
-    return -1;
+    return UP_DIRECTION;
 }
 
 bool Pawn::isPromote() const

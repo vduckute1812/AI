@@ -294,3 +294,24 @@ int StandardBoardEvaluator::attacks(const BoardConfig board, const Alliance alli
     return attackScore * ATTACK_MULTIPLIER;
 }
 
+int StandardBoardEvaluator::kingSafety(const BoardConfig board, const Alliance alliance)
+{
+    return 0;
+}
+
+int StandardBoardEvaluator::pieceEvaluations(const BoardConfig board, const Alliance alliance)
+{
+    int pieceValuationScore = 0;
+    int numBishops = 0;
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+
+    for (const Piece* piece : boardController->GetPiecesOnBoard(board, alliance))
+    {
+        pieceValuationScore += piece->GetPieceValue() + piece->locationBonus();
+        if(piece->GetPieceType() == PieceType::BISHOP) {
+            numBishops++;
+        }
+    }
+    return pieceValuationScore + (numBishops == 2 ? TWO_BISHOPS_BONUS : 0);
+}
+

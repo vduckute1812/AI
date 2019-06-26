@@ -14,6 +14,7 @@ SOURCES += main.cpp \
     DeadPieceWnd.cpp \
     HistoryWnd.cpp \
     King.cpp \
+    KingSafetyAnalyzer.cpp \
     Knight.cpp \
     MainWnd.cpp \
     Messenger.cpp \
@@ -36,11 +37,13 @@ HEADERS += \
     BoardController.h \
     BoardGameWnd.h \
     BoardUntils.h \
+    BonusSystem.h \
     Client.h \
     DeadPieceWnd.h \
     Defines.h \
     HistoryWnd.h \
     King.h \
+    KingSafetyAnalyzer.h \
     Knight.h \
     MainWnd.h \
     Messenger.h \

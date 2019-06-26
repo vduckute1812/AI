@@ -18,6 +18,10 @@ DeadPieceWnd::~DeadPieceWnd()
     delete m_gridBlackDeadPiece;
     m_deadBlackPiece.clear();
     m_deadWhitePiece.clear();
+
+    m_parentLayout = nullptr;
+    m_gridWhiteDeadPiece = nullptr;
+    m_gridBlackDeadPiece = nullptr;
 }
 
 

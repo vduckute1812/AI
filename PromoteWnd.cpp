@@ -78,7 +78,9 @@ void PromoteWnd::AddDefaultPromotePiece()
 void PromoteWnd::DeletePromotePiece()
 {
     Piece* piece = m_promotePieces.back();
+    piece->SetVisible(false);
     delete piece;
+    piece = nullptr;
     m_promotePieces.pop_back();
 }
 

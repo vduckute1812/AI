@@ -27,6 +27,7 @@ BoardGameWnd::~BoardGameWnd()
     for (piecePtr = m_pieces.begin(); piecePtr != m_pieces.end(); ++piecePtr)
     {
         delete *piecePtr;
+        *piecePtr = nullptr;
     }
 
     for (u32 i = 0; i < MAX_TEMP_BOARD; ++i)
@@ -34,6 +35,7 @@ BoardGameWnd::~BoardGameWnd()
         m_tempBoards.pieceData.clear();
     }
     delete m_boardController;
+    m_boardController = nullptr;
 }
 
 void BoardGameWnd::CreateStandardBoard()

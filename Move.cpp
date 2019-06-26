@@ -101,7 +101,7 @@ BoardConfig Move::UndoExecute()
     {
         piece = m_promotePiece;
         boardController->SetPieceOnBoard(m_board, m_movedCoordinate, m_promotePiece);
-//        PromoteWnd::GetInstance()->DeletePromotePiece();
+        PromoteWnd::GetInstance()->DeletePromotePiece();
     }
     else
     {
@@ -132,8 +132,9 @@ BoardConfig Move::Undo()
     if(m_isPromotePiece)
     {
         piece = m_promotePiece;
+        boardController->SetPieceOnBoard(m_board,m_destCoordinate, nullptr);
         boardController->SetPieceOnBoard(m_board,m_movedCoordinate, m_promotePiece);
-//        PromoteWnd::GetInstance()->DeletePromotePiece();
+        PromoteWnd::GetInstance()->DeletePromotePiece();
     }
     else
     {

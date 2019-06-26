@@ -30,8 +30,8 @@ public:
 
     unsigned int        GetMoveCoordinate() const;
     unsigned int        GetDestCoordinate() const;
-    bool                IsAttackMove() const;
 
+    bool                IsAttackMove() const;
     bool                IsLegalMove();
     bool                IsPromoteMove();
 

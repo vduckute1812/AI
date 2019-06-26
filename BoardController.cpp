@@ -55,9 +55,7 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
 
                         PromoteWnd::GetInstance()->SetPromote(true);
                         BoardGameWnd::GetInstance()->LockTiles(false);
-//                        Alliance alliance = move->GetAlliancePieceMove() == 'b' ? Alliance::BLACK : Alliance::WHITE;
-//                        PromoteWnd::GetInstance()->SetPromoteAlliance(alliance);
-//                        PromoteWnd::GetInstance()->AddDefaultPromotePiece();
+
                         PromoteWnd::GetInstance()->SetVisible(true);
                         PromoteWnd::GetInstance()->SetPromote(false);
                         BoardGameWnd::GetInstance()->LockTiles(true);
@@ -87,6 +85,11 @@ Alliance BoardController::GetMoveMaker()
     return BoardGameWnd::GetInstance()->GetCurrentBoard().playerTurn;
 }
 
+Alliance BoardController::GetMoveMaker(const BoardConfig &board) const
+{
+    return board.playerTurn;
+}
+
 
 void BoardController::MovePiece(Move *move)
 {
@@ -97,19 +100,23 @@ void BoardController::MovePiece(Move *move)
     QChar alliance = move->GetAlliancePieceMove();
 
     ////////////////////////// Set here ////////////////////////
+
+    QString str = "";
+
     if(move->IsAttackMove())
     {
-        move->SetDescription( type + QString(alliance) + QString(" attack ") + move->GetTypePieceIsAttacked() + QString(" ") +QString::number(move->GetDestCoordinate()) );
+        str +=  type + QString(alliance) + QString(" attack ") + move->GetTypePieceIsAttacked() + QString(" ") +QString::number(move->GetDestCoordinate());
     }
-    else if (move->IsPromoteMove())
+    if (move->IsPromoteMove())
     {
-        move->SetDescription(type + QString(alliance) + QString(" is promoted at ") + QString::number(move->GetDestCoordinate()) );
+        str += QString(" is promoted");
     }
-    else
+    if (!move->IsAttackMove() && !move->IsPromoteMove())
     {
-        move->SetDescription( type + QString(alliance) + QString(" move to ") +QString::number(move->GetDestCoordinate()) );
+        str += type + QString(alliance) + QString(" move to ") +QString::number(move->GetDestCoordinate());
     }
 
+    move->SetDescription( str );
 
     MoveMgr::GetInstance()->Do(move);
 }

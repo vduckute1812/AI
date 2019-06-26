@@ -9,6 +9,7 @@ const static int CHECK_MATE_BONUS = 1000;
 const static int DEPTH_BONUS = 100;
 const static int MOBILITY_MULTIPLIER = 2;
 const static int ATTACK_MULTIPLIER = 2;
+const static int TWO_BISHOPS_BONUS = 50;
 
 class BoardEvaluator;
 class Minimax: public Singleton<Minimax>
@@ -56,6 +57,8 @@ private:
     int depthBonus(int depth);
     int pieceValue(const BoardConfig board, const Alliance alliance);
     int attacks(const BoardConfig board, const Alliance alliance);
+    int kingSafety(const BoardConfig board, const Alliance alliance);
+    int pieceEvaluations(const BoardConfig board, const Alliance alliance);
 };
 
 #endif // MINIMAX_H

@@ -24,6 +24,7 @@ public:
     void        MoveSelectedPiece(unsigned int coordinate);
 
     Alliance    GetMoveMaker();
+    Alliance    GetMoveMaker(const BoardConfig& board) const;
 
     void        MovePiece(Move* move);
 
