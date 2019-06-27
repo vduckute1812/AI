@@ -31,6 +31,9 @@ public:
     unsigned int        GetMoveCoordinate() const;
     unsigned int        GetDestCoordinate() const;
 
+    const Piece*        GetMovedPiece() const;
+    const Piece*        GetAttackedPiece() const;
+
     bool                IsAttackMove() const;
     bool                IsLegalMove();
     bool                IsPromoteMove();

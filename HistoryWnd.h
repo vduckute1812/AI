@@ -15,6 +15,8 @@ class HistoryWnd: public QListWidget, public Singleton<HistoryWnd>, public Messe
         virtual void            Init() override;
         void                    Update();
 
+        virtual void        OnMessageReceived(const Message& msg) override;
+
     protected:
         QIcon           m_entryIcon;
 

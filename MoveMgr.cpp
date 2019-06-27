@@ -2,6 +2,7 @@
 #include "Move.h"
 #include "BoardGameWnd.h"
 #include "DeadPieceWnd.h"
+#include "HistoryWnd.h"
 
 MoveMgr* MoveMgr::s_instance = nullptr;
 
@@ -96,6 +97,10 @@ void MoveMgr::Do(Move *move)
     BoardGameWnd::GetInstance()->Lock(false);
     BoardGameWnd::GetInstance()->blockSignals(false);
 
+    Message msg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
+    Send(msg);
+    Message msg_2(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
+    Send(msg_2);
 }
 
 
@@ -128,6 +133,11 @@ void MoveMgr::Undo()
 
     BoardGameWnd::GetInstance()->Lock(false);
     BoardGameWnd::GetInstance()->blockSignals(false);
+
+    Message msg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
+    Send(msg);
+    Message msg_2(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
+    Send(msg_2);
 }
 
 bool MoveMgr::HasRedo()
@@ -158,6 +168,11 @@ void MoveMgr::Redo()
 
     BoardGameWnd::GetInstance()->Lock(false);
     BoardGameWnd::GetInstance()->blockSignals(false);
+
+    Message msg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
+    Send(msg);
+    Message msg_2(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
+    Send(msg_2);
 }
 
 

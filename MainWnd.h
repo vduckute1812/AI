@@ -31,13 +31,8 @@ public:
     void            SendMessage(Message& message);
     void            DeleteMessage();
 
-public slots:
-    // This method forces update of all dependent windows (warning: not thread-safe)
-    void            Update();
 
 private:
-    QTimer*         m_updateTimer;
-
     QDockWidget*	m_boardDock;
     QDockWidget*    m_historyDock;
     QDockWidget*    m_deadPieceDock;

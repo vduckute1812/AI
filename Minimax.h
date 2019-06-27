@@ -23,7 +23,7 @@ public:
     double  max(BoardConfig board, u32 depth, double highest, double lowest);
 
     bool    IsEndgame(BoardConfig board);
-    int     CalculateQuiescenceDepth(const Move* moveTransition, int depth);
+    u32     CalculateQuiescenceDepth(const Move* moveTransition, int depth);
     void    SetDepth(u32 depth);
     bool    SortMoveFollowValue(std::vector<Move*> moves);
 

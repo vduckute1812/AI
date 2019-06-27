@@ -12,6 +12,7 @@ HistoryWnd::HistoryWnd(QWidget *parent/* = nullptr*/): QListWidget (parent)
 void HistoryWnd::Init()
 {
     m_entryIcon = MainWnd::LoadIcon("history");
+    ListenTo(MoveMgr::GetInstance(), k_msgType, msg::HISTORY_UPDATE);
 }
 
 void HistoryWnd::Update()
@@ -42,5 +43,13 @@ void HistoryWnd::Update()
             item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
 
         addItem(item);
+    }
+}
+
+void HistoryWnd::OnMessageReceived(const Message &msg)
+{
+    if(msg.Is(msg::HISTORY_UPDATE))
+    {
+        Update();
     }
 }

@@ -7,6 +7,9 @@
 #include "BoardUntils.h"
 #include "HistoryWnd.h"
 #include "MainWnd.h"
+#include "MoveMgr.h"
+
+#include "Player.h"
 
 #include <QGridLayout>
 
@@ -16,9 +19,6 @@ BoardGameWnd::BoardGameWnd(BoardController* controller, QWidget* parent/* = null
     , Messenger()
 {
     m_boardController = controller;
-
-//    u32 messageMask = msg::MOVE | msg::ATTACK | msg::DEFEND | msg::ESCAPE | msg::BOARD_CHANGED;
-//    ListenTo(MainWnd::GetInstance(), k_msgType, messageMask);
 }
 
 BoardGameWnd::~BoardGameWnd()
@@ -35,7 +35,6 @@ BoardGameWnd::~BoardGameWnd()
         m_tempBoards.pieceData.clear();
     }
     delete m_boardController;
-    m_boardController = nullptr;
 }
 
 void BoardGameWnd::CreateStandardBoard()
@@ -137,6 +136,13 @@ void BoardGameWnd::Init()
 
     Lock(false);    //
     blockSignals(false);
+
+    m_whitePlayer = new WhitePlayer();
+
+    m_blackPlayer = new BlackPlayer();  // IS ai player
+    m_blackPlayer->SetIsAI(true);
+
+    ListenTo(MoveMgr::GetInstance(), BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
 }
 
 void BoardGameWnd::SetController(BoardController *controller)

@@ -23,13 +23,11 @@ namespace msg
     static const u32 MOVE					= (u32(1) << 0);
     static const u32 ATTACK                 = (u32(1) << 1);
     static const u32 DEFEND					= (u32(1) << 2);
-    static const u32 ESCAPE                 = (u32(1) << 3);
+    static const u32 PROMOTE                = (u32(1) << 3);
+    static const u32 ESCAPE                 = (u32(1) << 4);
 
-    static const u32 BOARD_CHANGED          = (u32(1) << 4);
-
-    // PROMOTE ACTION
-    static const u32 PROMOTE                = (u32(1) << 5);
-    static const u32 UN_PROMOTE             = (u32(1) << 6);
+    static const u32 BOARD_CHANGED          = (u32(1) << 5);
+    static const u32 HISTORY_UPDATE         = (u32(1) << 5);
 
     // KILL AND SUMMON PIECE
     static const u32 KILL                   = (u32(1) << 7);

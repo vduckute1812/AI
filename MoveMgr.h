@@ -3,12 +3,13 @@
 
 #include <vector>
 #include "Singleton.h"
+#include "Messenger.h"
 
 class Move;
 
 typedef std::vector<Move*> MoveCollection;
 
-class MoveMgr
+class MoveMgr: public Messenger
 {
 
 public:

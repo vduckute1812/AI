@@ -19,6 +19,8 @@ void Minimax::Init()
 
 Move *Minimax::execute(BoardConfig board)
 {
+    BoardGameWnd::GetInstance()->Lock(true);
+
     double currentValue;
 //    int freqTableIndex = 0;
 
@@ -34,7 +36,10 @@ Move *Minimax::execute(BoardConfig board)
 
     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
     MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
-//    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+
+
+    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+
     for (Move* move: moves) {
 
         BoardConfig transitionBoard = move->Execute();
@@ -43,7 +48,7 @@ Move *Minimax::execute(BoardConfig board)
                     min(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue):
                     max(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue);
 
-//        BoardState undoBoard = move->UndoExecute();
+        move->UndoExecute();
 
         if(board.playerTurn == Alliance::WHITE && currentValue > hightestSeenValue)
         {
@@ -70,6 +75,7 @@ Move *Minimax::execute(BoardConfig board)
     end = clock();
     m_executeTime = static_cast<double>((end-start)/ CLOCKS_PER_SEC);
 
+    BoardGameWnd::GetInstance()->Lock(false);
     return bestMove;
 }
 
@@ -95,7 +101,7 @@ double Minimax::min(BoardConfig board, u32 depth, double highest, double lowest)
     for (Move* move: candidateMoves)
     {
         BoardConfig transitionBoard = move->Execute();
-//        currentLowest = std::min(currentLowest, max(transitionBoard, calculateQuiescenceDepth(move, depth), highest, currentLowest));
+        currentLowest = std::min(currentLowest, max(transitionBoard, CalculateQuiescenceDepth(move, depth), highest, currentLowest));
 
         // release memory
         BoardConfig undoBoard = move->UndoExecute();
@@ -132,7 +138,7 @@ double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
      for (Move* move: candidateMoves)
      {
          BoardConfig transitionBoard = move->Execute();
-//         currentHighest = std::max(currentHighest, min(transitionBoard, calculateQuiescenceDepth(move, depth), currentHighest, lowest));
+         currentHighest = std::max(currentHighest, min(transitionBoard, CalculateQuiescenceDepth(move, depth), currentHighest, lowest));
 
          // release memory
          BoardConfig undoBoard = move->UndoExecute(); // return old board
@@ -164,7 +170,7 @@ bool Minimax::IsEndgame(BoardConfig board)
     return false;
 }
 
-int Minimax::CalculateQuiescenceDepth(const Move *moveTransition, int depth)
+u32 Minimax::CalculateQuiescenceDepth(const Move *moveTransition, int depth)
 {
     return depth - 1;
 }

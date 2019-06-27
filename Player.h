@@ -2,27 +2,34 @@
 #define PLAYER_H
 #include "Piece.h"
 
+class Minimax;
 class Player
 {
 public:
     Player();
     virtual ~Player();
-    virtual MoveCollection GetMoveCollection(BoardConfig state) = 0;
+    void        SetIsAI(bool isAi);
+    bool        IsAiPlayer();
+    Alliance    GetAlliance() const;
 protected:
-    Alliance m_player;
-
+    Alliance    m_player;
+    bool        m_isAI;  // AI player
 };
 
 class BlackPlayer: public Player
 {
+public:
+    BlackPlayer();
     virtual ~BlackPlayer();
-    MoveCollection GetMoveCollection(BoardConfig state);
+
 };
 
 class WhitePlayer: public Player
 {
+public:
+    WhitePlayer();
     virtual ~WhitePlayer();
-    MoveCollection GetMoveCollection(BoardConfig state);
+
 };
 
 #endif // PLAYER_H

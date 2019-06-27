@@ -53,11 +53,11 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
                     {
                         move->SetHasPromote(true);
 
-                        PromoteWnd::GetInstance()->SetPromote(true);
+//                        PromoteWnd::GetInstance()->SetPromote(true);
                         BoardGameWnd::GetInstance()->LockTiles(false);
 
-                        PromoteWnd::GetInstance()->SetVisible(true);
-                        PromoteWnd::GetInstance()->SetPromote(false);
+//                        PromoteWnd::GetInstance()->SetVisible(true);
+//                        PromoteWnd::GetInstance()->SetPromote(false);
                         BoardGameWnd::GetInstance()->LockTiles(true);
                     }
 
@@ -102,7 +102,6 @@ void BoardController::MovePiece(Move *move)
     ////////////////////////// Set here ////////////////////////
 
     QString str = "";
-
     if(move->IsAttackMove())
     {
         str +=  type + QString(alliance) + QString(" attack ") + move->GetTypePieceIsAttacked() + QString(" ") +QString::number(move->GetDestCoordinate());
@@ -117,6 +116,7 @@ void BoardController::MovePiece(Move *move)
     }
 
     move->SetDescription( str );
+
 
     MoveMgr::GetInstance()->Do(move);
 }

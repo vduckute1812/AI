@@ -24,13 +24,6 @@ QApplication::setOverrideCursor(Qt::BlankCursor)
 while (MainWnd::GetInstance()->IsLocked()) \
 Sleep(5)
 
-enum PlayerMode
-{
-    k_HumanVsHuman,
-    k_AiVsAi,
-    k_HumanVsAi
-};
-
 
 typedef std::vector<Piece*> PiecePositions;
 
@@ -99,6 +92,8 @@ private:
     BoardConfig             m_tempBoards/*[MAX_TEMP_BOARD]*/;
 
     Player*                 m_currentPlayer;
+    Player*                 m_whitePlayer;
+    Player*                 m_blackPlayer;
 };
 
 #endif // BOARDGAMEWND_H

@@ -3,7 +3,7 @@
 
 Player::Player()
 {
-
+    m_isAI = false;
 }
 
 Player::~Player()
@@ -11,16 +11,34 @@ Player::~Player()
 
 }
 
+void Player::SetIsAI(bool isAi)
+{
+    m_isAI = isAi;
+}
+
+bool Player::IsAiPlayer() const
+{
+    return m_isAI;
+}
+
+Alliance Player::GetAlliance() const
+{
+    return m_player;
+}
+
+BlackPlayer::BlackPlayer(): Player ()
+{
+    m_player = Alliance::BLACK;
+}
+
 BlackPlayer::~BlackPlayer()
 {
 
 }
 
-MoveCollection BlackPlayer::GetMoveCollection(BoardConfig state)
+WhitePlayer::WhitePlayer(): Player ()
 {
-    MoveCollection collection;
-
-    return collection;
+    m_player = Alliance::WHITE;
 }
 
 WhitePlayer::~WhitePlayer()
@@ -28,8 +46,3 @@ WhitePlayer::~WhitePlayer()
 
 }
 
-MoveCollection WhitePlayer::GetMoveCollection(BoardConfig state)
-{
-    MoveCollection collection;
-    return collection;
-}

@@ -10,7 +10,7 @@
 #include "PromoteWnd.h"
 #include "BoardController.h"
 #include "MainWnd.h"
-
+#include "Player.h"
 #include <QKeyEvent>
 
 
@@ -18,10 +18,7 @@ typedef std::map<QString , QIcon*, StringLT > IconNameMap;
 
 MainWnd::MainWnd(QWidget *parent/* = nullptr*/) : QMainWindow (parent)
 {
-    m_updateTimer = new QTimer(this);
-    // update thread
-    connect(m_updateTimer, SIGNAL(timeout()), this, SLOT(Update()), Qt::QueuedConnection);
-    m_updateTimer->start(50);
+
 }
 
 void MainWnd::Init()
@@ -51,6 +48,10 @@ void MainWnd::Init()
 
     m_boardDock = CreateDock("Board Game", "", boardWnd);
     setCentralWidget(boardWnd);
+
+    m_whitePlayer = new WhitePlayer();
+    m_blackPlayer = new BlackPlayer();
+    m_blackPlayer->SetIsAI(true);
 }
 
 void MainWnd::keyPressEvent(QKeyEvent *event)
@@ -140,14 +141,4 @@ void MainWnd::Show()
 {
     show();
     QApplication::processEvents(); // Make sure it is all processed before state restoration.
-}
-
-
-
-void MainWnd::Update()
-{
-    if(BoardGameWnd::GetInstance()->IsLocked())
-        return;
-    HistoryWnd::GetInstance()->Update();
-    BoardGameWnd::GetInstance()->Update();
 }

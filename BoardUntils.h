@@ -2,6 +2,7 @@
 #define BOARDUNTILS_H
 #include "Defines.h"
 #include "Piece.h"
+#include "Move.h"
 
 
 enum CheckColumn
@@ -46,8 +47,22 @@ struct BoardUntils
         {
             return true;
         }
-return false;
+    return false;
+    }
+
+
+    static int mvvlva(const Move* move)
+    {
+        const Piece* movingPiece = move->GetMovedPiece();
+        if(move->IsAttackMove())
+        {
+            const Piece* attackedPiece = move->GetAttackedPiece();
+            return (attackedPiece->GetPieceValue() - movingPiece->GetPieceValue() +  PieceValue::KING_VALUE) * 100;
+        }
+        return PieceValue::KING_VALUE - movingPiece->GetPieceValue();
     }
 };
+
+
 
 #endif // BOARDUNTILS_H

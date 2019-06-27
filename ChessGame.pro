@@ -20,6 +20,7 @@ SOURCES += main.cpp \
     Messenger.cpp \
     Move.cpp \
     MoveMgr.cpp \
+    MoveSorter.cpp \
     NetWorkEntity.cpp \
     Pawn.cpp \
     Piece.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     Messenger.h \
     Move.h \
     MoveMgr.h \
+    MoveSorter.h \
     NetWorkEntity.h \
     Pawn.h \
     Piece.h \
