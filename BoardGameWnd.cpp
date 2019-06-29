@@ -142,6 +142,8 @@ void BoardGameWnd::Init()
     m_blackPlayer = new BlackPlayer();  // IS ai player
     m_blackPlayer->SetIsAI(true);
 
+    m_currentPlayer = GetCurrentPlayer();
+
     ListenTo(MoveMgr::GetInstance(), BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
 }
 
@@ -172,6 +174,8 @@ void BoardGameWnd::SetBoard(BoardConfig board)
     }
 
     Lock(false);
+
+
 }
 
 void BoardGameWnd::ResetColorTiles()
@@ -229,9 +233,14 @@ void BoardGameWnd::OnMessageReceived(const Message &msg)
 
 }
 
-void BoardGameWnd::Update()
-{
+//void BoardGameWnd::Update()
+//{
 
+//}
+
+Player *BoardGameWnd::GetCurrentPlayer()
+{
+    return m_tempBoards.playerTurn == Alliance::WHITE ? m_whitePlayer : m_blackPlayer;
 }
 
 

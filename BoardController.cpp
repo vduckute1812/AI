@@ -11,13 +11,15 @@
 #include "PromoteWnd.h"
 #include "MainWnd.h"
 #include "Messenger.h"
+#include "Player.h"
+#include "PieceFactory.h"
 
 typedef vec2<int32_t> vec2i;
 
 BoardController::BoardController(QWidget* parent /*= nullptr*/) : QWidget(parent)
 {
-    m_modePlayer = EditModeDef::HUMAN_HUMAN;
     m_piece = nullptr;
+    m_currentPlayer = nullptr;
 }
 
 void BoardController::mousePressEvent(QMouseEvent */*event*/)
@@ -35,6 +37,7 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
 {
     if(BoardGameWnd::GetInstance()->IsLocked())
         return;
+
     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
 
     Piece* piece = boardController->GetSelecetedPiece();
@@ -48,21 +51,6 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
                 if(move->IsLegalMove())
 
                 {
-                    ////////////////////////////////////////////////////////////////////
-                    if(move->IsPromoteMove())
-                    {
-                        move->SetHasPromote(true);
-
-//                        PromoteWnd::GetInstance()->SetPromote(true);
-                        BoardGameWnd::GetInstance()->LockTiles(false);
-
-//                        PromoteWnd::GetInstance()->SetVisible(true);
-//                        PromoteWnd::GetInstance()->SetPromote(false);
-                        BoardGameWnd::GetInstance()->LockTiles(true);
-                    }
-
-                    /////////////////////////////////////////////////////////////////////
-
                     MovePiece(move);
                 }
                 else
@@ -76,8 +64,6 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
             }
         }
     }
-
-
 }
 
 Alliance BoardController::GetMoveMaker()
@@ -117,19 +103,33 @@ void BoardController::MovePiece(Move *move)
 
     move->SetDescription( str );
 
+    if(move->IsPromoteMove())
+    {
+//        // Create promote piece
+        PromoteWnd::GetInstance()->SetPromote(true);
+        PromoteWnd::GetInstance()->SetPromotePiece(nullptr);
+        PromoteWnd::GetInstance()->SetPromoteAlliance( move->GetMovedPiece()->GetAlliance());
+
+        PromoteWnd::GetInstance()->exec();
+
+        Piece* promotePiece =  PromoteWnd::GetInstance()->GetPromotePiece();
+        Piece* piece = nullptr;
+        if(promotePiece)
+        {
+            piece = PieceFactory::GeneratePiece(promotePiece->GetPieceType(), promotePiece->GetAlliance());
+        }
+        else
+        {
+            piece = PieceFactory::GeneratePiece(PieceType::BISHOP, move->GetMovedPiece()->GetAlliance());
+        }
+
+        move->SetIsPromotedPiece(piece);
+
+    }
 
     MoveMgr::GetInstance()->Do(move);
 }
 
-void BoardController::SetModePlayer(BoardController::EditModeDef modePlayer)
-{
-    m_modePlayer = modePlayer;
-}
-
-BoardController::EditModeDef BoardController::GetModePlayer() const
-{
-    return m_modePlayer;
-}
 
 bool BoardController::IsTileOccupied(const BoardConfig &board, u32 tilePosition)
 {
@@ -203,3 +203,9 @@ MoveCollection BoardController::GetMoveCollections(BoardConfig board, Alliance p
     }
     return moveCollection;
 }
+
+Player *BoardController::GetCurrentPlayer()
+{
+    return BoardGameWnd::GetInstance()->GetCurrentPlayer();
+}
+

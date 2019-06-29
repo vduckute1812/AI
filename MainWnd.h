@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "Messenger.h"
 #include "Singleton.h"
+#include <QSplitter>
 
 class PromoteWnd;
 class Player;
@@ -41,6 +42,9 @@ private:
 
     Player*         m_blackPlayer;
     Player*         m_whitePlayer;
+
+    QSplitter*      m_splitter;
+
 };
 
 #endif // MAINWND_H

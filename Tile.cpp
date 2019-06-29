@@ -18,8 +18,6 @@ Tile::Tile(unsigned int coordinate, Piece* piece, QWidget* parrent)
     m_defaultColor = (m_tileCoordinate + (m_tileCoordinate / NUM_TILES_PER_ROW) % 2) % 2 ? ODD_COLOR : EVEN_COLOR;
     m_currentColor = m_defaultColor;
     m_canTouch = false;
-
-//    connect(this, &Tile::promotePiece, PromoteWnd::GetInstance(), &PromoteWnd);
 }
 
 void Tile::SetPiece(Piece *piece)
@@ -32,7 +30,6 @@ void Tile::SetPiece(Piece *piece)
     m_piece = piece;
     if(piece != nullptr)
     {
-//        m_piece->SetVisible(false);
         m_piece->SetPosition(m_tileCoordinate);
         m_piece->setParent(this);
         m_piece->SetVisible(true, this);
@@ -72,11 +69,22 @@ void Tile::mousePressEvent(QMouseEvent *event)
 
     BoardGameWnd::GetInstance()->GetEditModeController()->mousePressEvent(event);
 
-    // Make move Piece
+    /*//////////////////////////////PROMOTE SELECTION//////////////////////////////////*/
+    if(PromoteWnd::GetInstance()->IsPromote())
+    {
+        Piece* promotePiece = this->GetPiece();
+        PromoteWnd::GetInstance()->SetPromotePiece(promotePiece);
+        PromoteWnd::GetInstance()->SetPromote(false);
+        PromoteWnd::GetInstance()->SetVisible(false);
+    }
+    /*/////////////////////////////////////////////////////////////////////////////////*/
+
+    /*//////////////////////////////MAKE MOVE PIECE////////////////////////////////////*/
     unsigned int coordinate = this->GetCoordinate();
     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
-
     boardController->MoveSelectedPiece(coordinate);
+    /*//////////////////////////////////////////////////////////////////////////////////*/
+
     boardController->SetSelecetedPiece(this->GetPiece());
 
     // Set colors on Board. Render posible move

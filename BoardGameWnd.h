@@ -80,7 +80,9 @@ public:
 
     virtual void            OnMessageReceived(const Message& msg) override;
 
-    void                    Update();
+//    void                    Update();
+
+    Player*                 GetCurrentPlayer();
 
 private:
     volatile bool			m_isLocked;

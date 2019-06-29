@@ -20,6 +20,7 @@ class Move
 {
 public:
     Move(const BoardConfig board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord);
+    ~Move();
 
     BoardConfig          Execute();
     BoardConfig          UndoExecute();
@@ -42,6 +43,8 @@ public:
     const QString&		GetDescription() const;
 
     void                SetHasPromote(bool yes);
+    void                SetIsPromotedPiece(Piece* piece);
+    Piece*              GetIsPromotedPiece() const;
 
     QChar               GetTypePieceMove() const;
     QChar               GetTypePieceIsAttacked() const;
@@ -53,10 +56,11 @@ protected:
     BoardConfig         m_board;
     const Piece*        m_movePiece;
     const Piece*        m_attackPiece;
-    Piece*              m_promotePiece;
     Piece*              m_killedPiece;
+    Piece*              m_promotePiece;
+    Piece*              m_isPromotedPiece;
 
-    bool                m_isPromotePiece;
+    bool                m_isPromote;
     bool                m_isFirstMove;
     unsigned int        m_movedCoordinate;
     unsigned int        m_destCoordinate;

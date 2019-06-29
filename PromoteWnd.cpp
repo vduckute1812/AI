@@ -6,8 +6,9 @@
 #include <QHBoxLayout>
 #include <QWidget>
 
-PromoteWnd::PromoteWnd(QWidget* parent): QMainWindow(parent)
+PromoteWnd::PromoteWnd(QWidget* parent): QDialog(parent)
 {
+    m_isPromote = false;
 }
 
 void PromoteWnd::Init()
@@ -36,10 +37,19 @@ void PromoteWnd::Init()
         m_blackPieces.push_back(pieceBlack);
     }
 
-    QWidget* widget = new QWidget(this);
-    setCentralWidget(widget);
-    widget->setLayout(layout);
+    setLayout(layout);
+
     setWindowTitle("Promote Windows");
+}
+
+void PromoteWnd::SetPromotePiece(Piece *piece)
+{
+    m_promotePiece = piece;
+}
+
+Piece *PromoteWnd::GetPromotePiece() const
+{
+    return m_promotePiece;
 }
 
 void PromoteWnd::SetPromoteAlliance(Alliance alliance)
@@ -52,7 +62,6 @@ void PromoteWnd::SetPromoteAlliance(Alliance alliance)
         m_promoteAlliance == Alliance::WHITE? tile->SetPiece(m_whitePieces[idx]): tile->SetPiece(m_blackPieces[idx]);
     }
 }
-
 void PromoteWnd::SetPromote(bool yes)
 {
     m_isPromote = yes;
@@ -61,30 +70,6 @@ void PromoteWnd::SetPromote(bool yes)
 bool PromoteWnd::IsPromote() const
 {
     return m_isPromote;
-}
-
-void PromoteWnd::AddPromotePiece(Piece * piece)
-{
-    Piece* promotePiece = PieceFactory::GeneratePiece(piece->GetPieceType(), m_promoteAlliance);
-    m_promotePieces.push_back(promotePiece);
-}
-
-void PromoteWnd::AddDefaultPromotePiece()
-{
-    Piece* promotePiece = PieceFactory::GeneratePiece(PieceType::QUEEN, m_promoteAlliance);
-    m_promotePieces.push_back(promotePiece);
-}
-
-void PromoteWnd::DeletePromotePiece()
-{
-    Piece* piece = m_promotePieces.back();
-    delete piece;
-    m_promotePieces.pop_back();
-}
-
-Piece *PromoteWnd::GetPromotePiece() const
-{
-    return m_promotePieces.back();
 }
 
 void PromoteWnd::SetVisible(bool yes)

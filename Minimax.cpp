@@ -178,17 +178,14 @@ u32 Minimax::CalculateQuiescenceDepth(const Move *moveTransition, int depth)
 
 BoardEvaluator::BoardEvaluator()
 {
-
 }
 
 BoardEvaluator::~BoardEvaluator()
 {
-
 }
 
 void StandardBoardEvaluator::Init()
 {
-
 }
 
 int StandardBoardEvaluator::evaluate(const BoardConfig board, int depth)
@@ -254,7 +251,7 @@ int StandardBoardEvaluator::kingThreats(const BoardConfig board, const Alliance 
          }
     }
 
-    return hasEscapeMove;
+    return  hasEscapeMove ? CHECK_MATE_BONUS * depthBonus(depth) : check(board, alliance);
 }
 
 int StandardBoardEvaluator::depthBonus(int depth)

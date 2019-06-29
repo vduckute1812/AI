@@ -41,6 +41,9 @@ void MainWnd::Init()
     m_deadPieceDock->show();
     AppendDock(m_deadPieceDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::LeftDockWidgetArea);
 
+//    setIcon
+    setWindowIcon(LoadIcon("dead"));
+
     m_promoteWnd = new PromoteWnd(this);
     m_promoteWnd->Init();
     m_promoteWnd->resize(600,300);
@@ -52,6 +55,14 @@ void MainWnd::Init()
     m_whitePlayer = new WhitePlayer();
     m_blackPlayer = new BlackPlayer();
     m_blackPlayer->SetIsAI(true);
+
+    m_splitter = new QSplitter(Qt::Vertical, this);
+    m_splitter->setObjectName("mainsplitter");
+
+//    SetGLWidget(new GLWidget(m_splitter));
+
+//    m_splitter->addWidget(GetGLWidget());
+//    m_splitter->addWidget(m_propWnd);
 }
 
 void MainWnd::keyPressEvent(QKeyEvent *event)

@@ -66,10 +66,10 @@ void DeadPieceWnd::RemoveDeadPiece(QChar alliance)
     delete pieceLabel;
 }
 
-void DeadPieceWnd::Update()
-{
+//void DeadPieceWnd::Update()
+//{
 
-}
+//}
 
 void DeadPieceWnd::OnMessageReceived(const Message &msg)
 {

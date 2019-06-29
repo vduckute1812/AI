@@ -1,19 +1,31 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Piece.h"
+#include "Messenger.h"
 
 class Minimax;
-class Player
+class Player: public Messenger
 {
 public:
+    enum TypeMessage
+    {
+        k_msgType		= 1 << 5
+    };
+
     Player();
-    virtual ~Player();
-    void        SetIsAI(bool isAi);
-    bool        IsAiPlayer();
-    Alliance    GetAlliance() const;
+    virtual ~Player() override;
+
+    void                    SetIsAI(bool isAi);
+    bool                    IsAiPlayer() const;
+    Alliance                GetAlliance() const;
+
+    virtual void            OnMessageReceived(const Message& msg) override;
+
+
 protected:
     Alliance    m_player;
     bool        m_isAI;  // AI player
+    Minimax*    m_minimax;
 };
 
 class BlackPlayer: public Player

@@ -89,6 +89,11 @@ void MoveMgr::Do(Move *move)
         DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());
     }
 
+    if(move->IsPromoteMove())
+    {
+        move->SetHasPromote(true);
+    }
+
     BoardConfig board = move->Execute();
     m_trackMoves.push_back(move);
 
@@ -97,10 +102,11 @@ void MoveMgr::Do(Move *move)
     BoardGameWnd::GetInstance()->Lock(false);
     BoardGameWnd::GetInstance()->blockSignals(false);
 
-    Message msg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
-    Send(msg);
-    Message msg_2(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
-    Send(msg_2);
+    Message hitoryMsg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
+    Send(hitoryMsg);
+
+    Message boardGameMsg(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
+    Send(boardGameMsg);
 }
 
 
@@ -134,10 +140,10 @@ void MoveMgr::Undo()
     BoardGameWnd::GetInstance()->Lock(false);
     BoardGameWnd::GetInstance()->blockSignals(false);
 
-    Message msg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
-    Send(msg);
-    Message msg_2(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
-    Send(msg_2);
+    Message hitoryMsg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
+    Send(hitoryMsg);
+    Message boardGameMsg(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
+    Send(boardGameMsg);
 }
 
 bool MoveMgr::HasRedo()
@@ -169,10 +175,10 @@ void MoveMgr::Redo()
     BoardGameWnd::GetInstance()->Lock(false);
     BoardGameWnd::GetInstance()->blockSignals(false);
 
-    Message msg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
-    Send(msg);
-    Message msg_2(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
-    Send(msg_2);
+    Message hitoryMsg(HistoryWnd::k_msgType, msg::HISTORY_UPDATE);
+    Send(hitoryMsg);
+    Message boardGameMsg(BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
+    Send(boardGameMsg);
 }
 
 

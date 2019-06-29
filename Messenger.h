@@ -44,8 +44,8 @@ namespace msg
     // CHANGE TURN
     static const u32 CHANGE_TURN            = (u32(1) << 13);
 
-//    //PAINT EVENTS
-//    static const u32 SHOW_THREAT_KING       = (u32(1) << 14);
+//    //MOVE DONE, CHANGE TURN
+    static const u32 MOVE_DONE              = (u32(1) << 14);
 //    static const u32 SHOW_POSIBLE_MOVES     = (u32(1) << 15);
 }
 

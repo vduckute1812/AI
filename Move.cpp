@@ -15,8 +15,15 @@ Move::Move( const BoardConfig board, const Piece* movePiece, const Piece* attack
     m_isFirstMove = m_movePiece->IsFirstMove();
     m_killedPiece = nullptr;
     m_promotePiece = nullptr;
-    m_isPromotePiece = false;
+    m_isPromotedPiece = nullptr;
+    m_isPromote = false;
     m_description = "";
+}
+
+Move::~Move()
+{
+    if(m_isPromotedPiece)
+        delete m_isPromotedPiece;
 }
 
 unsigned int Move::GetMoveCoordinate() const
@@ -52,52 +59,22 @@ bool Move::IsAttackMove() const
 
 BoardConfig Move::Execute()
 {
-//    if(BoardGameWnd::s_tmpStateIdx >= MAX_TEMP_BOARD )
-//    {
-//        BoardState boardState;
-//        BoardConfig boardConfig = boardState.m_boardValue;
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    Piece* piece = boardController->GetPieceOnBoard(m_board, m_movedCoordinate);
+    piece->SetFirstMove(false);
+    m_killedPiece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
 
-//        BoardConfig oldBoard = m_board.m_boardValue;
+    if(m_isPromote)
+    {
+        m_promotePiece = piece;
+        piece = m_isPromotedPiece;
+    }
 
-//        for (unsigned int idx = 0; idx < NUM_TILES_PER_COL * NUM_TILES_PER_ROW; ++idx)
-//        {
-//            boardConfig.push_back(std::make_pair(idx, oldBoard.at(idx).second));
-//        }
-//        Piece* piece = BoardState::GetPieceOnBoard(boardState, m_movedCoordinate);
-//        piece->SetFirstMove(false);
-//        m_killedPiece = BoardState::GetPieceOnBoard(boardState, m_destCoordinate);
+    boardController->SetPieceOnBoard(m_board, m_movedCoordinate, nullptr);
+    boardController->SetPieceOnBoard(m_board, m_destCoordinate, piece);
 
-//        boardState.SetPiece(m_movedCoordinate, nullptr);
-//        boardState.SetPiece(m_destCoordinate, piece);
-
-//        Alliance nextTurnPlayer = m_board.m_playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-//        boardState.m_playerTurn = nextTurnPlayer;
-
-//        return boardState;
-//    }
-//    else
-//    {
-        BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
-        Piece* piece = boardController->GetPieceOnBoard(m_board, m_movedCoordinate);
-        piece->SetFirstMove(false);
-        m_killedPiece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
-
-//        if(m_isPromotePiece)
-//        {
-//            PromoteWnd::GetInstance()->SetPromoteAlliance(m_movePiece->GetAlliance());
-//            PromoteWnd::GetInstance()->AddDefaultPromotePiece();
-
-//            m_promotePiece = piece;
-//            piece = PromoteWnd::GetInstance()->GetPromotePiece();
-//        }
-
-        boardController->SetPieceOnBoard(m_board, m_movedCoordinate, nullptr);
-        boardController->SetPieceOnBoard(m_board, m_destCoordinate, piece);
-
-        Alliance nextTurnPlayer = m_board.playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
-        m_board.playerTurn = nextTurnPlayer;
-//    }
-
+    Alliance nextTurnPlayer = m_board.playerTurn == Alliance::WHITE ? Alliance::BLACK : Alliance::WHITE;
+    m_board.playerTurn = nextTurnPlayer;
 
     return m_board;
 }
@@ -107,16 +84,15 @@ BoardConfig Move::UndoExecute()
     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
     Piece* piece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
 
-//    if(m_isPromotePiece)
-//    {
-//        piece = m_promotePiece;
-//        boardController->SetPieceOnBoard(m_board, m_movedCoordinate, m_promotePiece);
-//        PromoteWnd::GetInstance()->DeletePromotePiece();
-//    }
-//    else
-//    {
+    if(m_isPromote)
+    {
+        piece = m_promotePiece;
+        boardController->SetPieceOnBoard(m_board, m_movedCoordinate, m_promotePiece);
+    }
+    else
+    {
         boardController->SetPieceOnBoard(m_board, m_movedCoordinate, piece);
-//    }
+    }
 
     boardController->SetPieceOnBoard(m_board,m_destCoordinate, m_killedPiece);
     m_killedPiece = nullptr;
@@ -139,17 +115,15 @@ BoardConfig Move::Undo()
 
     Piece* piece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
 
-//    if(m_isPromotePiece)
-//    {
-//        piece = m_promotePiece;
-//        boardController->SetPieceOnBoard(m_board,m_destCoordinate, nullptr);
-//        boardController->SetPieceOnBoard(m_board,m_movedCoordinate, m_promotePiece);
-//        PromoteWnd::GetInstance()->DeletePromotePiece();
-//    }
-//    else
-//    {
+    if(m_isPromote)
+    {
+        piece = m_promotePiece;
+        boardController->SetPieceOnBoard(m_board,m_movedCoordinate, m_promotePiece);
+    }
+    else
+    {
         boardController->SetPieceOnBoard(m_board,m_movedCoordinate, piece);
-//    }
+    }
 
     boardController->SetPieceOnBoard(m_board,m_destCoordinate, m_killedPiece);
     m_killedPiece = nullptr;
@@ -171,12 +145,11 @@ BoardConfig Move::Redo()
     piece->SetFirstMove(false);
     m_killedPiece = boardController->GetPieceOnBoard(m_board, m_destCoordinate);
 
-//    if(m_isPromotePiece)
-//    {
-//        PromoteWnd::GetInstance()->SetPromoteAlliance(m_movePiece->GetAlliance());
-//        PromoteWnd::GetInstance()->AddDefaultPromotePiece();
-//        piece = PromoteWnd::GetInstance()->GetPromotePiece();
-//    }
+    if(m_isPromote)
+    {
+        m_promotePiece = piece;
+        piece = m_isPromotedPiece;
+    }
 
     boardController->SetPieceOnBoard(m_board,m_movedCoordinate, nullptr);
     boardController->SetPieceOnBoard(m_board,m_destCoordinate, piece);
@@ -246,7 +219,17 @@ const QString &Move::GetDescription() const
 
 void Move::SetHasPromote(bool yes)
 {
-    m_isPromotePiece = yes;
+    m_isPromote = yes;
+}
+
+void Move::SetIsPromotedPiece(Piece *piece)
+{
+    m_isPromotedPiece = piece;
+}
+
+Piece *Move::GetIsPromotedPiece() const
+{
+    return m_isPromotedPiece;
 }
 
 QChar Move::GetAlliancePieceMove() const

@@ -17,6 +17,7 @@ SOURCES += main.cpp \
     KingSafetyAnalyzer.cpp \
     Knight.cpp \
     MainWnd.cpp \
+    MessageBoxWnd.cpp \
     Messenger.cpp \
     Move.cpp \
     MoveMgr.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     KingSafetyAnalyzer.h \
     Knight.h \
     MainWnd.h \
+    MessageBoxWnd.h \
     Messenger.h \
     Move.h \
     MoveMgr.h \

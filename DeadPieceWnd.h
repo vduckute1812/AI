@@ -27,7 +27,7 @@ public:
     void                AddDeadPiece(QChar, QChar);
     void                RemoveDeadPiece(QChar);
 
-    void                Update();
+//    void                Update();
 
     virtual void        OnMessageReceived(const Message& msg) override;
 

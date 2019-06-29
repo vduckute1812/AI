@@ -1,12 +1,12 @@
 #ifndef PROMOTEWND_H
 #define PROMOTEWND_H
-#include <QMainWindow>
+#include <QDialog>
 #include "Singleton.h"
 #include "Piece.h"
 #include "Messenger.h"
 
 class Tile;
-class PromoteWnd: public QMainWindow, public Singleton<PromoteWnd>, public Messenger
+class PromoteWnd: public QDialog, public Singleton<PromoteWnd>, public Messenger
 {
 
 public:
@@ -21,10 +21,7 @@ public:
     void            SetPromote(bool yes);
     bool            IsPromote() const;
 
-    void            AddPromotePiece(Piece*);
-    void            AddDefaultPromotePiece();
-
-    void            DeletePromotePiece();
+    void            SetPromotePiece(Piece* piece);
     Piece*          GetPromotePiece() const;
 
     void            SetVisible(bool yes);
@@ -36,8 +33,7 @@ private:
     std::vector<Piece*>     m_whitePieces;
     std::vector<Piece*>     m_blackPieces;
 
-    std::vector<Piece*>     m_promotePieces;
-
+    Piece*                  m_promotePiece;
 };
 
 #endif // PROMOTEWND_H
