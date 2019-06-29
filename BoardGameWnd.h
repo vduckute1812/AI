@@ -76,11 +76,8 @@ public:
     void                    AddPieceOnBoard(Piece* piece);
 
     void                    ResetTiles();
-//    void                    timerEvent(QTimerEvent *e) override;
 
     virtual void            OnMessageReceived(const Message& msg) override;
-
-//    void                    Update();
 
     Player*                 GetCurrentPlayer();
 
@@ -90,7 +87,6 @@ private:
     BoardTiles              m_tiles;
     CollectPieces           m_pieces;
 
-//    u32                     m_tmpStateIdx;
     BoardConfig             m_tempBoards/*[MAX_TEMP_BOARD]*/;
 
     Player*                 m_currentPlayer;

@@ -265,9 +265,13 @@ int StandardBoardEvaluator::pieceValue(const BoardConfig board, const Alliance a
     PiecePositions boardConfig = board.pieceData;
     for (unsigned int pieceIdx = 0; pieceIdx < boardConfig.size(); ++pieceIdx)
     {
-        if(BoardUntils::IsSameAlliance(boardConfig.at(pieceIdx)->GetAlliance(), alliance))
+        Piece* piece = boardConfig.at(pieceIdx);
+        if(piece)
         {
-            pieceValueScore += boardConfig.at(pieceIdx)->GetPieceValue();
+            if(BoardUntils::IsSameAlliance(piece->GetAlliance(), alliance))
+            {
+                pieceValueScore += piece->GetPieceValue();
+            }
         }
     }
     return pieceValueScore;

@@ -128,6 +128,8 @@ void BoardController::MovePiece(Move *move)
     }
 
     MoveMgr::GetInstance()->Do(move);
+    Message msg(Player::k_msgType, msg::MOVE_DONE);
+    Send(msg);
 }
 
 

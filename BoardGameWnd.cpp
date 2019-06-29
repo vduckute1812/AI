@@ -208,35 +208,28 @@ void BoardGameWnd::OnMessageReceived(const Message &msg)
 {
 //    if(msg.IsFrom<MainWnd>())   // receive message from MainWnd
 //    {
-        if(msg.Is(msg::MOVE))
-        {
-            // will do more in here
-        }
-        else if(msg.Is(msg::ATTACK))
-        {
-            // will do more in here
-        }
-        else if(msg.Is(msg::DEFEND))
-        {
-            // will do more in here
-        }
-        else if(msg.Is(msg::DEFEND))
-        {
-            // will do more in here
-        }
+    if(msg.Is(msg::MOVE))
+    {
+        // will do more in here
+    }
+    else if(msg.Is(msg::ATTACK))
+    {
+        // will do more in here
+    }
+    else if(msg.Is(msg::DEFEND))
+    {
+        // will do more in here
+    }
+    else if(msg.Is(msg::DEFEND))
+    {
+        // will do more in here
+    }
 
-        if(msg.Is(msg::BOARD_CHANGED))
-        {
-            repaint();
-        }
-//    }
-
+    if(msg.Is(msg::BOARD_CHANGED))
+    {
+        repaint();
+    }
 }
-
-//void BoardGameWnd::Update()
-//{
-
-//}
 
 Player *BoardGameWnd::GetCurrentPlayer()
 {
