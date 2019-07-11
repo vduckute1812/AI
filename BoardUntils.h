@@ -61,6 +61,11 @@ struct BoardUntils
         }
         return PieceValue::KING_VALUE - movingPiece->GetPieceValue();
     }
+
+    static Alliance OpponentPlayer(const Alliance player)
+    {
+        return player == Alliance::WHITE? Alliance::BLACK : Alliance::WHITE;
+    }
 };
 
 

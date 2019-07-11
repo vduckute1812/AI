@@ -45,7 +45,8 @@ Move *Minimax::execute(BoardConfig board)
          candidateMoves = MoveCollection(moves.begin() , moves.begin()+10);
     }
 
-    for (Move* move: candidateMoves) {
+    for (Move* move: candidateMoves)
+    {
 
         BoardConfig transitionBoard = move->Execute();
         m_quiescenceCount = 0;
@@ -76,11 +77,7 @@ Move *Minimax::execute(BoardConfig board)
         }
 
         BoardConfig undoBoard  = move->UndoExecute();
-    //        boardController->PrintBoard(undoBoard);
-        if(bestMove != move)
-        delete move;
     }
-
 
     /* Do the work. */
     end = clock();
@@ -91,6 +88,14 @@ Move *Minimax::execute(BoardConfig board)
 
 
     BoardGameWnd::GetInstance()->Lock(false);
+
+
+    for (Move* move: moves)
+    {
+        if(move!=bestMove)
+            delete move;
+    }
+
     return bestMove;
 }
 
@@ -102,6 +107,7 @@ double Minimax::min(BoardConfig board, u32 depth, double highest, double lowest)
         {
              m_boardEvaluated++;
         }
+
         return m_boardEvaluator->evaluate(board, depth);
     }
 
@@ -110,8 +116,13 @@ double Minimax::min(BoardConfig board, u32 depth, double highest, double lowest)
     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
 //    boardController->PrintBoard(board);
 
+    if(boardController->IsKingThreat(board, BoardUntils::OpponentPlayer(board.playerTurn)))
+    {
+        return m_boardEvaluator->evaluate(board, depth);
+    }
+
     MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
-//    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
 
     MoveCollection candidateMoves;
     if(moves.size() < 20)
@@ -123,9 +134,11 @@ double Minimax::min(BoardConfig board, u32 depth, double highest, double lowest)
          candidateMoves = MoveCollection(moves.begin() , moves.begin()+10);
     }
 
-
     for (Move* move: candidateMoves)
     {
+        if(move->IsPromoteMove())
+            continue;
+
         BoardConfig transitionBoard = move->Execute();
 //        boardController->PrintBoard(transitionBoard);
 
@@ -136,6 +149,11 @@ double Minimax::min(BoardConfig board, u32 depth, double highest, double lowest)
 
         if(currentLowest <= highest)
         {
+            for (Move* move: moves)
+            {
+                // release memory
+                delete move;
+            }
             return highest;
         }
     }
@@ -164,8 +182,13 @@ double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
      BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
 //     boardController->PrintBoard(board);
 
+     if(boardController->IsKingThreat(board, BoardUntils::OpponentPlayer(board.playerTurn)))
+     {
+         return m_boardEvaluator->evaluate(board, depth);
+     }
+
      MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
-//     std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
+     std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
 
      MoveCollection candidateMoves;
      if(moves.size() < 20)
@@ -179,6 +202,9 @@ double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
 
      for (Move* move: candidateMoves)
      {
+         if(move->IsPromoteMove())
+             continue;
+
          BoardConfig transitionBoard = move->Execute();
 //         boardController->PrintBoard(transitionBoard);
 
@@ -189,6 +215,12 @@ double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
 
          if(currentHighest >= lowest)
          {
+             for (Move* move: moves)
+             {
+                 // release memory
+                 delete move;
+             }
+
              return lowest;
          }
      }
@@ -198,6 +230,7 @@ double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
          // release memory
          delete move;
      }
+     moves.clear();
 
     return currentHighest;
 }
