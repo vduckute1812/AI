@@ -83,7 +83,6 @@ void MoveMgr::Do(Move *move)
 
     m_moveIdx++;
 
-
     if(move->IsAttackMove())
     {
         DeadPieceWnd::GetInstance()->AddDeadPiece(move->GetTypePieceIsAttacked(), move->GetAlliancePieceAttack());

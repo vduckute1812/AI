@@ -1,5 +1,7 @@
-#include "Defines.h"
 #include <QMouseEvent>
+#include <QTextStream>
+
+#include "Defines.h"
 #include "BoardController.h"
 #include "BoardGameWnd.h"
 #include "Piece.h"
@@ -38,10 +40,8 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
     if(BoardGameWnd::GetInstance()->IsLocked())
         return;
 
-    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
-
-    Piece* piece = boardController->GetSelecetedPiece();
-    Alliance currentMoveMaker = boardController->GetMoveMaker();
+    Piece* piece = GetSelecetedPiece();
+    Alliance currentMoveMaker = GetMoveMaker();
     if (piece && BoardUntils::IsSameAlliance(piece->GetAlliance(), currentMoveMaker))
     {
         for (Move* move : piece->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))
@@ -133,7 +133,7 @@ void BoardController::MovePiece(Move *move)
 }
 
 
-bool BoardController::IsTileOccupied(const BoardConfig &board, u32 tilePosition)
+bool BoardController::IsTileOccupied(const BoardConfig &board, u32 tilePosition) const
 {
     return board.pieceData.at(tilePosition) != nullptr;
 }
@@ -188,7 +188,7 @@ u32 BoardController::GetKingPosition(BoardConfig board, Alliance player) const
     return kingPosition;
 }
 
-MoveCollection BoardController::GetMoveCollections(BoardConfig board, Alliance player)
+MoveCollection BoardController::GetMoveCollections(BoardConfig board, Alliance player) const
 {
     MoveCollection moveCollection;
     PiecePositions::iterator piecePtr = board.pieceData.begin();
@@ -206,8 +206,72 @@ MoveCollection BoardController::GetMoveCollections(BoardConfig board, Alliance p
     return moveCollection;
 }
 
+bool BoardController::IsKingThreat( const BoardConfig& board, Alliance player) const
+{
+    Alliance opponentPlayer = player == Alliance::WHITE? Alliance::BLACK : Alliance::WHITE;
+    MoveCollection moves = GetMoveCollections(board, opponentPlayer);
+
+    for (Move* move: moves)
+    {
+        if(move->IsAttackMove()
+                && move->GetAttackedPiece()->GetPieceType() == PieceType::KING)
+        {
+            return true;
+        }
+    }
+
+    return  false;
+}
+
+bool BoardController::IsCheckMate(const BoardConfig &board, Alliance player) const
+{
+    MoveCollection moves = GetMoveCollections(board, player);
+
+    bool hasEscapeMove = false;
+
+    for (Move* move: moves)
+    {
+         if(move->IsLegalMove())
+         {
+             hasEscapeMove = true;
+             break;
+         }
+    }
+
+    return !hasEscapeMove;  // don't has escape move, is check mate
+}
+
 Player *BoardController::GetCurrentPlayer()
 {
     return BoardGameWnd::GetInstance()->GetCurrentPlayer();
+}
+
+void BoardController::PrintBoard(const BoardConfig &board) const
+{
+    QTextStream out(stdout);
+    char key;
+    out << "============================" <<endl;
+
+    for (int idx = 0; idx < NUM_TILES; ++idx)
+    {
+        if (idx % 8 == 0)
+            out << endl;
+
+        bool isTileOccupiedIdx = IsTileOccupied(board, idx);
+
+        Piece* piece = nullptr;
+        if(isTileOccupiedIdx)
+        {
+            piece = GetPieceOnBoard(board, idx);
+        }
+
+        key = !isTileOccupiedIdx ? '_' :piece->GetKeyCharacter();
+
+        if(isTileOccupiedIdx && piece->GetAlliance() == Alliance::BLACK)
+            key = key + 'a' - 'A';
+
+        out << " " << key;
+    }
+    out << endl;
 }
 

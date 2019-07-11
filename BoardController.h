@@ -23,15 +23,20 @@ public:
 
     void        MovePiece(Move* move);
 
-    bool                IsTileOccupied(const BoardConfig& board, u32 tilePosition);
+    bool                IsTileOccupied(const BoardConfig& board, u32 tilePosition) const;
     void                SetPieceOnBoard(BoardConfig& board, u32 piecePosition, Piece* piece);
     Piece*              GetPieceOnBoard(const BoardConfig& board, u32 piecePosition) const;
     CollectPieces       GetPiecesOnBoard(BoardConfig board, Alliance alliance) const;
 
     u32                 GetKingPosition( BoardConfig board, Alliance player) const;
-    MoveCollection      GetMoveCollections(BoardConfig board, Alliance player);
+    MoveCollection      GetMoveCollections(BoardConfig board, Alliance player) const;
+
+    bool                IsKingThreat( const BoardConfig& board, Alliance player) const;
+    bool                IsCheckMate(const BoardConfig& board, Alliance player) const;
 
     Player*             GetCurrentPlayer();
+
+    void                PrintBoard(const BoardConfig& board) const;
 
 private:
     Piece*          m_piece;

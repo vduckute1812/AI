@@ -31,16 +31,21 @@ Move *Minimax::execute(BoardConfig board)
     double hightestSeenValue = MIN_VALUE;
     double lowestSeenValue = MAX_VALUE;
 
-    QTextStream out(stdout);
-    out << QChar(board.playerTurn) << " IS THINKING with depth " << m_searchDepth <<endl;
-
     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
     MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
-
-
     std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
 
-    for (Move* move: moves) {
+    MoveCollection candidateMoves;
+    if(moves.size() < 20)
+    {
+        candidateMoves = moves;
+    }
+    else
+    {
+         candidateMoves = MoveCollection(moves.begin() , moves.begin()+10);
+    }
+
+    for (Move* move: candidateMoves) {
 
         BoardConfig transitionBoard = move->Execute();
         m_quiescenceCount = 0;
@@ -48,32 +53,42 @@ Move *Minimax::execute(BoardConfig board)
                     min(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue):
                     max(transitionBoard, m_searchDepth - 1, hightestSeenValue, lowestSeenValue);
 
-        move->UndoExecute();
 
         if(board.playerTurn == Alliance::WHITE && currentValue > hightestSeenValue)
         {
             hightestSeenValue = currentValue;
+
             bestMove = move;
+            if(boardController->IsCheckMate(transitionBoard, Alliance::BLACK))
+            {
+                break;
+            }
         }
         else if(board.playerTurn == Alliance::BLACK && currentValue < lowestSeenValue)
         {
             lowestSeenValue = currentValue;
 
-            if(bestMove)
-                delete bestMove;
-
             bestMove = move;
+            if(boardController->IsCheckMate(transitionBoard, Alliance::WHITE))
+            {
+                break;
+            }
         }
-        // release memory
-        else
-        {
-            delete move;
-        }
+
+        BoardConfig undoBoard  = move->UndoExecute();
+    //        boardController->PrintBoard(undoBoard);
+        if(bestMove != move)
+        delete move;
     }
+
 
     /* Do the work. */
     end = clock();
-    m_executeTime = static_cast<double>((end-start)/ CLOCKS_PER_SEC);
+    m_executeTime = static_cast<float>((end-start)/ float(CLOCKS_PER_SEC));
+
+    QTextStream out(stdout);
+    out << QChar(board.playerTurn) << " IS THINKING with depth " << m_searchDepth << ", EXECUTED TIME: " << QString::number(m_executeTime) << endl;
+
 
     BoardGameWnd::GetInstance()->Lock(false);
     return bestMove;
@@ -87,34 +102,51 @@ double Minimax::min(BoardConfig board, u32 depth, double highest, double lowest)
         {
              m_boardEvaluated++;
         }
-        return this->m_boardEvaluator->evaluate(board, depth);
+        return m_boardEvaluator->evaluate(board, depth);
     }
 
     double currentLowest = lowest;
 
     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+//    boardController->PrintBoard(board);
+
     MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
 //    std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
 
-    MoveCollection candidateMoves (moves.begin() , moves.begin()+4);
+    MoveCollection candidateMoves;
+    if(moves.size() < 20)
+    {
+        candidateMoves = moves;
+    }
+    else
+    {
+         candidateMoves = MoveCollection(moves.begin() , moves.begin()+10);
+    }
+
 
     for (Move* move: candidateMoves)
     {
         BoardConfig transitionBoard = move->Execute();
-        currentLowest = std::min(currentLowest, max(transitionBoard, CalculateQuiescenceDepth(move, depth), highest, currentLowest));
+//        boardController->PrintBoard(transitionBoard);
 
-        // release memory
+        currentLowest = std::min(currentLowest, max(transitionBoard, /*CalculateQuiescenceDepth(move, depth)*/ depth - 1, highest, currentLowest));
+
         BoardConfig undoBoard = move->UndoExecute();
-
-        delete move;
+//        boardController->PrintBoard(undoBoard);
 
         if(currentLowest <= highest)
         {
             return highest;
         }
     }
+    for (Move* move: moves)
+    {
+        // release memory
+        delete move;
+    }
 
-return currentLowest;}
+    return currentLowest;
+}
 
 double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
 {
@@ -124,31 +156,47 @@ double Minimax::max(BoardConfig board, u32 depth, double highest, double lowest)
          {
              m_boardEvaluated++;
          }
-         return this->m_boardEvaluator->evaluate(board, depth);
+         return m_boardEvaluator->evaluate(board, depth);
      }
 
      double currentHighest  = highest;
 
      BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+//     boardController->PrintBoard(board);
+
      MoveCollection moves = boardController->GetMoveCollections(board,board.playerTurn);
 //     std::sort(moves.begin(), moves.end(), [](const Move* A, const Move* B){ return BoardUntils::mvvlva(A) > BoardUntils::mvvlva(B); });
 
-     MoveCollection candidateMoves (moves.begin(), moves.begin()+4);
+     MoveCollection candidateMoves;
+     if(moves.size() < 20)
+     {
+         candidateMoves = moves;
+     }
+     else
+     {
+          candidateMoves = MoveCollection(moves.begin() , moves.begin()+10);
+     }
 
      for (Move* move: candidateMoves)
      {
          BoardConfig transitionBoard = move->Execute();
-         currentHighest = std::max(currentHighest, min(transitionBoard, CalculateQuiescenceDepth(move, depth), currentHighest, lowest));
+//         boardController->PrintBoard(transitionBoard);
 
-         // release memory
+         currentHighest = std::max(currentHighest, min(transitionBoard, /*CalculateQuiescenceDepth(move, depth)*/ depth - 1, currentHighest, lowest));
+
          BoardConfig undoBoard = move->UndoExecute(); // return old board
-
-         delete move;
+//         boardController->PrintBoard(undoBoard);
 
          if(currentHighest >= lowest)
          {
              return lowest;
          }
+     }
+
+     for (Move* move: moves)
+     {
+         // release memory
+         delete move;
      }
 
     return currentHighest;

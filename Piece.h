@@ -25,11 +25,11 @@ enum PieceType
 enum PieceValue
 {
     PAWN_VALUE =    100,
-    KNIGHT_VALUE =  300,
-    BISHOP_VALUE =  300,
+    KNIGHT_VALUE =  320,
+    BISHOP_VALUE =  350,
     ROOK_VALUE =    500,
     QUEEN_VALUE =   900,
-    KING_VALUE =    1000
+    KING_VALUE =    20000
 };
 
 

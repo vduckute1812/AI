@@ -31,7 +31,7 @@ private:
     BoardEvaluator* m_boardEvaluator;
     unsigned int    m_boardEvaluated;
     unsigned int    m_searchDepth;
-    double          m_executeTime;
+    float           m_executeTime;
     int             m_quiescenceCount;
 };
 

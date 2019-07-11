@@ -23,7 +23,7 @@ void Player::SetIsAI(bool isAi)
     {
         m_minimax = Minimax::GetInstance();
         m_minimax->Init();
-        m_minimax->SetDepth(5);
+        m_minimax->SetDepth(4);
     }
 }
 
@@ -49,8 +49,8 @@ void Player::OnMessageReceived(const Message &msg)
         BoardConfig currentBoard = BoardGameWnd::GetInstance()->GetCurrentBoard();
         Move* move = m_minimax->execute(currentBoard);
         boardController->MovePiece(move);
-        BoardGameWnd::GetInstance()->Lock(false);
         BoardGameWnd::GetInstance()->LockTiles(true);
+        BoardGameWnd::GetInstance()->Lock(false);
     }
 }
 
