@@ -1,8 +1,8 @@
 #ifndef MOVE_H
 #define MOVE_H
 
-#include "Piece.h"
-#include "BoardGameWnd.h"
+#include "Piece/Piece.h"
+#include "GUI/BoardGameWnd.h"
 
 class Board;
 enum TypeMove

@@ -2,10 +2,10 @@
 #define BOARDGAMEWND_H
 #include <QWidget>
 #include <QTimer>
-#include "Piece.h"
 #include "Defines.h"
 #include "Messenger.h"
 #include "Singleton.h"
+#include "Piece/Piece.h"
 
 class Board;
 class BoardController;

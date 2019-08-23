@@ -5,8 +5,8 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include "Singleton.h"
-#include "Piece.h"
 #include "Messenger.h"
+#include "Piece/Piece.h"
 
 
 class Tile;

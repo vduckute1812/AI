@@ -1,8 +1,8 @@
 #ifndef BOARDUNTILS_H
 #define BOARDUNTILS_H
 #include "Defines.h"
-#include "Piece.h"
-#include "Move.h"
+#include "Piece/Piece.h"
+#include "Controller/Move.h"
 
 
 enum CheckColumn

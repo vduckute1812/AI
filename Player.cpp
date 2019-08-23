@@ -1,7 +1,7 @@
 #include "Player.h"
-#include "BoardGameWnd.h"
-#include "BoardController.h"
-#include "Minimax.h"
+#include "GUI/BoardGameWnd.h"
+#include "Controller/BoardController.h"
+#include "Minimax/Minimax.h"
 
 Player::Player()
 {

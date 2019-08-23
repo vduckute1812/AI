@@ -1,8 +1,8 @@
 #include "MoveMgr.h"
 #include "Move.h"
-#include "BoardGameWnd.h"
-#include "DeadPieceWnd.h"
-#include "HistoryWnd.h"
+#include "GUI/BoardGameWnd.h"
+#include "GUI/DeadPieceWnd.h"
+#include "GUI/HistoryWnd.h"
 
 MoveMgr* MoveMgr::s_instance = nullptr;
 

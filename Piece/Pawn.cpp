@@ -1,9 +1,9 @@
 #include "Pawn.h"
-#include "Tile.h"
-#include "Move.h"
 #include "BoardUntils.h"
-#include "BoardGameWnd.h"
-#include "BoardController.h"
+#include "GUI/Tile.h"
+#include "GUI/BoardGameWnd.h"
+#include "Controller/BoardController.h"
+#include "Controller/Move.h"
 
 static const int UP_DIRECTION = -1;
 

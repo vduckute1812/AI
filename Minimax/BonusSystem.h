@@ -1,7 +1,7 @@
 #ifndef BONUSSYSTEM_H
 #define BONUSSYSTEM_H
 
-#include "Piece.h"
+#include "Piece/Piece.h"
 
 struct BonusSystem
 {

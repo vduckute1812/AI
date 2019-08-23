@@ -1,8 +1,8 @@
 #include "DeadPieceWnd.h"
-#include "MainWnd.h"
-#include "Piece.h"
-#include "Tile.h"
 #include <QLabel>
+#include "MainWnd.h"
+#include "Tile.h"
+#include "Piece/Piece.h"
 
 
 DeadPieceWnd::DeadPieceWnd(QWidget* parent /*= nullptr*/): QWidget(parent)

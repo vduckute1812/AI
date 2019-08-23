@@ -2,16 +2,16 @@
 #include <QFileInfo>
 #include <QApplication>
 #include <QTreeWidget>
-#include "MoveMgr.h"
+#include <QKeyEvent>
 #include "MainWnd.h"
 #include "HistoryWnd.h"
 #include "BoardGameWnd.h"
 #include "DeadPieceWnd.h"
 #include "PromoteWnd.h"
-#include "BoardController.h"
 #include "MainWnd.h"
 #include "Player.h"
-#include <QKeyEvent>
+#include "Controller/MoveMgr.h"
+#include "Controller/BoardController.h"
 
 
 typedef std::map<QString , QIcon*, StringLT > IconNameMap;

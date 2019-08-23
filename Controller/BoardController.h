@@ -1,8 +1,8 @@
 #ifndef BOARDCONTROLLER_H
 #define BOARDCONTROLLER_H
 #include <QWidget>
-#include "Piece.h"
 #include "Messenger.h"
+#include "Piece/Piece.h"
 
 class Player;
 typedef std::vector<Piece*> CollectPieces;

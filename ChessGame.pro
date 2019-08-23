@@ -7,64 +7,64 @@ TARGET = ChessGame
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    Bishop.cpp \
-    BoardController.cpp \
-    BoardGameWnd.cpp \
-    Client.cpp \
-    DeadPieceWnd.cpp \
-    HistoryWnd.cpp \
-    King.cpp \
-    KingSafetyAnalyzer.cpp \
-    Knight.cpp \
-    MainWnd.cpp \
-    MessageBoxWnd.cpp \
+    GUI/BoardGameWnd.cpp \
+    GUI/DeadPieceWnd.cpp \
+    GUI/HistoryWnd.cpp \
+    GUI/MainWnd.cpp \
+    GUI/MessageBoxWnd.cpp \
+    GUI/PromoteWnd.cpp \
+    GUI/Tile.cpp \
+    Controller/BoardController.cpp \
+    Controller/Move.cpp \
+    Controller/MoveMgr.cpp \
+    Minimax/KingSafetyAnalyzer.cpp \
+    Minimax/Minimax.cpp \
+    Minimax/MoveSorter.cpp \
+    Network/Client.cpp \
+    Network/NetWorkEntity.cpp \
+    Network/Server.cpp \
+    Piece/Bishop.cpp \
+    Piece/King.cpp \
+    Piece/Knight.cpp \
+    Piece/Pawn.cpp \
+    Piece/Piece.cpp \
+    Piece/PieceFactory.cpp \
+    Piece/Queen.cpp \
+    Piece/Rook.cpp \
     Messenger.cpp \
-    Move.cpp \
-    MoveMgr.cpp \
-    MoveSorter.cpp \
-    NetWorkEntity.cpp \
-    Pawn.cpp \
-    Piece.cpp \
-    PieceFactory.cpp \
-    PromoteWnd.cpp \
-    Queen.cpp \
-    Rook.cpp \
-    Server.cpp \
-    Tile.cpp \
-    Player.cpp \
-    Minimax.cpp
+    Player.cpp
 
 HEADERS += \
-    Bishop.h \
-    BoardController.h \
-    BoardGameWnd.h \
+    GUI/BoardGameWnd.h \
+    GUI/DeadPieceWnd.h \
+    GUI/HistoryWnd.h \
+    GUI/MainWnd.h \
+    GUI/MessageBoxWnd.h \
+    GUI/PromoteWnd.h \
+    GUI/Tile.h \
+    Controller/BoardController.h \
+    Controller/Move.h \
+    Controller/MoveMgr.h \
+    Minimax/BonusSystem.h \
+    Minimax/KingSafetyAnalyzer.h \
+    Minimax/Minimax.h \
+    Minimax/MoveSorter.h \
+    Network/Client.h \
+    Network/NetWorkEntity.h \
+    Network/Server.h \
+    Piece/Bishop.h \
+    Piece/King.h \
+    Piece/Knight.h \
+    Piece/Pawn.h \
+    Piece/Piece.h \
+    Piece/PieceFactory.h \
+    Piece/Queen.h \
+    Piece/Rook.h \
     BoardUntils.h \
-    BonusSystem.h \
-    Client.h \
-    DeadPieceWnd.h \
     Defines.h \
-    HistoryWnd.h \
-    King.h \
-    KingSafetyAnalyzer.h \
-    Knight.h \
-    MainWnd.h \
-    MessageBoxWnd.h \
     Messenger.h \
-    Move.h \
-    MoveMgr.h \
-    MoveSorter.h \
-    NetWorkEntity.h \
-    Pawn.h \
-    Piece.h \
-    PieceFactory.h \
-    PromoteWnd.h \
-    Queen.h \
-    Rook.h \
-    Server.h \
-    Singleton.h \
-    Tile.h \
     Player.h \
-    Minimax.h
+    Singleton.h
 
 DISTFILES += \
     Resources/exit.png \

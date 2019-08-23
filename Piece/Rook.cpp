@@ -1,9 +1,9 @@
 #include "Rook.h"
-#include "Tile.h"
-#include "Move.h"
 #include "BoardUntils.h"
-#include "BoardGameWnd.h"
-#include "BoardController.h"
+#include "GUI/Tile.h"
+#include "GUI/BoardGameWnd.h"
+#include "Controller/Move.h"
+#include "Controller/BoardController.h"
 
 const int ROOK_CANDIDATE_MOVE_COORDINATE[] = { -NUM_TILES_PER_COL,
                                                -1, 1,

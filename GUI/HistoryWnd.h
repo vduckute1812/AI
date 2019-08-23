@@ -1,7 +1,7 @@
 #ifndef HISTORYWND_H
 #define HISTORYWND_H
-#include "Singleton.h"
 #include <QListWidget>
+#include "Singleton.h"
 #include "Messenger.h"
 
 class HistoryWnd: public QListWidget, public Singleton<HistoryWnd>, public Messenger

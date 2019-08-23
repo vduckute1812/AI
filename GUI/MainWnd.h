@@ -2,9 +2,9 @@
 #define MAINWND_H
 
 #include <QMainWindow>
+#include <QSplitter>
 #include "Messenger.h"
 #include "Singleton.h"
-#include <QSplitter>
 
 class PromoteWnd;
 class Player;

@@ -1,14 +1,13 @@
 #include "Tile.h"
-#include "Piece.h"
 #include "BoardGameWnd.h"
-#include "BoardController.h"
-#include "PieceFactory.h"
-#include "Rook.h"
 #include "BoardUntils.h"
 #include "HistoryWnd.h"
 #include "MainWnd.h"
-#include "MoveMgr.h"
-
+#include "Piece/Piece.h"
+#include "Piece/Rook.h"
+#include "Piece/PieceFactory.h"
+#include "Controller/MoveMgr.h"
+#include "Controller/BoardController.h"
 #include "Player.h"
 
 #include <QGridLayout>
@@ -137,10 +136,10 @@ void BoardGameWnd::Init()
     Lock(false);    //
     blockSignals(false);
 
-    m_whitePlayer = new WhitePlayer();
+    m_whitePlayer = new Player();
 
-    m_blackPlayer = new BlackPlayer();  // IS ai player
-    m_blackPlayer->SetIsAI(true);
+    m_blackPlayer = new Player();  // IS ai player
+//    m_blackPlayer->SetIsAI(false);
 
     m_currentPlayer = GetCurrentPlayer();
 
@@ -174,8 +173,6 @@ void BoardGameWnd::SetBoard(BoardConfig board)
     }
 
     Lock(false);
-
-
 }
 
 void BoardGameWnd::ResetColorTiles()

@@ -1,11 +1,11 @@
 #include "Tile.h"
-#include "Piece.h"
 #include "Defines.h"
 #include "BoardGameWnd.h"
-#include "BoardController.h"
 #include "BoardUntils.h"
 #include "PromoteWnd.h"
-#include "Move.h"
+#include "Piece/Piece.h"
+#include "Controller/Move.h"
+#include "Controller/BoardController.h"
 
 #include <QPainter>
 

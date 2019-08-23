@@ -1,10 +1,10 @@
-#include "PromoteWnd.h"
-#include "Tile.h"
-#include "Piece.h"
-#include "Defines.h"
-#include "PieceFactory.h"
 #include <QHBoxLayout>
 #include <QWidget>
+#include "PromoteWnd.h"
+#include "Tile.h"
+#include "Defines.h"
+#include "Piece/Piece.h"
+#include "Piece/PieceFactory.h"
 
 PromoteWnd::PromoteWnd(QWidget* parent): QDialog(parent)
 {

@@ -1,8 +1,8 @@
 #include "HistoryWnd.h"
-#include "MoveMgr.h"
 #include "MainWnd.h"
-#include "Move.h"
 #include <QString>
+#include "Controller/Move.h"
+#include "Controller/MoveMgr.h"
 
 HistoryWnd::HistoryWnd(QWidget *parent/* = nullptr*/): QListWidget (parent)
 {

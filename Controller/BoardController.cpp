@@ -3,18 +3,18 @@
 
 #include "Defines.h"
 #include "BoardController.h"
-#include "BoardGameWnd.h"
-#include "Piece.h"
 #include "MoveMgr.h"
 #include "BoardUntils.h"
 #include "Move.h"
-#include "HistoryWnd.h"
-#include "DeadPieceWnd.h"
-#include "PromoteWnd.h"
-#include "MainWnd.h"
 #include "Messenger.h"
 #include "Player.h"
-#include "PieceFactory.h"
+#include "GUI/MainWnd.h"
+#include "GUI/PromoteWnd.h"
+#include "GUI/HistoryWnd.h"
+#include "GUI/BoardGameWnd.h"
+#include "GUI/DeadPieceWnd.h"
+#include "Piece/Piece.h"
+#include "Piece/PieceFactory.h"
 
 typedef vec2<int32_t> vec2i;
 
