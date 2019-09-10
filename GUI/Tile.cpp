@@ -67,8 +67,6 @@ void Tile::mousePressEvent(QMouseEvent *event)
     if(BoardGameWnd::GetInstance()->IsLocked() || !m_canTouch)
         return;
 
-    BoardGameWnd::GetInstance()->GetEditModeController()->mousePressEvent(event);
-
     /*//////////////////////////////PROMOTE SELECTION//////////////////////////////////*/
     if(PromoteWnd::GetInstance()->IsPromote())
     {
