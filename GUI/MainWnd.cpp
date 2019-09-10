@@ -58,11 +58,6 @@ void MainWnd::Init()
 
     m_splitter = new QSplitter(Qt::Vertical, this);
     m_splitter->setObjectName("mainsplitter");
-
-//    SetGLWidget(new GLWidget(m_splitter));
-
-//    m_splitter->addWidget(GetGLWidget());
-//    m_splitter->addWidget(m_propWnd);
 }
 
 void MainWnd::keyPressEvent(QKeyEvent *event)

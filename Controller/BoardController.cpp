@@ -241,10 +241,10 @@ bool BoardController::IsCheckMate(const BoardConfig &board, Alliance player) con
     return !hasEscapeMove;  // don't has escape move, is check mate
 }
 
-Player *BoardController::GetCurrentPlayer()
-{
-    return BoardGameWnd::GetInstance()->GetCurrentPlayer();
-}
+//Player *BoardController::GetCurrentPlayer()
+//{
+//    return BoardGameWnd::GetInstance()->GetCurrentPlayer();
+//}
 
 void BoardController::PrintBoard(const BoardConfig &board) const
 {

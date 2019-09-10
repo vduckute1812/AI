@@ -90,8 +90,8 @@ private:
     BoardConfig             m_tempBoards/*[MAX_TEMP_BOARD]*/;
 
     Player*                 m_currentPlayer;
-    Player*                 m_whitePlayer;
-    Player*                 m_blackPlayer;
+//    Player*                 m_whitePlayer;
+//    Player*                 m_blackPlayer;
 };
 
 #endif // BOARDGAMEWND_H

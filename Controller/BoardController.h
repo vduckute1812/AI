@@ -34,7 +34,7 @@ public:
     bool                IsKingThreat( const BoardConfig& board, Alliance player) const;
     bool                IsCheckMate(const BoardConfig& board, Alliance player) const;
 
-    Player*             GetCurrentPlayer();
+//    Player*             GetCurrentPlayer();
 
     void                PrintBoard(const BoardConfig& board) const;
 

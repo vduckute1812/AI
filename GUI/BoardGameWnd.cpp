@@ -136,12 +136,12 @@ void BoardGameWnd::Init()
     Lock(false);    //
     blockSignals(false);
 
-    m_whitePlayer = new Player();
+//    m_whitePlayer = new Player();
 
-    m_blackPlayer = new Player();  // IS ai player
-//    m_blackPlayer->SetIsAI(false);
+//    m_blackPlayer = new Player();  // IS ai player
+//    m_blackPlayer->SetIsAI(true);
 
-    m_currentPlayer = GetCurrentPlayer();
+//    m_currentPlayer = GetCurrentPlayer();
 
     ListenTo(MoveMgr::GetInstance(), BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
 }
@@ -228,10 +228,10 @@ void BoardGameWnd::OnMessageReceived(const Message &msg)
     }
 }
 
-Player *BoardGameWnd::GetCurrentPlayer()
-{
-    return m_tempBoards.playerTurn == Alliance::WHITE ? m_whitePlayer : m_blackPlayer;
-}
+//Player *BoardGameWnd::GetCurrentPlayer()
+//{
+//    return m_tempBoards.playerTurn == Alliance::WHITE ? m_whitePlayer : m_blackPlayer;
+//}
 
 
 void BoardGameWnd::ResetTiles()
