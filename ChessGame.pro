@@ -11,6 +11,8 @@ SOURCES += main.cpp \
     GUI/DeadPieceWnd.cpp \
     GUI/HistoryWnd.cpp \
     GUI/MainWnd.cpp \
+    GUI/MenuBase.cpp \
+    GUI/MenuFactory.cpp \
     GUI/MessageBoxWnd.cpp \
     GUI/PromoteWnd.cpp \
     GUI/Tile.cpp \
@@ -39,6 +41,8 @@ HEADERS += \
     GUI/DeadPieceWnd.h \
     GUI/HistoryWnd.h \
     GUI/MainWnd.h \
+    GUI/MenuBase.h \
+    GUI/MenuFactory.h \
     GUI/MessageBoxWnd.h \
     GUI/PromoteWnd.h \
     GUI/Tile.h \
@@ -49,6 +53,7 @@ HEADERS += \
     Minimax/KingSafetyAnalyzer.h \
     Minimax/Minimax.h \
     Minimax/MoveSorter.h \
+    MoveDefine.h \
     Network/Client.h \
     Network/NetWorkEntity.h \
     Network/Server.h \
