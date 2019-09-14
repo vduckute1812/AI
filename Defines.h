@@ -11,8 +11,6 @@
 #include <QString>
 
 
-typedef unsigned int u32;
-
 template<typename T>
 struct vec2
 {
@@ -47,7 +45,9 @@ const static int NUM_TILES_PER_COL = 8;
 
 const static int NUM_TILES = NUM_TILES_PER_ROW*NUM_TILES_PER_COL;
 
-const static int MAX_TEMP_BOARD = 1000;
+const static int MAX_TEMP_BOARD = 1;
+
+const static int NUM_TILE_PROMOTE = 4;
 
 #define DEFINE_PTRS(C)							\
 typedef std::shared_ptr<C>			C##Ptr;		\
