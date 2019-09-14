@@ -14,12 +14,12 @@ enum Alliance
 
 enum PieceType
 {
+    PAWN	= 'P',
     ROOK	= 'R',
     KNIGHT	= 'K',
     BISHOP	= 'B',
     QUEEN	= 'Q',
-    KING	= 'Z',
-    PAWN	= 'P'
+    KING	= 'Z'
 };
 
 enum PieceValue

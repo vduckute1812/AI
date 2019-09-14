@@ -4,7 +4,6 @@
 #include <QFileInfo>
 #include "GUI/Tile.h"
 #include "GUI/BoardGameWnd.h"
-#include "Minimax/BonusSystem.h"
 
 Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent, unsigned int position): QFrame(parent)
 {
@@ -34,27 +33,6 @@ Piece::~Piece()
 int Piece::locationBonus() const
 {
     int score = 0;
-    switch (m_pieceType)
-    {
-    case PAWN:
-        score = BonusSystem::pawnBonus(m_piecePosition, m_pieceAlliance);
-        break;
-    case ROOK:
-        score = BonusSystem::rookBonus(m_piecePosition, m_pieceAlliance);
-        break;
-    case KNIGHT:
-        score = BonusSystem::knightBonus(m_piecePosition, m_pieceAlliance);
-        break;
-    case BISHOP:
-        score = BonusSystem::knightBonus(m_piecePosition, m_pieceAlliance);
-        break;
-    case QUEEN:
-        score = BonusSystem::queenBonus(m_piecePosition, m_pieceAlliance);
-        break;
-    case KING:
-        score = BonusSystem::kingBonus(m_piecePosition, m_pieceAlliance);
-        break;
-    }
     return score;
 }
 

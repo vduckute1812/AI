@@ -17,9 +17,6 @@ SOURCES += main.cpp \
     Controller/BoardController.cpp \
     Controller/Move.cpp \
     Controller/MoveMgr.cpp \
-    Minimax/KingSafetyAnalyzer.cpp \
-    Minimax/Minimax.cpp \
-    Minimax/MoveSorter.cpp \
     Network/Client.cpp \
     Network/NetWorkEntity.cpp \
     Network/Server.cpp \
@@ -45,10 +42,6 @@ HEADERS += \
     Controller/BoardController.h \
     Controller/Move.h \
     Controller/MoveMgr.h \
-    Minimax/BonusSystem.h \
-    Minimax/KingSafetyAnalyzer.h \
-    Minimax/Minimax.h \
-    Minimax/MoveSorter.h \
     Network/Client.h \
     Network/NetWorkEntity.h \
     Network/Server.h \

@@ -1,7 +1,6 @@
 #include "Player.h"
 #include "GUI/BoardGameWnd.h"
 #include "Controller/BoardController.h"
-#include "Minimax/Minimax.h"
 
 Player::Player()
 {
@@ -21,9 +20,6 @@ void Player::SetIsAI(bool isAi)
     m_isAI = isAi;
     if(isAi)
     {
-        m_minimax = Minimax::GetInstance();
-        m_minimax->Init();
-        m_minimax->SetDepth(4);
     }
 }
 
@@ -41,17 +37,6 @@ void Player::OnMessageReceived(const Message &msg)
 {
     BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
     Alliance currentPlayer = boardController->GetMoveMaker();
-
-    if( m_isAI && m_player == currentPlayer && msg.Is(msg::MOVE_DONE))
-    {
-        BoardGameWnd::GetInstance()->LockTiles(true);
-        BoardGameWnd::GetInstance()->Lock(true);
-        BoardConfig currentBoard = BoardGameWnd::GetInstance()->GetCurrentBoard();
-        Move* move = m_minimax->execute(currentBoard);
-        boardController->MovePiece(move);
-        BoardGameWnd::GetInstance()->LockTiles(false);
-        BoardGameWnd::GetInstance()->Lock(false);
-    }
 }
 
 BlackPlayer::BlackPlayer(): Player ()
