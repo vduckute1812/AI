@@ -1,33 +1,47 @@
-#pragma once
-#include <vector>
-#include "Piece.h"
+#ifndef PLAYER_H
+#define PLAYER_H
+#include "Piece/Piece.h"
+#include "Messenger.h"
 
-class Move;
-class Board;
-class Player
+class Minimax;
+class Player: public Messenger
 {
 public:
-    Player(const Board* board, Alliance alliance);
-    virtual ~Player();
+    enum TypeMessage
+    {
+        k_msgType		= 1 << 5
+    };
 
-	bool					isInCheck();
-	bool					isInCheckMate();
-    bool                    checkLegalMove(Move* move);
-	std::vector<Move*>		calculateActacksOnTile(int piecePosition, std::vector<Move*> moves);
+    Player();
+    virtual ~Player() override;
+
+    void                    SetIsAI(bool isAi);
+    bool                    IsAiPlayer() const;
+    Alliance                GetAlliance() const;
+
+    virtual void            OnMessageReceived(const Message& msg) override;
+
 
 protected:
-
-    virtual std::vector<Move*>  calculateKingCastles(const std::vector<Move*> playerLegals,
-                                                const std::vector<Move*> opponentLegals) = 0;
-
-
-    bool                    hasEscapeMoves();
-
-
-
-	const Piece*			m_King;
-	std::vector<Piece*>		m_pieces;
-	Alliance				m_alliance;
-	bool					m_isInCheck;
+    Alliance    m_player;
+    bool        m_isAI;  // AI player
+    Minimax*    m_minimax;
 };
 
+class BlackPlayer: public Player
+{
+public:
+    BlackPlayer();
+    virtual ~BlackPlayer();
+
+};
+
+class WhitePlayer: public Player
+{
+public:
+    WhitePlayer();
+    virtual ~WhitePlayer();
+
+};
+
+#endif // PLAYER_H

@@ -1,90 +1,76 @@
-#include "Move.h"
 #include "Player.h"
-#include "Board.h"
-#include "Tile.h"
+#include "GUI/BoardGameWnd.h"
+#include "Controller/BoardController.h"
+#include "Minimax/Minimax.h"
 
-Player::Player(const Board* board, Alliance alliance)
+Player::Player()
 {
-	m_pieces = board->calculateActivePieces(board->getTiles(), alliance);
-	m_isInCheck = false;
-	m_alliance = alliance;
-	m_King =  board->getPieces(PieceType::KING, alliance).at(0);
+    m_isAI = false;
+    m_minimax = nullptr;
 
-    m_isInCheck = false;
+    ListenTo(BoardGameWnd::GetInstance()->GetEditModeController(), k_msgType, msg::MOVE_DONE);
 }
 
 Player::~Player()
 {
+
 }
 
-std::vector<Move*> Player::calculateActacksOnTile(int piecePosition, std::vector<Move*> moves)
+void Player::SetIsAI(bool isAi)
 {
-    std::vector<Move*> attackMove;
-	for (Move* move : moves)
-	{
-		if (piecePosition == move->getDestCoordinate())
-		{
-            attackMove.push_back(move);
-		}
-        else
-        {
-            delete move;
-        }
-	}
-    return attackMove;
-}
-
-bool Player::isInCheck()
-{
-    m_isInCheck = true;
-
-    std::vector<Move*> moves = BoardController::GetInstance()->getBoard()->calculateAttackMoves(m_alliance == Alliance::WHITE ? Alliance::BLACK: Alliance::WHITE);
-    std::vector<Move*> attackedMove = calculateActacksOnTile(m_King->getPosistion(), moves);
-
-	if (attackedMove.empty())
-	{
-        m_isInCheck = false;
-    }
-    return m_isInCheck;
-}
-
-bool  Player::hasEscapeMoves()
-{
-    return false;
-}
-
-bool Player::isInCheckMate()
-{
-    return isInCheck() && !hasEscapeMoves();
-}
-
-bool Player::checkLegalMove(Move* move)
-{
-    bool checkState = false;
-
-    Tile* currentTile = BoardController::GetInstance()->getBoard()->getTile( move->getMovePiece()->getPosistion());
-    Tile* dstTile = BoardController::GetInstance()->getBoard()->getTile( move->getDestCoordinate());
-
-    Piece* currentPiece = currentTile->getPiece();
-    Piece* dstPiece = dstTile->getPiece();
-
-    currentTile->setOccupiedState(false);
-    dstTile->setOccupiedState(true);
-
-    Piece* tmp = dstPiece;
-    dstTile->setPiece(currentPiece);
-    currentTile->setPiece(nullptr);
-
-    if(isInCheck())
+    m_isAI = isAi;
+    if(isAi)
     {
-        checkState = true;
+        m_minimax = Minimax::GetInstance();
+        m_minimax->Init();
+        m_minimax->SetDepth(4);
     }
-
-    //Reset old state
-    currentTile->setOccupiedState(true);
-    dstTile->setOccupiedState(false);
-    currentTile->setPiece(currentPiece);
-    dstTile->setPiece(tmp);
-
-    return checkState;
 }
+
+bool Player::IsAiPlayer() const
+{
+    return m_isAI;
+}
+
+Alliance Player::GetAlliance() const
+{
+    return m_player;
+}
+
+void Player::OnMessageReceived(const Message &msg)
+{
+    BoardController* boardController = BoardGameWnd::GetInstance()->GetEditModeController();
+    Alliance currentPlayer = boardController->GetMoveMaker();
+
+    if( m_isAI && m_player == currentPlayer && msg.Is(msg::MOVE_DONE))
+    {
+        BoardGameWnd::GetInstance()->LockTiles(false);
+        BoardGameWnd::GetInstance()->Lock(true);
+        BoardConfig currentBoard = BoardGameWnd::GetInstance()->GetCurrentBoard();
+        Move* move = m_minimax->execute(currentBoard);
+        boardController->MovePiece(move);
+        BoardGameWnd::GetInstance()->LockTiles(true);
+        BoardGameWnd::GetInstance()->Lock(false);
+    }
+}
+
+BlackPlayer::BlackPlayer(): Player ()
+{
+    m_player = Alliance::BLACK;
+}
+
+BlackPlayer::~BlackPlayer()
+{
+
+}
+
+WhitePlayer::WhitePlayer(): Player ()
+{
+    m_player = Alliance::WHITE;
+}
+
+WhitePlayer::~WhitePlayer()
+{
+
+}
+
