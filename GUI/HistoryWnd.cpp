@@ -44,6 +44,7 @@ void HistoryWnd::Update()
 
         addItem(item);
     }
+    repaint();
 }
 
 void HistoryWnd::OnMessageReceived(const Message &msg)
