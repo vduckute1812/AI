@@ -44,12 +44,12 @@ void Player::OnMessageReceived(const Message &msg)
 
     if( m_isAI && m_player == currentPlayer && msg.Is(msg::MOVE_DONE))
     {
-        BoardGameWnd::GetInstance()->LockTiles(false);
+        BoardGameWnd::GetInstance()->LockTiles(true);
         BoardGameWnd::GetInstance()->Lock(true);
         BoardConfig currentBoard = BoardGameWnd::GetInstance()->GetCurrentBoard();
         Move* move = m_minimax->execute(currentBoard);
         boardController->MovePiece(move);
-        BoardGameWnd::GetInstance()->LockTiles(true);
+        BoardGameWnd::GetInstance()->LockTiles(false);
         BoardGameWnd::GetInstance()->Lock(false);
     }
 }

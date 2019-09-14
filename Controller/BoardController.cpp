@@ -8,25 +8,20 @@
 #include "Move.h"
 #include "Messenger.h"
 #include "Player.h"
-#include "Piece/PieceFactory.h"
-#include "GUI/BoardGameWnd.h"
-#include "GUI/HistoryWnd.h"
-#include "GUI/DeadPieceWnd.h"
-#include "GUI/PromoteWnd.h"
 #include "GUI/MainWnd.h"
+#include "GUI/PromoteWnd.h"
+#include "GUI/HistoryWnd.h"
+#include "GUI/BoardGameWnd.h"
+#include "GUI/DeadPieceWnd.h"
+#include "Piece/Piece.h"
+#include "Piece/PieceFactory.h"
 
 typedef vec2<int32_t> vec2i;
 
-BoardController::BoardController(QWidget* parent /*= nullptr*/) : QWidget(parent)
+BoardController::BoardController()
 {
     m_piece = nullptr;
     m_currentPlayer = nullptr;
-}
-
-void BoardController::mousePressEvent(QMouseEvent */*event*/)
-{
-//        vec2i pointer2D(event->x(), event->y());
-
 }
 
 void BoardController::SetSelecetedPiece(Piece* piece)
@@ -34,7 +29,7 @@ void BoardController::SetSelecetedPiece(Piece* piece)
     m_piece = piece;
 }
 
-void BoardController::MoveSelectedPiece(unsigned int coordinate)
+void BoardController::MoveSelectedPiece(unsigned int destination)
 {
     if(BoardGameWnd::GetInstance()->IsLocked())
         return;
@@ -45,17 +40,9 @@ void BoardController::MoveSelectedPiece(unsigned int coordinate)
     {
         for (Move* move : piece->calculateLegalMove(BoardGameWnd::GetInstance()->GetCurrentBoard()))
         {
-            if (move->GetDestCoordinate() == coordinate)
+            if (move->GetDestCoordinate() == destination && move->IsLegalMove())
             {
-                if(move->IsLegalMove())
-
-                {
-                    MovePiece(move);
-                }
-                else
-                {
-                    delete move;
-                }
+                 MovePiece(move);
             }
             else
             {
@@ -238,11 +225,6 @@ bool BoardController::IsCheckMate(const BoardConfig &board, Alliance player) con
     }
 
     return !hasEscapeMove;  // don't has escape move, is check mate
-}
-
-Player *BoardController::GetCurrentPlayer()
-{
-    return BoardGameWnd::GetInstance()->GetCurrentPlayer();
 }
 
 void BoardController::PrintBoard(const BoardConfig &board) const

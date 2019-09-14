@@ -64,16 +64,15 @@ Piece *Tile::GetPiece()
 
 void Tile::mousePressEvent(QMouseEvent *event)
 {
-    if(BoardGameWnd::GetInstance()->IsLocked() || !m_canTouch)
+    if(!m_canTouch)
         return;
 
-    BoardGameWnd::GetInstance()->GetEditModeController()->mousePressEvent(event);
+    Piece* selectPiece = this->GetPiece();
 
     /*//////////////////////////////PROMOTE SELECTION//////////////////////////////////*/
     if(PromoteWnd::GetInstance()->IsPromote())
     {
-        Piece* promotePiece = this->GetPiece();
-        PromoteWnd::GetInstance()->SetPromotePiece(promotePiece);
+        PromoteWnd::GetInstance()->SetPromotePiece(selectPiece);
         PromoteWnd::GetInstance()->SetPromote(false);
         PromoteWnd::GetInstance()->SetVisible(false);
     }
@@ -85,7 +84,7 @@ void Tile::mousePressEvent(QMouseEvent *event)
     boardController->MoveSelectedPiece(coordinate);
     /*//////////////////////////////////////////////////////////////////////////////////*/
 
-    boardController->SetSelecetedPiece(this->GetPiece());
+    boardController->SetSelecetedPiece(selectPiece);
 
     // Set colors on Board. Render posible move
     BoardGameWnd::GetInstance()->ResetColorTiles();

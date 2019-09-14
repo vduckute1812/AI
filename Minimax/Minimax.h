@@ -1,8 +1,8 @@
 #ifndef MINIMAX_H
 #define MINIMAX_H
-#include "Piece.h"
 #include "Singleton.h"
 #include "Defines.h"
+#include "Piece/Piece.h"
 
 const static int CHECK_BONUS = 50;
 const static int CHECK_MATE_BONUS = 1000;

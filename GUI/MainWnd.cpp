@@ -3,7 +3,6 @@
 #include <QApplication>
 #include <QTreeWidget>
 #include <QKeyEvent>
-
 #include "MainWnd.h"
 #include "HistoryWnd.h"
 #include "BoardGameWnd.h"
@@ -11,9 +10,9 @@
 #include "PromoteWnd.h"
 #include "MainWnd.h"
 #include "Player.h"
-
 #include "Controller/MoveMgr.h"
 #include "Controller/BoardController.h"
+
 
 typedef std::map<QString , QIcon*, StringLT > IconNameMap;
 
@@ -59,11 +58,6 @@ void MainWnd::Init()
 
     m_splitter = new QSplitter(Qt::Vertical, this);
     m_splitter->setObjectName("mainsplitter");
-
-//    SetGLWidget(new GLWidget(m_splitter));
-
-//    m_splitter->addWidget(GetGLWidget());
-//    m_splitter->addWidget(m_propWnd);
 }
 
 void MainWnd::keyPressEvent(QKeyEvent *event)
@@ -114,7 +108,7 @@ const QIcon& MainWnd::LoadIcon(QString iconStr)
             QString fn(QString("Resources/") + iconStr + extensions[i]);
 
             QFileInfo info(fn);
-            if (info.exists() && info.isFile())
+            if (info.exists())
             {
                 icon = new QIcon(fn);
                 break;

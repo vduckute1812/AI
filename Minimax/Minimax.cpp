@@ -1,10 +1,10 @@
+#include <time.h>
+#include <QTextStream>
 #include "Minimax.h"
 #include "BoardUntils.h"
-#include <QTextStream>
-#include "Move.h"
-#include "BoardGameWnd.h"
-#include "BoardController.h"
-#include "time.h"
+#include "GUI/BoardGameWnd.h"
+#include "Controller/Move.h"
+#include "Controller/BoardController.h"
 
 const static double MAX_VALUE = 1e4;
 const static double MIN_VALUE = -1e4;

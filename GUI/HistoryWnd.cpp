@@ -1,6 +1,6 @@
-#include <QString>
-#include "MainWnd.h"
 #include "HistoryWnd.h"
+#include "MainWnd.h"
+#include <QString>
 #include "Controller/Move.h"
 #include "Controller/MoveMgr.h"
 
@@ -44,6 +44,7 @@ void HistoryWnd::Update()
 
         addItem(item);
     }
+    repaint();
 }
 
 void HistoryWnd::OnMessageReceived(const Message &msg)

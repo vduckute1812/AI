@@ -1,8 +1,8 @@
 #ifndef MAINWND_H
 #define MAINWND_H
 
-#include <QSplitter>
 #include <QMainWindow>
+#include <QSplitter>
 #include "Messenger.h"
 #include "Singleton.h"
 

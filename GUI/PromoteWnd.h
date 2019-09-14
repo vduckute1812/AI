@@ -2,8 +2,8 @@
 #define PROMOTEWND_H
 #include <QDialog>
 #include "Singleton.h"
-#include "Piece/Piece.h"
 #include "Messenger.h"
+#include "Piece/Piece.h"
 
 class Tile;
 class PromoteWnd: public QDialog, public Singleton<PromoteWnd>, public Messenger

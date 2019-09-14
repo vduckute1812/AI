@@ -1,6 +1,7 @@
 #ifndef MOVE_H
 #define MOVE_H
 
+#include "Piece/Piece.h"
 #include "GUI/BoardGameWnd.h"
 
 class Board;

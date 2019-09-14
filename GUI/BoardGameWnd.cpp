@@ -3,10 +3,11 @@
 #include "BoardUntils.h"
 #include "HistoryWnd.h"
 #include "MainWnd.h"
+#include "Piece/Piece.h"
+#include "Piece/Rook.h"
 #include "Piece/PieceFactory.h"
 #include "Controller/MoveMgr.h"
 #include "Controller/BoardController.h"
-
 #include "Player.h"
 
 #include <QGridLayout>
@@ -135,13 +136,6 @@ void BoardGameWnd::Init()
     Lock(false);    //
     blockSignals(false);
 
-    m_whitePlayer = new WhitePlayer();
-
-    m_blackPlayer = new BlackPlayer();  // IS ai player
-    m_blackPlayer->SetIsAI(true);
-
-    m_currentPlayer = GetCurrentPlayer();
-
     ListenTo(MoveMgr::GetInstance(), BoardGameWnd::k_msgType, msg::BOARD_CHANGED);
 }
 
@@ -172,8 +166,6 @@ void BoardGameWnd::SetBoard(BoardConfig board)
     }
 
     Lock(false);
-
-
 }
 
 void BoardGameWnd::ResetColorTiles()
@@ -193,7 +185,7 @@ void BoardGameWnd::LockTiles(bool yes)
     for (tilePtr = m_tiles.begin(); tilePtr != m_tiles.end(); ++tilePtr)
     {
         Tile* tile = *tilePtr;
-        tile->SetCanTouch(yes);
+        tile->SetCanTouch(!yes);
     }
 }
 
@@ -206,34 +198,27 @@ void BoardGameWnd::OnMessageReceived(const Message &msg)
 {
 //    if(msg.IsFrom<MainWnd>())   // receive message from MainWnd
 //    {
-    if(msg.Is(msg::MOVE))
-    {
-        // will do more in here
-    }
-    else if(msg.Is(msg::ATTACK))
-    {
-        // will do more in here
-    }
-    else if(msg.Is(msg::DEFEND))
-    {
-        // will do more in here
-    }
-    else if(msg.Is(msg::DEFEND))
-    {
-        // will do more in here
-    }
 
-    if(msg.Is(msg::BOARD_CHANGED))
+    switch (msg.GetMessage())
     {
-        repaint();
+        case msg::MOVE:
+        {
+            // will do more in here
+        }
+        case msg::ATTACK:
+        {
+            // will do more in here
+        }
+        case msg::DEFEND:
+        {
+            // will do more in here
+        }
+        case msg::BOARD_CHANGED:
+        {
+            repaint();
+        }
     }
 }
-
-Player *BoardGameWnd::GetCurrentPlayer()
-{
-    return m_tempBoards.playerTurn == Alliance::WHITE ? m_whitePlayer : m_blackPlayer;
-}
-
 
 void BoardGameWnd::ResetTiles()
 {
