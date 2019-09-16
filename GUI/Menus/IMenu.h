@@ -14,14 +14,14 @@ public:
         k_OptionMenu
     };
 public:
-    IMenu();
+    IMenu(MenuType menuType);
     virtual ~IMenu();
 
 public:
     virtual void CreateMenu() = 0;
 
 private:
-
+    MenuType m_type;
 };
 
 #endif // IMENU_H

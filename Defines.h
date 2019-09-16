@@ -9,6 +9,7 @@
 #include <memory>
 #include <algorithm>
 #include <QString>
+#include <QDebug>
 
 
 template<typename T>

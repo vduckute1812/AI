@@ -1,6 +1,7 @@
 #include "OptionMenu.h"
 
 OptionMenu::OptionMenu()
+    :IMenu (k_OptionMenu)
 {
 
 }

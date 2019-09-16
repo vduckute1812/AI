@@ -1,6 +1,7 @@
 #include "MainMenu.h"
 
 MainMenu::MainMenu()
+    :IMenu (k_MainMenu)
 {
 
 }

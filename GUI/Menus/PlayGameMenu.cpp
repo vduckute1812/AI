@@ -1,6 +1,7 @@
 #include "PlayGameMenu.h"
 
 PlayGameMenu::PlayGameMenu()
+    :IMenu (k_PlayGameMenu)
 {
 
 }

@@ -1,6 +1,7 @@
 #include "ScoreMenu.h"
 
 ScoreMenu::ScoreMenu()
+    :IMenu (k_ScoreMenu)
 {
 
 }
