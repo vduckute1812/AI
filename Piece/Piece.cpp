@@ -2,8 +2,8 @@
 #include "Defines.h"
 #include "BoardUntils.h"
 #include <QFileInfo>
-#include "GUI/Tile.h"
-#include "GUI/BoardGameWnd.h"
+#include "GUI/MenuComponents/Tile.h"
+#include "GUI/MenuComponents/BoardGameWnd.h"
 #include "Minimax/BonusSystem.h"
 
 Piece::Piece(Alliance pieceAlliance, PieceType pieceType, PieceValue pieceValue, QWidget *parent, unsigned int position): QFrame(parent)

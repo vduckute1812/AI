@@ -7,15 +7,21 @@ TARGET = ChessGame
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    GUI/BoardGameWnd.cpp \
-    GUI/DeadPieceWnd.cpp \
-    GUI/HistoryWnd.cpp \
-    GUI/MainWnd.cpp \
     GUI/MenuBase.cpp \
+    GUI/MenuComponents/BoardGameWnd.cpp \
+    GUI/MenuComponents/DeadPieceWnd.cpp \
+    GUI/MenuComponents/HistoryWnd.cpp \
+    GUI/MenuComponents/MainWnd.cpp \
+    GUI/MenuComponents/MessageBoxWnd.cpp \
+    GUI/MenuComponents/PromoteWnd.cpp \
+    GUI/MenuComponents/Tile.cpp \
     GUI/MenuFactory.cpp \
-    GUI/MessageBoxWnd.cpp \
-    GUI/PromoteWnd.cpp \
-    GUI/Tile.cpp \
+    GUI/MenuManager.cpp \
+    GUI/Menus/IMenu.cpp \
+    GUI/Menus/LoginMenu.cpp \
+    GUI/Menus/MainMenu.cpp \
+    GUI/Menus/PlayGameMenu.cpp \
+    GUI/Menus/ScoreMenu.cpp \
     Controller/BoardController.cpp \
     Controller/Move.cpp \
     Controller/MoveMgr.cpp \
@@ -37,15 +43,21 @@ SOURCES += main.cpp \
     Player.cpp
 
 HEADERS += \
-    GUI/BoardGameWnd.h \
-    GUI/DeadPieceWnd.h \
-    GUI/HistoryWnd.h \
-    GUI/MainWnd.h \
     GUI/MenuBase.h \
+    GUI/MenuComponents/BoardGameWnd.h \
+    GUI/MenuComponents/DeadPieceWnd.h \
+    GUI/MenuComponents/HistoryWnd.h \
+    GUI/MenuComponents/MainWnd.h \
+    GUI/MenuComponents/MessageBoxWnd.h \
+    GUI/MenuComponents/PromoteWnd.h \
+    GUI/MenuComponents/Tile.h \
     GUI/MenuFactory.h \
-    GUI/MessageBoxWnd.h \
-    GUI/PromoteWnd.h \
-    GUI/Tile.h \
+    GUI/MenuManager.h \
+    GUI/Menus/IMenu.h \
+    GUI/Menus/LoginMenu.h \
+    GUI/Menus/MainMenu.h \
+    GUI/Menus/PlayGameMenu.h \
+    GUI/Menus/ScoreMenu.h \
     Controller/BoardController.h \
     Controller/Move.h \
     Controller/MoveMgr.h \

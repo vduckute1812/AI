@@ -2,8 +2,8 @@
 #include "BoardUntils.h"
 #include "BoardController.h"
 #include "Piece/Piece.h"
-#include "GUI/PromoteWnd.h"
-#include "GUI/BoardGameWnd.h"
+#include "GUI/MenuComponents/PromoteWnd.h"
+#include "GUI/MenuComponents/BoardGameWnd.h"
 
 Move::Move( const BoardConfig board, const Piece* movePiece, const Piece* attackPiece, const unsigned int destCoord)
 {

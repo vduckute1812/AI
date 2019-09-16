@@ -2,7 +2,7 @@
 #include <QTextStream>
 #include "Minimax.h"
 #include "BoardUntils.h"
-#include "GUI/BoardGameWnd.h"
+#include "GUI/MenuComponents/BoardGameWnd.h"
 #include "Controller/Move.h"
 #include "Controller/BoardController.h"
 

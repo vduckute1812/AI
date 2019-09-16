@@ -1,7 +1,7 @@
 #include "Pawn.h"
 #include "BoardUntils.h"
-#include "GUI/Tile.h"
-#include "GUI/BoardGameWnd.h"
+#include "GUI/MenuComponents/Tile.h"
+#include "GUI/MenuComponents/BoardGameWnd.h"
 #include "Controller/BoardController.h"
 #include "Controller/Move.h"
 

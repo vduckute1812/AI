@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "GUI/BoardGameWnd.h"
+#include "GUI/MenuComponents/BoardGameWnd.h"
 #include "Controller/BoardController.h"
 #include "Minimax/Minimax.h"
 
