@@ -4,3 +4,10 @@ IMenu::IMenu()
 {
 
 }
+
+IMenu::~IMenu()
+{
+
+}
+
+

@@ -4,3 +4,14 @@ LoginMenu::LoginMenu()
 {
 
 }
+
+LoginMenu::~LoginMenu()
+{
+
+}
+
+void LoginMenu::CreateMenu()
+{
+
+}
+

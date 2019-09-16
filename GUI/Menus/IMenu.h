@@ -15,10 +15,10 @@ public:
     };
 public:
     IMenu();
-//    virtual ~IMenu();
+    virtual ~IMenu();
 
 public:
-//    virtual void CreateMenu();
+    virtual void CreateMenu() = 0;
 
 private:
 

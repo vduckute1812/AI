@@ -4,3 +4,13 @@ PlayGameMenu::PlayGameMenu()
 {
 
 }
+
+PlayGameMenu::~PlayGameMenu()
+{
+
+}
+
+void PlayGameMenu::CreateMenu()
+{
+
+}

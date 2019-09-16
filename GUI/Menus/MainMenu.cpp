@@ -4,3 +4,13 @@ MainMenu::MainMenu()
 {
 
 }
+
+MainMenu::~MainMenu()
+{
+
+}
+
+void MainMenu::CreateMenu()
+{
+
+}
