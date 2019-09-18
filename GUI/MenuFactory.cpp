@@ -2,25 +2,40 @@
 
 void MenuFactory::Initialize()
 {
-    m_menuName =
-        {
-            std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_MainMenu,"Main Menu"),
-            std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_LoginMenu,"Login Menu"),
-            std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_PlayGameMenu,"Play Game Menu"),
-            std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_OptionMenu,"Option Menu"),
-            std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_ScoreMenu,"Score Menu"),
-        };
+    InitializeMenuName();
+    InitializeMenuFactories();
+}
+
+void MenuFactory::InitializeMenuName()
+{
+    m_menuName.clear();
+    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_MainMenu,"Main Menu"));
+    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_LoginMenu,"Login Menu"));
+    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_PlayGameMenu,"Play Game Menu"));
+    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_OptionMenu,"Option Menu"));
+    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_ScoreMenu,"Score Menu"));
+}
+
+
+void MenuFactory::InitializeMenuFactories()
+{
+    m_menuFactories.clear();
+    RegisterMenu(IMenu::MenuType::k_MainMenu,new MainMenu());
+    RegisterMenu(IMenu::MenuType::k_LoginMenu,new LoginMenu());
+    RegisterMenu(IMenu::MenuType::k_PlayGameMenu,new PlayGameMenu());
+    RegisterMenu(IMenu::MenuType::k_OptionMenu,new OptionMenu());
+    RegisterMenu(IMenu::MenuType::k_ScoreMenu,new ScoreMenu());
+}
+
+void MenuFactory::RegisterMenu(IMenu::MenuType menuType, IMenu* menu)
+{
+    m_menuFactories.insert(std::pair<IMenu::MenuType, IMenu*>(menuType, menu));
 }
 
 void MenuFactory::OpenMenu(IMenu::MenuType menuType)
 {
     qInfo()<<"Open Menu: "<<GetMenuName(menuType).c_str();
 }
-
-//void MenuFactory::RegisterMenu(IMenu::MenuType menuType, IMenu menu)
-//{
-
-//}
 
 std::string MenuFactory::GetMenuName(IMenu::MenuType menuType)
 {
