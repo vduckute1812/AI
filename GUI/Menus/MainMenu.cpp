@@ -15,3 +15,13 @@ void MainMenu::CreateMenu()
 {
 
 }
+
+void MainMenu::Show()
+{
+
+}
+
+void MainMenu::Destroy()
+{
+
+}

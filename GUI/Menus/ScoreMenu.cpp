@@ -15,3 +15,13 @@ void ScoreMenu::CreateMenu()
 {
 
 }
+
+void ScoreMenu::Show()
+{
+
+}
+
+void ScoreMenu::Destroy()
+{
+
+}

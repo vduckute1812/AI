@@ -16,3 +16,13 @@ void LoginMenu::CreateMenu()
 
 }
 
+void LoginMenu::Show()
+{
+
+}
+
+void LoginMenu::Destroy()
+{
+
+}
+

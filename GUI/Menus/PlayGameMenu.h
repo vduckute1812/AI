@@ -2,6 +2,7 @@
 #define PLAYGAMEMENU_H
 
 #include "GUI/Menus/IMenu.h"
+#include "GUI/MenuComponents/MainWnd.h"
 
 class PlayGameMenu: public IMenu
 {
@@ -11,6 +12,8 @@ public:
 
 public:
     virtual void CreateMenu() override;
+    virtual void Show() override;
+    virtual void Destroy() override;
 };
 
 #endif // PLAYGAMEMENU_H

@@ -31,14 +31,12 @@ void MainWnd::Init()
     HistoryWnd* historyWnd = HistoryWnd::GetInstance();
     historyWnd->Init();
     m_historyDock = CreateDock("History", "history", historyWnd);
-    m_historyDock->show();
     AppendDock(m_historyDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::RightDockWidgetArea);
 
 
-    DeadPieceWnd* deadPieceWnd = DeadPieceWnd::GetInstance();
+    DeadPieceWnd* deadPieceWnd = new DeadPieceWnd(this);
     deadPieceWnd->Init();
     m_deadPieceDock = CreateDock("Dead Piece", "dead", deadPieceWnd);
-    m_deadPieceDock->show();
     AppendDock(m_deadPieceDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::LeftDockWidgetArea);
 
 //    setIcon
@@ -146,5 +144,7 @@ const QPixmap &MainWnd::LoadPixmap(QString iconStr)
 void MainWnd::Show()
 {
     show();
+    m_historyDock->show();
+    m_deadPieceDock->show();
     QApplication::processEvents(); // Make sure it is all processed before state restoration.
 }

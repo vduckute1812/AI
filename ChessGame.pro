@@ -7,6 +7,7 @@ TARGET = ChessGame
 TEMPLATE = app
 
 SOURCES += main.cpp \
+    Application.cpp \
     GUI/MenuComponents/BoardGameWnd.cpp \
     GUI/MenuComponents/DeadPieceWnd.cpp \
     GUI/MenuComponents/HistoryWnd.cpp \
@@ -43,6 +44,7 @@ SOURCES += main.cpp \
     Player.cpp
 
 HEADERS += \
+    Application.h \
     GUI/MenuComponents/BoardGameWnd.h \
     GUI/MenuComponents/DeadPieceWnd.h \
     GUI/MenuComponents/HistoryWnd.h \

@@ -11,6 +11,8 @@ public:
 
 public:
     virtual void CreateMenu() override;
+    virtual void Show() override;
+    virtual void Destroy() override;
 };
 
 #endif // MAINMENU_H

@@ -6,6 +6,15 @@ void MenuFactory::Initialize()
     InitializeMenuFactories();
 }
 
+IMenu *MenuFactory::GetMenu(IMenu::MenuType menuType)
+{
+    IMenu* menu = m_menuFactories.find(menuType)->second;
+    if  (menu!=nullptr)
+    {
+        return menu;
+    }
+}
+
 void MenuFactory::InitializeMenuName()
 {
     m_menuName.clear();
@@ -32,10 +41,10 @@ void MenuFactory::RegisterMenu(IMenu::MenuType menuType, IMenu* menu)
     m_menuFactories.insert(std::pair<IMenu::MenuType, IMenu*>(menuType, menu));
 }
 
-void MenuFactory::OpenMenu(IMenu::MenuType menuType)
-{
-    qInfo()<<"Open Menu: "<<GetMenuName(menuType).c_str();
-}
+//void MenuFactory::OpenMenu(IMenu::MenuType menuType)
+//{
+//    qInfo()<<"Open Menu: "<<GetMenuName(menuType).c_str();
+//}
 
 std::string MenuFactory::GetMenuName(IMenu::MenuType menuType)
 {
