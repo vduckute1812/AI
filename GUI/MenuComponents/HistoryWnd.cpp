@@ -3,8 +3,10 @@
 #include <QString>
 #include "Controller/Move.h"
 #include "Controller/MoveMgr.h"
+#include "GUI/MenuComponents/MainWnd.h"
 
-HistoryWnd::HistoryWnd(QWidget *parent/* = nullptr*/): QListWidget (parent)
+HistoryWnd::HistoryWnd(QWidget *parent/* = nullptr*/):
+    QListWidget (MainWnd::GetInstance())
 {
 
 }
@@ -12,6 +14,7 @@ HistoryWnd::HistoryWnd(QWidget *parent/* = nullptr*/): QListWidget (parent)
 void HistoryWnd::Init()
 {
     m_entryIcon = MainWnd::LoadIcon("history");
+    this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     ListenTo(MoveMgr::GetInstance(), k_msgType, msg::HISTORY_UPDATE);
 }
 

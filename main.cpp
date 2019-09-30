@@ -8,12 +8,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-//    MainWnd* mainWnd = MainWnd::GetInstance();
-//    MenuManager::GetInstance()->Init();
-
-//    mainWnd->Init();
-//    mainWnd->Show();
-
     Application::GetInstance()->Init();
 
     Application::GetInstance()->Update();

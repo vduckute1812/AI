@@ -34,7 +34,7 @@ void MainWnd::Init()
     AppendDock(m_historyDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::RightDockWidgetArea);
 
 
-    DeadPieceWnd* deadPieceWnd = new DeadPieceWnd(this);
+    DeadPieceWnd* deadPieceWnd = DeadPieceWnd::GetInstance();
     deadPieceWnd->Init();
     m_deadPieceDock = CreateDock("Dead Piece", "dead", deadPieceWnd);
     AppendDock(m_deadPieceDock, Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea, Qt::LeftDockWidgetArea);
@@ -44,7 +44,7 @@ void MainWnd::Init()
 
     m_promoteWnd = new PromoteWnd(this);
     m_promoteWnd->Init();
-    m_promoteWnd->resize(600,300);
+//    m_promoteWnd->resize(600,300);
     m_promoteWnd->hide();
 
     m_boardDock = CreateDock("Board Game", "", boardWnd);
