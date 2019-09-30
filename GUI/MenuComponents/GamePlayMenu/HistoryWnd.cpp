@@ -3,7 +3,7 @@
 #include <QString>
 #include "Controller/Move.h"
 #include "Controller/MoveMgr.h"
-#include "GUI/MenuComponents/MainWnd.h"
+#include "GUI/MenuComponents/GamePlayMenu/MainWnd.h"
 
 HistoryWnd::HistoryWnd(QWidget *parent/* = nullptr*/):
     QListWidget (MainWnd::GetInstance())

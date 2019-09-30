@@ -1,7 +1,7 @@
 #include "Queen.h"
 #include "BoardUntils.h"
-#include "GUI/MenuComponents/Tile.h"
-#include "GUI/MenuComponents/BoardGameWnd.h"
+#include "GUI/MenuComponents/GamePlayMenu/Tile.h"
+#include "GUI/MenuComponents/GamePlayMenu/BoardGameWnd.h"
 #include "Controller/Move.h"
 #include "Controller/BoardController.h"
 

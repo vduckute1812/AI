@@ -2,7 +2,7 @@
 #define MOVE_H
 
 #include "Piece/Piece.h"
-#include "GUI/MenuComponents/BoardGameWnd.h"
+#include "GUI/MenuComponents/GamePlayMenu/BoardGameWnd.h"
 
 class Board;
 enum TypeMove

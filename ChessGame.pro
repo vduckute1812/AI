@@ -8,13 +8,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     Application.cpp \
-    GUI/MenuComponents/BoardGameWnd.cpp \
-    GUI/MenuComponents/DeadPieceWnd.cpp \
-    GUI/MenuComponents/HistoryWnd.cpp \
-    GUI/MenuComponents/MainWnd.cpp \
-    GUI/MenuComponents/MessageBoxWnd.cpp \
-    GUI/MenuComponents/PromoteWnd.cpp \
-    GUI/MenuComponents/Tile.cpp \
+    GUI/MenuComponents/GamePlayMenu/BoardGameWnd.cpp \
+    GUI/MenuComponents/GamePlayMenu/DeadPieceWnd.cpp \
+    GUI/MenuComponents/GamePlayMenu/HistoryWnd.cpp \
+    GUI/MenuComponents/GamePlayMenu/MainWnd.cpp \
+    GUI/MenuComponents/GamePlayMenu/MessageBoxWnd.cpp \
+    GUI/MenuComponents/GamePlayMenu/PromoteWnd.cpp \
+    GUI/MenuComponents/GamePlayMenu/Tile.cpp \
+    GUI/MenuComponents/MainMenu/MainMenuWnd.cpp \
     GUI/MenuFactory.cpp \
     GUI/MenuManager.cpp \
     GUI/Menus/IMenu.cpp \
@@ -45,13 +46,14 @@ SOURCES += main.cpp \
 
 HEADERS += \
     Application.h \
-    GUI/MenuComponents/BoardGameWnd.h \
-    GUI/MenuComponents/DeadPieceWnd.h \
-    GUI/MenuComponents/HistoryWnd.h \
-    GUI/MenuComponents/MainWnd.h \
-    GUI/MenuComponents/MessageBoxWnd.h \
-    GUI/MenuComponents/PromoteWnd.h \
-    GUI/MenuComponents/Tile.h \
+    GUI/MenuComponents/GamePlayMenu/BoardGameWnd.h \
+    GUI/MenuComponents/GamePlayMenu/DeadPieceWnd.h \
+    GUI/MenuComponents/GamePlayMenu/HistoryWnd.h \
+    GUI/MenuComponents/GamePlayMenu/MainWnd.h \
+    GUI/MenuComponents/GamePlayMenu/MessageBoxWnd.h \
+    GUI/MenuComponents/GamePlayMenu/PromoteWnd.h \
+    GUI/MenuComponents/GamePlayMenu/Tile.h \
+    GUI/MenuComponents/MainMenu/MainMenuWnd.h \
     GUI/MenuFactory.h \
     GUI/MenuManager.h \
     GUI/Menus/IMenu.h \
