@@ -1,7 +1,7 @@
 #include "PlayGameMenu.h"
 
 PlayGameMenu::PlayGameMenu()
-    :IMenu (k_PlayGameMenu)
+    :IMenu (k_PlayGameMenu, "Play Game Menu")
 {
 //    this->SetWND(MainWnd::GetInstance());
     MainWnd::GetInstance()->Init();

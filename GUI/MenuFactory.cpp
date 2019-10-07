@@ -2,7 +2,6 @@
 
 void MenuFactory::Initialize()
 {
-    InitializeMenuName();
     InitializeMenuFactories();
 }
 
@@ -13,18 +12,15 @@ IMenu *MenuFactory::GetMenu(IMenu::MenuType menuType)
     {
         return menu;
     }
+    return nullptr;
 }
 
-void MenuFactory::InitializeMenuName()
+std::string MenuFactory::GetMenuName(IMenu::MenuType menuType)
 {
-    m_menuName.clear();
-    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_MainMenu,"Main Menu"));
-    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_LoginMenu,"Login Menu"));
-    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_PlayGameMenu,"Play Game Menu"));
-    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_OptionMenu,"Option Menu"));
-    m_menuName.insert(std::pair<IMenu::MenuType, std::string>(IMenu::MenuType::k_ScoreMenu,"Score Menu"));
-}
 
+    auto result = m_menuFactories.find(menuType);
+    return result->second->GetMenuName();
+}
 
 void MenuFactory::InitializeMenuFactories()
 {
@@ -41,13 +37,4 @@ void MenuFactory::RegisterMenu(IMenu::MenuType menuType, IMenu* menu)
     m_menuFactories.insert(std::pair<IMenu::MenuType, IMenu*>(menuType, menu));
 }
 
-//void MenuFactory::OpenMenu(IMenu::MenuType menuType)
-//{
-//    qInfo()<<"Open Menu: "<<GetMenuName(menuType).c_str();
-//}
 
-std::string MenuFactory::GetMenuName(IMenu::MenuType menuType)
-{
-    auto result = m_menuName.find(menuType);
-    return result->second;
-}

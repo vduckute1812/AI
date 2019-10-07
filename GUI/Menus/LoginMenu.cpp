@@ -1,7 +1,7 @@
 #include "LoginMenu.h"
 
 LoginMenu::LoginMenu()
-    :IMenu (k_LoginMenu)
+    :IMenu (k_LoginMenu, "Login Menu")
 {
 
 }
