@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "GUI/MenuComponents/MainWnd.h"
+#include "GUI/MenuComponents/GamePlayMenu/MainWnd.h"
 #include "GUI/MenuFactory.h"
 #include "GUI/MenuManager.h"
 #include "Application.h"

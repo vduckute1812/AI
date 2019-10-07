@@ -2,7 +2,7 @@
 #define PLAYGAMEMENU_H
 
 #include "GUI/Menus/IMenu.h"
-#include "GUI/MenuComponents/MainWnd.h"
+#include "GUI/MenuComponents/GamePlayMenu/MainWnd.h"
 
 class PlayGameMenu: public IMenu
 {
