@@ -31,6 +31,7 @@ public:
 
     //getter
     std::string GetMenuName() {return m_menuName;}
+    MenuType GetType(){return m_type;}
 
     //methods
     void ShowWND(){m_menuWND->show();}

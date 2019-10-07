@@ -25,16 +25,16 @@ std::string MenuFactory::GetMenuName(IMenu::MenuType menuType)
 void MenuFactory::InitializeMenuFactories()
 {
     m_menuFactories.clear();
-    RegisterMenu(IMenu::MenuType::k_MainMenu,new MainMenu());
-    RegisterMenu(IMenu::MenuType::k_LoginMenu,new LoginMenu());
-    RegisterMenu(IMenu::MenuType::k_PlayGameMenu,new PlayGameMenu());
-    RegisterMenu(IMenu::MenuType::k_OptionMenu,new OptionMenu());
-    RegisterMenu(IMenu::MenuType::k_ScoreMenu,new ScoreMenu());
+    RegisterMenu(new MainMenu());
+    RegisterMenu(new LoginMenu());
+    RegisterMenu(new PlayGameMenu());
+    RegisterMenu(new OptionMenu());
+    RegisterMenu(new ScoreMenu());
 }
 
-void MenuFactory::RegisterMenu(IMenu::MenuType menuType, IMenu* menu)
+void MenuFactory::RegisterMenu(IMenu* menu)
 {
-    m_menuFactories.insert(std::pair<IMenu::MenuType, IMenu*>(menuType, menu));
+    m_menuFactories.insert(std::pair<IMenu::MenuType, IMenu*>(menu->GetType(), menu));
 }
 
 

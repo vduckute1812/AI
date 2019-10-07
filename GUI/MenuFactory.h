@@ -15,17 +15,15 @@ class MenuFactory : public Singleton<MenuFactory>
 {
 public:
     void Initialize();
-//    void OpenMenu(IMenu::MenuType menuType);
+    void RegisterMenu(IMenu* menu);
+
     IMenu* GetMenu(IMenu::MenuType menuType);
-    void RegisterMenu(IMenu::MenuType menuType, IMenu* menu);
     std::string GetMenuName(IMenu::MenuType menuType);
 
-//    void InitializeMenuName();
     void InitializeMenuFactories();
 
 private:
     std::map <IMenu::MenuType, IMenu*> m_menuFactories;
-//    std::map <IMenu::MenuType, std::string> m_menuName;
 };
 
 #endif // MENUFACTORY_H
